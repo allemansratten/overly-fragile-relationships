@@ -14,7 +14,7 @@ export class RelationShipEffect {
 
 export class Constrain {
     public HaveToBePresent: Array<Human>
-    public CannotBePresetn: Array<Human>
+    public CannotBePresent: Array<Human>
     public AllowedLocations: Array<Location>
 
     public Effect: Array<RelationShipEffect>
