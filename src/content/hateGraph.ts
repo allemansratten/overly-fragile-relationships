@@ -12,7 +12,7 @@ export class HateGraph {
     }
 }
 
-export interface SituationEffect {
+export class SituationEffect {
     people: [HumanName, HumanName]
 
     addedRelTags: Set<RelationshipTag>
@@ -20,6 +20,20 @@ export interface SituationEffect {
 
     addedHumTags: [Set<HumanTag>, Set<HumanTag>]
     removedHumTags: [Set<HumanTag>, Set<HumanTag>]
+
+    constructor(
+        people: [HumanName, HumanName], 
+        addedRelTags?: Set<RelationshipTag>, 
+        removedRelTags?: Set<RelationshipTag>, 
+        addedHumTags?: [Set<HumanTag>, Set<HumanTag>], 
+        removedHumTags?: [Set<HumanTag>, Set<HumanTag>]) {
+            this.people = people
+            this.addedRelTags = addedRelTags ?? new Set<RelationshipTag>()
+            this.removedRelTags = removedRelTags ?? new Set<RelationshipTag>()
+            this.addedHumTags = addedHumTags ??  [new Set<HumanTag>(), new Set<HumanTag>()]
+            this.removedHumTags = removedHumTags ?? [new Set<HumanTag>(), new Set<HumanTag>()]
+
+    }
 }
 
 export interface Constraint {

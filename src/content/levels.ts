@@ -1,4 +1,4 @@
-import { HateGraph, SimpleSituation } from "./hateGraph"
+import { HateGraph, SimpleSituation, SituationEffect } from "./hateGraph"
 import { Level } from "./level"
 import { RelationshipTag, Relationship } from "./peopleGraph"
 import { Human, HumanTag } from "./human"
@@ -32,13 +32,12 @@ levels.push(
                 ['Matthew'],
                 locations,
                 [
-                    {
-                        people: ['Kate', 'Lucian'], 
-                        addedRelTags: new Set([RelationshipTag.crush]), 
-                        addedHumTags: [new Set([HumanTag.sad_drunk]), new Set<HumanTag>()],
-                        removedRelTags: new Set<RelationshipTag>(),
-                        removedHumTags: [new Set<HumanTag>(),new Set<HumanTag>()],
-                    },
+                    new SituationEffect(
+                        ['Kate', 'Lucian'], 
+                        new Set([RelationshipTag.crush]), 
+                        undefined, 
+                        [new Set([HumanTag.sad_drunk]), new Set<HumanTag>()],
+                    ),
                 ]
             )
             ,
