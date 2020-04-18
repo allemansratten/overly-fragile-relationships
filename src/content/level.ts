@@ -2,9 +2,9 @@ import { Human, HumanName } from "./human"
 import { Location } from "./location"
 import { TripSummary } from "../management/tripsummary"
 import { PeopleGraph, Relationship } from "./peopleGraph"
-import { HateGraph } from "./hateGraph"
+import { HateGraph, SituationEffect } from "./hateGraph"
 import { FriendshipManager } from "./friendshipManager"
-import { HumanTag } from "./entityTags"
+import { HumanTag, RelationshipTag, HumanTagMap, RelationshipTagMap } from "./entityTags"
 
 export class Level {
     public humans: Array<Human>
@@ -42,13 +42,10 @@ export class Level {
         let effects = this.friendshipManager.applyMeeting(tripSummary)
 
         // Construct msgs for effects
-        let effectsMsgs = effects.map(effect => {
-            // TODO: Rework
-            // return `${effect.people[0]} now ${Array(effect.addedRelTags).join(", ")} and no longer ${Array(effect.removedHumTags).join(", ")}  ${effect.people[1]} a bit more.`
-        })
+        let { perPersonRelMsg, perPersonHumMsg } = this.reduceEffectsPerPerson(effects)
+        let effectsMsgs = this.createEffectsMsgs(perPersonRelMsg, perPersonHumMsg)
 
         let effectMsg = effectsMsgs.length > 0
-
             ? effectsMsgs.join('\n')
             : "No one cared for your trip. ╯︿╰"
 
@@ -64,5 +61,56 @@ export class Level {
         let statusMessage = `You went out to ${tripSummary.goLocation?.name} with ${friendList}.\n${effectMsg}`
 
         return statusMessage
+    }
+
+    private createEffectsMsgs(
+        perPersonRelMsg: Map<[string, string], [RelationshipTag[], RelationshipTag[]]>, 
+        perPersonHumMsg: Map<string, [HumanTag[], HumanTag[]]>) {
+
+        let relMsgs = Array<string>()
+        perPersonRelMsg.forEach((changes, couple) => {
+            let newRelTags = changes[0].map(t => RelationshipTagMap[t]).join(", ")
+            let oldRelTags = changes[1].map(t => RelationshipTagMap[t]).join(", ")
+            relMsgs.push(`${couple[0]} now ${newRelTags} and no longer ${oldRelTags}  ${couple[1]}.`)
+        })
+
+        let humMsgs = Array<string>()
+        perPersonHumMsg.forEach((changes, person) => {
+            let newHumTags = changes[0].map(t => HumanTagMap[t]).join(", ")
+            let oldHumTags = changes[1].map(t => HumanTagMap[t]).join(", ")
+            relMsgs.push(`${person[0]} is now ${newHumTags} and no longer ${oldHumTags}.`)
+        })
+        let effectsMsgs = relMsgs.concat(humMsgs)
+
+        return effectsMsgs
+    }
+
+    private reduceEffectsPerPerson(effects: SituationEffect[]) {
+        let perPersonRelMsg = new Map<[HumanName, HumanName], [Array<RelationshipTag>, Array<RelationshipTag>]>()
+        let perPersonHumMsg = new Map<HumanName, [Array<HumanTag>, Array<HumanTag>]>()
+
+        effects.forEach(effect => {
+            effect.addedHumTags.forEach(ah => {
+                let ppHumMsg = perPersonHumMsg.get(ah[0]) ?? [new Array(), new Array()]
+                ppHumMsg[0].push(ah[1])
+                perPersonHumMsg.set(ah[0], ppHumMsg)
+            })
+            effect.removedHumTags.forEach(rh => {
+                let ppHumMsg = perPersonHumMsg.get(rh[0]) ?? [new Array(), new Array()]
+                ppHumMsg[1].push(rh[1])
+                perPersonHumMsg.set(rh[0], ppHumMsg)
+            })
+            effect.addedRelTags.forEach(ac => {
+                let ppHumMsg = perPersonRelMsg.get(ac[0]) ?? [new Array(), new Array()]
+                ppHumMsg[0].push(ac[1])
+                perPersonRelMsg.set(ac[0], ppHumMsg)
+            })
+            effect.removedRelTags.forEach(rc => {
+                let ppHumMsg = perPersonRelMsg.get(rc[0]) ?? [new Array(), new Array()]
+                ppHumMsg[1].push(rc[1])
+                perPersonRelMsg.set(rc[0], ppHumMsg)
+            })
+        })
+        return { perPersonRelMsg, perPersonHumMsg }
     }
 }
