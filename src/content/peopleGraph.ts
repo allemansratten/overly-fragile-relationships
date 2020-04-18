@@ -13,8 +13,9 @@ export class PeopleGraph {
 
         people.forEach(h => {
             people.forEach(hh => {
-                // will set weight for each person with themselves but ¯\_(ツ)_/¯
-                this.setWeight([h.name, hh.name], 0)
+                if (hh.name != h.name) {
+                    this.setWeight([h.name, hh.name], 0)
+                }
             });
         });
 
