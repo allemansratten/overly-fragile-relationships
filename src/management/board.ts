@@ -7,7 +7,8 @@ import { Location } from '../content/location'
 import {Level} from "../content/level"
 
 export class BoardScene extends Phaser.Scene {
-    private fader?: Phaser.GameObjects.Rectangle
+    private tripFader?: Phaser.GameObjects.Rectangle
+    private transitionFader?: Phaser.GameObjects.Rectangle
     private infoText?: Phaser.GameObjects.Text
     private level: Level
     
@@ -30,10 +31,14 @@ export class BoardScene extends Phaser.Scene {
         this.load.setBaseURL('assets/')
         this.load.spritesheet('portrait_big', 'portrait_big.png', { frameWidth: 200, frameHeight: 200 })
         this.load.spritesheet('location_thumb', 'location_thumb.png', { frameWidth: 200, frameHeight: 200 })
+
+        this.transitionFader = this.add.rectangle(0, 0, 800, 500, 0x0)
+            .setOrigin(0, 0)
+            .setDepth(2001)
     }
 
     public create() {
-        this.fader = this.add.rectangle(0, 0, 800, 500, 0x0)
+        this.tripFader = this.add.rectangle(0, 0, 800, 500, 0x0)
             .setOrigin(0, 0)
             .setDepth(1001)
             .setAlpha(0)
@@ -46,21 +51,27 @@ export class BoardScene extends Phaser.Scene {
         this.locationStage = new LocationStage(this, this.level)
         this.humanStage = new HumanStage(this, this.level)
         this.phone = new PhoneStage(this)
+
+        this.add.tween({
+            targets: this.transitionFader,
+            alpha: { from: 1, to: 0 },
+            duration: 500,
+        })
     }
 
     public goOut(location: Location) {
         if (!this.tripSummary.prepare(location))
             return
         let message = this.level.goOut(this.tripSummary)
-        this.fader!.input.enabled = false
+        this.tripFader!.input.enabled = false
         this.locationStage!.enable(false)
         this.infoText!.setText(message)
         this.add.tween({
-            targets: [this.infoText, this.fader],
+            targets: [this.infoText, this.tripFader],
             alpha: { from: 0, to: 1 },
             duration: 1000,
             onComplete: () => {
-                this.fader!.input.enabled = true
+                this.tripFader!.input.enabled = true
                 this.locationStage!.enable(true)
                 this.refresh()
             }
@@ -69,12 +80,12 @@ export class BoardScene extends Phaser.Scene {
 
     private goBack() {
         this.humanStage!.bleachPeople()
-        this.fader!.input.enabled = false
+        this.tripFader!.input.enabled = false
         this.add.tween({
-            targets: [this.infoText, this.fader],
+            targets: [this.infoText, this.tripFader],
             alpha: { from: 1, to: 0 },
             duration: 1000,
-            onComplete: () => this.fader!.input.enabled = true
+            onComplete: () => this.tripFader!.input.enabled = true
         })
     }
 

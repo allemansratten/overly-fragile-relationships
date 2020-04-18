@@ -53,8 +53,10 @@ export class HumanStage {
     }
 
     public bleachPeople() {
-        for (let text of this.allPeopleTexts) {
-            text.setFill('#f00')
+        for (let i in this.allPeopleTexts) {
+            if(Number(i) != 0) {
+                this.allPeopleTexts[i].setFill('#f00')
+            }
         }
     }
 }
