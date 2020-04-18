@@ -4,14 +4,14 @@ import { TripSummary } from "../management/tripsummary";
 import { RelationshipTag, HumanTag } from "./entityTags";
 
 export class HateGraph {
-    public constraints: Array<Constraint>
+    public constraints: Array<Situation>
 
-    constructor(constraints: Array<Constraint>) {
+    constructor(constraints: Array<Situation>) {
         this.constraints = constraints
     }
 }
 
-export interface Constraint {
+export interface Situation {
     GetApplicableEffects(trip: TripSummary): Array<SituationEffect>
 }
 
@@ -40,7 +40,7 @@ export class SituationEffect {
     }
 }
 
-export class SimpleSituation implements Constraint {
+export class SimpleSituation implements Situation {
     private haveToBePresent: Array<HumanName>
     private cannotBePresent: Array<HumanName>
     private allowedLocations: Array<Location>

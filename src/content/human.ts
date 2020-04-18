@@ -5,13 +5,15 @@ export type HumanName = string
 
 export class Human {
     name: HumanName
-    relationships: Array<Relationship>
+    
+    // these are read only
+    public relationships: Array<Relationship>
     public tags: Set<HumanTag>
 
-    constructor(name: HumanName, relationships?: Array<Relationship>, tags?: Set<HumanTag>) {
+    constructor(name: HumanName) {
         this.name = name
-        this.relationships = relationships ?? new Array()
-        this.tags = tags ?? new Set()
+        this.relationships = new Array()
+        this.tags = new Set()
     }
 
 

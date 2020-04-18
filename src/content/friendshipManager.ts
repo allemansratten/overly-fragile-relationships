@@ -1,7 +1,5 @@
-import { HateGraph, Constraint, SituationEffect } from "./hateGraph";
+import { HateGraph, Situation, SituationEffect } from "./hateGraph";
 import { PeopleGraph } from "./peopleGraph";
-import { Human } from "./human";
-import { Location } from "./location"
 import { TripSummary } from "../management/tripsummary";
 
 export class FriendshipManager {
@@ -24,12 +22,12 @@ export class FriendshipManager {
         return appliedEffects
     }
 
-    private tryResolveConstraint(con: Constraint, trip: TripSummary): Array<SituationEffect> {
+    private tryResolveConstraint(con: Situation, trip: TripSummary): Array<SituationEffect> {
         let applicableEffects = con.GetApplicableEffects(trip);
 
         applicableEffects.forEach(eff => {
-            eff.addedRelTags.forEach(at => this.peopleGraph.addTag(eff.people, at))
-            eff.removedRelTags.forEach(at => this.peopleGraph.removeTag(eff.people, at))
+            eff.addedRelTags.forEach(at => this.peopleGraph.addRelTag(eff.people, at))
+            eff.removedRelTags.forEach(at => this.peopleGraph.removeRelTag(eff.people, at))
 
 
             // TODO: Petr: do all updates

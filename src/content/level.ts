@@ -1,9 +1,10 @@
-import { Human } from "./human"
+import { Human, HumanName } from "./human"
 import { Location } from "./location"
 import { TripSummary } from "../management/tripsummary"
 import { PeopleGraph, Relationship } from "./peopleGraph"
 import { HateGraph } from "./hateGraph"
 import { FriendshipManager } from "./friendshipManager"
+import { HumanTag } from "./entityTags"
 
 export class Level {
     public humans: Array<Human>
@@ -11,10 +12,10 @@ export class Level {
 
     public friendshipManager: FriendshipManager
 
-    constructor(humans: Array<Human>, locations: Array<Location>, relationships: Array<Relationship>, hateGraph: HateGraph) {
+    constructor(humans: Array<Human>, locations: Array<Location>, relationships: Array<Relationship>, initialTags: Array<[HumanName, HumanTag]>, hateGraph: HateGraph) {
         this.humans = humans
         this.locations = locations
-        let peopleGraph = new PeopleGraph(this.humans, relationships)
+        let peopleGraph = new PeopleGraph(this.humans, relationships, initialTags)
 
         this.friendshipManager = new FriendshipManager(hateGraph, peopleGraph)
 
