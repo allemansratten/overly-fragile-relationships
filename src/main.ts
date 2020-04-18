@@ -1,5 +1,5 @@
 import * as Phaser from 'phaser'
-import { ManagementScene } from './scenes/management'
+import { BoardScene } from './management/board'
 
 const gameConfig: Phaser.Types.Core.GameConfig = {
   title: 'Sustainable Friendship',
@@ -14,7 +14,7 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
   parent: 'content',
   backgroundColor: '#888',
 
-  scene:  ManagementScene,
+  scene:  BoardScene,
 };
  
 export const game = new Phaser.Game(gameConfig);

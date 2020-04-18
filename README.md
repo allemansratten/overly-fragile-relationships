@@ -1,4 +1,4 @@
-# Levý sluchat
+# Sustainable Friendship
 
 ## Dev
 
