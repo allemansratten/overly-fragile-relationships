@@ -8,7 +8,7 @@ export class PeopleGraph {
         this.graph = new Map()
     }
 
-    public addWeight(people: [Person, Person], weight: number){
+    public setWeight(people: [Person, Person], weight: number){
         let graphKey = this.getOrderedPair(people)
         this.graph[graphKey] = weight 
     }
