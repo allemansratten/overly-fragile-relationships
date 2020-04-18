@@ -87,8 +87,8 @@ export class BoardScene extends Phaser.Scene {
     private goOut() {
         if(!this.tripSummary.isValid())
             return
-        let friendlist: string = this.tripSummary.goPeople.map((human: Human)=>human.name).join(', ')
-        this.infoText.setText(`You went to ${this.tripSummary.goLocation.name} with ${friendlist}`)
+        let message = this.level.goOut(this.tripSummary)
+        this.infoText.setText(message)
         this.add.tween({
             targets: [this.infoText, this.fader],
             alpha: {from: 0, to: 1},
