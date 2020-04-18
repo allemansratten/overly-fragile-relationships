@@ -2,8 +2,15 @@ import { Human, HumanName } from "./human"
 
 type NodeKey = string
 
+
+type RelationshipTagO = 'crush' | 'dislike' | 'like (as a friend)'
+type RelationshipTagU = 'friend' | 'lover' | 'ex' | 'political disagreement'
+export type RelationshipTag = RelationshipTagO | RelationshipTagU
+
+
+
 export class PeopleGraph {
-    private graph: Map<NodeKey, number>
+    private graph: Map<NodeKey, Set<RelationshipTag>>
     private oriented: Boolean
 
     constructor(people: Human[] = [], initialRelationships: Array<Relationship> = []){
@@ -12,35 +19,32 @@ export class PeopleGraph {
 
         people.forEach(h => {
             people.forEach(hh => {
-                if (hh.name != h.name) {
-                    this.setWeight([h.name, hh.name], 0)
-                }
+                this.setTags([h.name, hh.name], new Set<RelationshipTag>())
             });
         });
 
         initialRelationships.forEach(rel => {
-            this.setWeight(rel.people, rel.level)
+            this.setTags(rel.people, rel.tags)
         });
     }
 
-    public setWeight(people: [HumanName, HumanName], weight: number){
+
+    public setTags(people: [HumanName, HumanName], tags: Set<RelationshipTag>){
         let graphKey = this.getGraphKey(people)
-        this.graph.set(graphKey, weight) 
+        this.graph.set(graphKey, tags) 
     }
 
-    public updateWeight(people: [HumanName, HumanName], weightDelta: number){
+    public getTags(people: [HumanName, HumanName]) {
         let graphKey = this.getGraphKey(people)
-        this.graph.set(graphKey, (this.graph.get(graphKey) ?? 0) + weightDelta)
+        return this.graph.get(graphKey)
     }
 
-    public getWeight(people: [HumanName, HumanName]): number{
-        let graphKey = this.getGraphKey(people)
-        let currValue = this.graph.get(graphKey) 
-        if (currValue == null) {
-            this.graph.set(graphKey, 0)
-            return 0
-        }
-        return currValue
+    public addTag(people: [HumanName, HumanName], tag: RelationshipTag) {
+        this.getTags(people)?.add(tag)
+    }
+
+    public removeTag(people: [HumanName, HumanName], tag: RelationshipTag) {
+        this.getTags(people)?.delete(tag)
     }
 
     public getOutRelationships(person: HumanName): Array<Relationship>{
@@ -85,14 +89,14 @@ export class PeopleGraph {
 
 export class Relationship {
     people: [HumanName, HumanName]
-    level: number
+    tags: Set<RelationshipTag>
 
-    constructor(people: [HumanName, HumanName], level: number){
+    constructor(people: [HumanName, HumanName], tags?: Set<RelationshipTag>){
         this.people = people
-        this.level = level
+        this.tags = tags ?? new Set<RelationshipTag>()
     }
 
     public toString(): string {
-        return `${this.people[0]} -> ${this.people[1]}: ${this.level}`
+        return `${this.people[0]} -> ${this.people[1]}: ${Array(this.tags).join(', ')}`
     }
 }

@@ -1,16 +1,22 @@
 {
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
     "configurations": [
-      {
-        "name": "Launch Program",
-        "type": "node",
-        "request": "launch",
-        "cwd": "${workspaceRoot}",
-        "program": "${workspaceRoot}/src/main.ts",
-        "outFiles": [
-          "${workspaceRoot}/dist/bundle.js"
-        ],
-        "sourceMaps": true
-      }
+        {
+            "type": "edge",
+            "version": "dev",
+            "request": "launch",
+            "name": "Launch Edge against localhost",
+            "url": "https://127.0.0.1:8081/",
+            "webRoot": "${workspaceFolder}/scr",
+            "sourceMaps": true,
+            "sourceMapPathOverrides": {
+                "top/webpack:///./node_modules*": "${webRoot}/node_modules/*",
+                "top/webpack:///./src/*":   "${webRoot}/*",
+            }
+          
+        }
     ]
-  }
-  
+}
