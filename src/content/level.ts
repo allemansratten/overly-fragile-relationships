@@ -25,15 +25,17 @@ export class Level {
 
         // Construct msgs for effects
         let effectsMsgs = effects.map(effect => {
-            return `${effect.people[0].name} now ${effect.relationshipChange > 0 ? "loves" : "hates"}  ${effect.people[1].name} a bit more.`
-        });
-        let effectMsg = effectsMsgs.length > 0 
+            return `${effect.people[0]} now ${effect.relationshipChange > 0 ? "loves" : "hates"}  ${effect.people[1]} a bit more.`
+        })
+
+        let effectMsg = effectsMsgs.length > 0
+
             ? effectsMsgs.join('\n')
             : "No one cared for your trip. ╯︿╰"
 
         // Update relationships on people
         this.humans.forEach(h => {
-            h.relationships = this.friendshipManager.peopleGraph.getRelationships(h)
+            h.relationships = this.friendshipManager.peopleGraph.getRelationships(h.name)
         });
 
         console.log("Effects:", effects)

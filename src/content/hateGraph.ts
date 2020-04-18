@@ -1,4 +1,4 @@
-import { HumanIdentity } from "./human";
+import { HumanName } from "./human";
 import { Location } from "./location"
 
 
@@ -11,15 +11,15 @@ export class HateGraph {
 }
 
 export interface RelationshipEffect {
-    people: [HumanIdentity, HumanIdentity]
+    people: [HumanName, HumanName]
     relationshipChange: number
 
     // TODO(?): Add min/max pre=existing relationship level for the change to apply.
 }
 
 export interface Constraint {
-    haveToBePresent: Array<HumanIdentity>
-    cannotBePresent: Array<HumanIdentity>
+    haveToBePresent: Array<HumanName>
+    cannotBePresent: Array<HumanName>
     allowedLocations: Array<Location>
 
     effect: Array<RelationshipEffect>

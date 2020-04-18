@@ -17,27 +17,27 @@ export class FriendshipManager {
         let appliedEffects = new Array<RelationshipEffect>()
 
         this.hateGraph.constraints.forEach(con => {
-            const appEffForCurrCon = this.tryResolveConstrain(con, trip.goPeople, trip.goLocation as Location);  // We know it's gonna be assigned 
+            const appEffForCurrCon = this.tryResolveConstraint(con, trip.goPeople, trip.goLocation as Location);  // We know it's gonna be assigned
             appliedEffects = appliedEffects.concat(appEffForCurrCon);
 
         });
         return appliedEffects
     }
 
-    private tryResolveConstrain(con: Constraint, peoplePresent: Array<Human>, location: Location): Array<RelationshipEffect> {
-
+    private tryResolveConstraint(con: Constraint, peoplePresent: Array<Human>, location: Location): Array<RelationshipEffect> {
+        let namesPresent = peoplePresent.map(p => p.name)
         let appliedEffects = new Array<RelationshipEffect>()
 
         if (false){
             // TODO: Figure out how to use debugger with this build system
             console.log(con, peoplePresent, location)
-            console.log(con.haveToBePresent.every(hp => peoplePresent.some(pp => pp.name == hp.name)), peoplePresent, location)
-            console.log(con.cannotBePresent.every(cp => !peoplePresent.some(pp => pp.name == cp.name)))
+            console.log(con.haveToBePresent.every(hp => peoplePresent.some(pp => pp.name == hp)), peoplePresent, location)
+            console.log(con.cannotBePresent.every(cp => !peoplePresent.some(pp => pp.name == cp)))
             console.log(con.allowedLocations.some(loc => loc.name == location.name))
         }
 
-        if (con.haveToBePresent.every(hp => peoplePresent.some(pp => pp.name == hp.name)) &&
-            con.cannotBePresent.every(cp => !peoplePresent.some(pp => pp.name == cp.name)) &&
+        if (con.haveToBePresent.every(hp => namesPresent.includes(hp)) &&
+            con.cannotBePresent.every(cp => !namesPresent.includes(cp)) &&
             con.allowedLocations.some(loc => loc.name == location.name)) {
             con.effect.forEach(eff => {
                 this.peopleGraph.updateWeight(eff.people, eff.relationshipChange);

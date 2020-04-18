@@ -1,4 +1,4 @@
-import { HumanIdentity } from "./human"
+import { Human, HumanName } from "./human"
 
 type NodeKey = string
 
@@ -6,14 +6,15 @@ export class PeopleGraph {
     private graph: Map<NodeKey, number>
     private oriented: Boolean
 
-    constructor(people: HumanIdentity[] = [], initialRelationships: Array<Relationship> = []){
+
+    constructor(people: Human[] = [], initialRelationships: Array<Relationship> = []){
         this.graph = new Map
         this.oriented = false
 
         people.forEach(h => {
             people.forEach(hh => {
                 // will set weight for each person with themselves but ¯\_(ツ)_/¯
-                this.setWeight([h, hh], 0)
+                this.setWeight([h.name, hh.name], 0)
             });
         });
 
@@ -22,17 +23,17 @@ export class PeopleGraph {
         });
     }
 
-    public setWeight(people: [HumanIdentity, HumanIdentity], weight: number){
+    public setWeight(people: [HumanName, HumanName], weight: number){
         let graphKey = this.getGraphKey(people)
         this.graph.set(graphKey, weight) 
     }
 
-    public updateWeight(people: [HumanIdentity, HumanIdentity], weightDelta: number){
+    public updateWeight(people: [HumanName, HumanName], weightDelta: number){
         let graphKey = this.getGraphKey(people)
-        this.graph.set(graphKey, (this.graph.get(graphKey) ?? 0) + weightDelta) 
+        this.graph.set(graphKey, (this.graph.get(graphKey) ?? 0) + weightDelta)
     }
 
-    public getWeight(people: [HumanIdentity, HumanIdentity]): number{
+    public getWeight(people: [HumanName, HumanName]): number{
         let graphKey = this.getGraphKey(people)
         let currValue = this.graph.get(graphKey) 
         if (currValue == null) {
@@ -42,11 +43,11 @@ export class PeopleGraph {
         return currValue
     }
 
-    public getRelationships(person: HumanIdentity): Array<Relationship>{
+    public getRelationships(person: HumanName): Array<Relationship>{
         let result = new Array
 
         this.graph.forEach((val, key) => {
-            if (key.startsWith(person.name)) {
+            if (key.startsWith(person)) {
                 result.push(new Relationship(this.nodeKeyToTwoIdentities(key), val))
             }
         })
@@ -54,32 +55,32 @@ export class PeopleGraph {
         return result
     }
 
-    private getGraphKey(unorderedPair: [HumanIdentity, HumanIdentity]): NodeKey{
-        let [a, b] = unorderedPair.map(n => n.name)
+    private getGraphKey(unorderedPair: [HumanName, HumanName]): NodeKey{
+        let [a, b] = unorderedPair
         let orderedPair = a <= b || !this.oriented ? [a, b] : [b, a]
 
         return orderedPair.join('|')
     }
 
-    private nodeKeyToTwoIdentities(key: NodeKey): [HumanIdentity, HumanIdentity]{
+    private nodeKeyToTwoIdentities(key: NodeKey): [HumanName, HumanName]{
         let names = key.split('|')
         console.assert(names.length == 2)
 
-        return [{name: names[0]}, {name:names[1]}]
+        return [names[0], names[1]]
     }
 
 }
 
 export class Relationship {
-    constructor(people: [HumanIdentity, HumanIdentity], level: number){
+    constructor(people: [HumanName, HumanName], level: number){
         this.people = people
         this.level = level
     }
 
-    people: [HumanIdentity, HumanIdentity]
+    people: [HumanName, HumanName]
     level: number
 
     public toString(): string {
-        return `${this.people[0].name} -> ${this.people[1].name}: ${this.level}`
+        return `${this.people[0]} -> ${this.people[1]}: ${this.level}`
     }
 }
