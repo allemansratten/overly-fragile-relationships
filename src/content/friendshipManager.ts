@@ -29,7 +29,7 @@ export class FriendshipManager {
 
         if (con.DoesConstraintApplies(trip)) {
             con.effect.forEach(eff => {
-                this.peopleGraph.updateWeight(eff.people, eff.relationshipChange);
+                // updateTags
                 appliedEffects.push(eff)
             });
         }

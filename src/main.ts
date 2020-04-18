@@ -1,5 +1,6 @@
 import * as Phaser from 'phaser'
 import { BoardScene } from './management/board'
+import { LoadingScene } from './utils/loading'
 
 const gameConfig: Phaser.Types.Core.GameConfig = {
   title: 'Sustainable Friendship',
@@ -14,7 +15,7 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
   parent: 'content',
   backgroundColor: '#888',
 
-  scene:  BoardScene,
+  scene:  [LoadingScene, BoardScene],
 };
  
 export const game = new Phaser.Game(gameConfig);
