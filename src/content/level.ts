@@ -17,6 +17,12 @@ export class Level {
         let peopleGraph = new PeopleGraph(this.humans, relationships)
 
         this.friendshipManager = new FriendshipManager(hateGraph, peopleGraph)
+
+        // Init relationships on people
+        this.humans.forEach(h => {
+            h.relationships = this.friendshipManager.peopleGraph.getOutRelationships(h.name)
+        });
+
     }
 
     public goOut(tripSummary: TripSummary): string {
@@ -41,9 +47,9 @@ export class Level {
         console.log("Effects:", effects)
         console.log("Humans:", this.humans)
         console.log("Relationships", this.friendshipManager.peopleGraph)
-    
+
         // Construct final msg
-        let friendList: string = tripSummary.goPeople.map((human: Human)=>human.name).join(', ')
+        let friendList: string = tripSummary.goPeople.map((human: Human) => human.name).join(', ')
         let statusMessage = `You went out to ${tripSummary.goLocation?.name} with ${friendList}.\n${effectMsg}`
 
         return statusMessage

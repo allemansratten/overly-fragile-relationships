@@ -62,9 +62,9 @@ export class BoardScene extends Phaser.Scene {
             onComplete: () => {
                 this.fader!.input.enabled = true
                 this.locationStage!.enable(true)
+                this.refresh()
             }
         })
-        this.refresh()
     }
 
     private goBack() {
@@ -80,5 +80,6 @@ export class BoardScene extends Phaser.Scene {
 
     private refresh() {
         this.tripSummary = new TripSummary()
+        this.phone?.display(this.level.humans[0], 0)
     }
 }

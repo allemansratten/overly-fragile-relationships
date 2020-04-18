@@ -16,6 +16,6 @@ export class PhoneStage {
 
     public display(human: Human, index: number) {
         this.portrait.setFrame(index)
-        this.text.setText(human.name)
+        this.text.setText(human.name + "\n" + human.relationships.join('\n'))
     }
 }
