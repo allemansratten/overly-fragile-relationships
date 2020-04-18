@@ -4,6 +4,7 @@ import { Level } from '../content/level'
 import { TripSummary } from './tripsummary'
 
 export class BoardScene extends Phaser.Scene {
+    private goButton: Phaser.GameObjects.Text
     private allLocationTexts: Array<Phaser.GameObjects.Text> = []
     private allPeopleTexts: Array<Phaser.GameObjects.Text> = []
     private fader: Phaser.GameObjects.Rectangle
@@ -41,7 +42,7 @@ export class BoardScene extends Phaser.Scene {
         this.add.rectangle(640, 440, 100, 30, 0xcccccc)
             .setOrigin(0, 0)
 
-        let goButton = this.add.text(650, 450, "Let's go", { fill: '#0f0' })
+        this.goButton = this.add.text(650, 450, "Let's go", { fill: '#0f0' })
             .setInteractive({ useHandCursor: true })
             .on('pointerdown', () => this.goOut())
 
@@ -88,21 +89,34 @@ export class BoardScene extends Phaser.Scene {
         if(!this.tripSummary.isValid())
             return
         let message = this.level.goOut(this.tripSummary)
+        this.fader.input.enabled = false
+        this.goButton.input.enabled = false
         this.infoText.setText(message)
         this.add.tween({
             targets: [this.infoText, this.fader],
             alpha: {from: 0, to: 1},
-            duration: 1000
+            duration: 1000,
+            onComplete: () => {
+                this.fader.input.enabled = true
+                this.goButton.input.enabled = true
+            }
         })
+        this.refresh()
     }
-
+    
     private goBack() {
         this.bleachLocation()
         this.bleachPeople()
+        this.fader.input.enabled = false
         this.add.tween({
             targets: [this.infoText, this.fader],
             alpha: {from: 1, to: 0},
-            duration: 1000
+            duration: 1000,
+            onComplete: () => this.fader.input.enabled = true
         })
+    }
+
+    private refresh() {
+
     }
 }

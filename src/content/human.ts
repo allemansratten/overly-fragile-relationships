@@ -1,4 +1,7 @@
-export interface Human {
-    name: string,
+export interface Human extends HumanIdentity {
     love: number
+}
+
+export interface HumanIdentity {
+    name: string,
 }
