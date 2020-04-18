@@ -1,4 +1,4 @@
-import { HateGraph, Constrain, RelationShipEffect } from "./hateGraph";
+import { HateGraph, Constraint, RelationshipEffect } from "./hateGraph";
 import { PeopleGraph } from "./peopleGraph";
 import { Human } from "./human";
 import { Location } from "./location"
@@ -13,7 +13,7 @@ export class FriendshipManager {
         this.peopleGraph = peopleGraph
     }
 
-    public ApplyMeeting(trip: TripSummary): Array<RelationShipEffect> {
+    public ApplyMeeting(trip: TripSummary): Array<RelationshipEffect> {
         let appliedEffects = []
 
         this.hateGraph.constraints.forEach(con => {
@@ -24,7 +24,7 @@ export class FriendshipManager {
         return appliedEffects
     }
 
-    private tryResolveConstrain(con: Constrain, peoplePresent: Array<Human>, location: Location): Array<RelationShipEffect> {
+    private tryResolveConstrain(con: Constraint, peoplePresent: Array<Human>, location: Location): Array<RelationshipEffect> {
 
         let appliedEffects = []
 
