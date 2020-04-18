@@ -1,7 +1,14 @@
 import { HateGraph } from "./hateGraph"
 import { Level } from "./level"
 
-export let levels = []
+export let levels: Array<Level> = []
+
+let locations = [
+    {name: 'Bowling', limit: {min: 2, max: 5}},
+    {name: 'Drink', limit: {min: 2, max: 4}},
+    {name: 'Forest', limit: {min: 2, max: 6}},
+    {name: 'Movie', limit: {min: 2, max: 6}},
+]
 
 levels.push(
     new Level(
@@ -10,12 +17,7 @@ levels.push(
             {name: 'Lucian', relationships: []},
             {name: 'Mathew', relationships: []},
         ],
-        [
-            {name: 'Bowling', limit: {min: 2, max: 5}},
-            {name: 'Drink', limit: {min: 2, max: 4}},
-            {name: 'Forest', limit: {min: 2, max: 6}},
-            {name: 'Movie', limit: {min: 2, max: 6}},
-        ],
+        locations,
         [
             {people: [{name: 'Kate'}, {name: 'Mathew'}], level: -1},
         ],
@@ -23,7 +25,7 @@ levels.push(
             {
                 haveToBePresent: [{name: 'Kate'}, {name: 'Lucian'}],
                 cannotBePresent: [{name: 'Mathew'}],
-                allowedLocations: this.locations,
+                allowedLocations: locations,
                 effect: [
                     {people: [{name: 'Kate'}, {name: 'Lucian'}], relationshipChange: +1},
                     {people: [{name: 'Lucian'}, {name: 'Kate'}], relationshipChange: +1},
