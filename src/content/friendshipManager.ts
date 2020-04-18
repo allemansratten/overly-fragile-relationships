@@ -13,17 +13,17 @@ export class FriendshipManager {
     }
 
     public ApplyMeeting(peoplePresent: Array<Human>, location: Location) {
-        this.hateGraph.Constrains.forEach(con => {
+        this.hateGraph.constrains.forEach(con => {
             this.tryResolveConstrian(con, peoplePresent, location);
         });
     }
 
     private tryResolveConstrian(con: Constrain, peoplePresent: Array<Human>, location: Location) {
-        if (con.HaveToBePresent.every(hp => peoplePresent.some(pp => pp.name == hp.name)) &&
-            con.CannotBePresent.every(cp => !peoplePresent.some(pp => pp.name == cp.name)) &&
-            con.AllowedLocations.some(loc => loc.name == location.name)) {
-            con.Effect.forEach(eff => {
-                this.peopleGraph.updateWeight(eff.People, eff.RelationshipChange);
+        if (con.haveToBePresent.every(hp => peoplePresent.some(pp => pp.name == hp.name)) &&
+            con.cannotBePresent.every(cp => !peoplePresent.some(pp => pp.name == cp.name)) &&
+            con.allowedLocations.some(loc => loc.name == location.name)) {
+            con.effect.forEach(eff => {
+                this.peopleGraph.updateWeight(eff.people, eff.relationshipChange);
             });
         }
     }
