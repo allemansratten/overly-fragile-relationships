@@ -7,7 +7,7 @@ export enum HumanTag {
     good_bowler, bad_bowler, promiscuous, jealous, disagreeable
 }
 
-let HumanTagMap : {[key in HumanTag]: string } = {
+let HumanTagMap: { [key in HumanTag]: string } = {
     [HumanTag.introvert]: 'introvert',
     [HumanTag.extrovert]: 'extrover',
     [HumanTag.angry_drunk]: 'angry when drunk',
@@ -18,15 +18,16 @@ let HumanTagMap : {[key in HumanTag]: string } = {
     [HumanTag.jealous]: 'jealous',
     [HumanTag.disagreeable]: 'disagreeable'
 }
+export { HumanTagMap }
 
 export class Human {
     name: HumanName
     relationships: Array<Relationship>
     tags: Set<HumanTag>
 
-    constructor(name: HumanName, relationships?: Array<Relationship>){
+    constructor(name: HumanName, relationships?: Array<Relationship>, tags?: Set<HumanTag>) {
         this.name = name
         this.relationships = relationships ?? new Array()
-        this.tags = new Set()
+        this.tags = tags ?? new Set()
     }
 }

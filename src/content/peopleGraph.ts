@@ -102,6 +102,6 @@ export class Relationship {
     }
 
     public toString(): string {
-        return `${this.people[0]} -> ${this.people[1]}: ${Array(this.tags).join(', ')}`
+        return `- ${this.people[1]}: ${Array.from(this.tags).map((x) => RelationshipTagMap[x]).join(', ')}`
     }
 }

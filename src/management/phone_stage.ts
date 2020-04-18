@@ -1,4 +1,5 @@
-import { Human } from '../content/human'
+import { Human, HumanTagMap } from '../content/human'
+import { RelationshipTagMap } from '../content/peopleGraph'
 
 export class PhoneStage {
     private portrait : Phaser.GameObjects.Image
@@ -16,6 +17,8 @@ export class PhoneStage {
 
     public display(human: Human, index: number) {
         this.portrait.setFrame(index)
-        this.text.setText(human.name + "\n" + human.relationships.join('\n'))
+        let tagString = Array.from(human.tags).map((x) => HumanTagMap[x]).join(', ')
+        let relString = human.relationships.join('\n')
+        this.text.setText(`${human.name}\n${tagString}\n${relString}`)
     }
 }
