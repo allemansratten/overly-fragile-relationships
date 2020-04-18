@@ -125,6 +125,6 @@ export class BoardScene extends Phaser.Scene {
     }
 
     private refresh() {
-
+        this.tripSummary = new TripSummary()
     }
 }
