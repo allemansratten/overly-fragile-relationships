@@ -6,13 +6,9 @@ export class TripSummary {
     public goLocation?: Location = null
 
     public removeGoPeople(human: Human): boolean {
-        for (let i in this.goPeople) {
-            if (this.goPeople[i].name == human.name) {
-                delete this.goPeople[i]
-                return true
-            }
-        }
-        return false
+        let prevSize = this.goPeople.length
+        this.goPeople = this.goPeople.filter(x => x.name !== human.name)
+        return prevSize != this.goPeople.length
     }
 
     public flipGoPeople(human: Human): boolean {
