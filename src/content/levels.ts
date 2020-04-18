@@ -10,12 +10,15 @@ let locations = [
     { name: 'Movie', limit: { min: 2, max: 6 } },
 ]
 
+// You is always on the zeroth position
+
 levels.push(
     new Level(
         [
-            { name: 'Kate', relationships: [] },
-            { name: 'Lucian', relationships: [] },
-            { name: 'Matthew', relationships: [] },
+            {name: 'You', relationships: []},
+            {name: 'Kate', relationships: []},
+            {name: 'Lucian', relationships: []},
+            {name: 'Matthew', relationships: []},
         ],
         locations,
         [
