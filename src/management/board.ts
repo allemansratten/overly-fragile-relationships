@@ -20,7 +20,15 @@ export class BoardScene extends Phaser.Scene {
         this.tripSummary = new TripSummary()
     }
 
+    public preload() {
+        console.log('preloading')
+        this.load.setBaseURL('assets/')
+        this.load.image('portrait_big', 'portrait_big.png')
+    }
+
     public create() {
+        this.add.image(0, 0, 'portrait_big')
+
         // phone
         this.add.rectangle(10, 10, 200, 380, 0xcccccc)
             .setOrigin(0, 0)
@@ -117,6 +125,6 @@ export class BoardScene extends Phaser.Scene {
     }
 
     private refresh() {
-
+        this.tripSummary = new TripSummary()
     }
 }

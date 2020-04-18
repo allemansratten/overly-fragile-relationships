@@ -16,7 +16,7 @@ export class FriendshipManager {
     public ApplyMeeting(trip: TripSummary): Array<RelationShipEffect> {
         let appliedEffects = []
 
-        this.hateGraph.constrains.forEach(con => {
+        this.hateGraph.constraints.forEach(con => {
             const appliedEffectsForCurrConstr = this.tryResolveConstrain(con, trip.goPeople, trip.goLocation);
             appliedEffects = appliedEffects.concat(appliedEffectsForCurrConstr);
 

@@ -3,24 +3,24 @@ import { Location } from "./location"
 
 
 export class HateGraph {
-    public constrains: Array<Constrain>
+    public constraints: Array<Constraint>
 
     constructor() {
-        this.constrains = []
+        this.constraints = []
     }
 }
 
-export class RelationShipEffect {
+export class RelationshipEffect {
     public people: [HumanIdentity, HumanIdentity]
     public relationshipChange: number
 
     // TODO(?): Add min/max pre=existing relationship level for the change to apply.
 }
 
-export class Constrain {
+export class Constraint {
     public haveToBePresent: Array<HumanIdentity>
     public cannotBePresent: Array<HumanIdentity>
     public allowedLocations: Array<Location>
 
-    public effect: Array<RelationShipEffect>
+    public effect: Array<RelationshipEffect>
 }

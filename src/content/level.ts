@@ -2,8 +2,9 @@ import {Human} from "./human"
 import {Location} from "./location"
 import { TripSummary } from "../management/tripsummary"
 import { PeopleGraph } from "./peopleGraph"
-import { HateGraph, Constrain } from "./hateGraph"
+import { HateGraph, Constraint } from "./hateGraph"
 import { FriendshipManager } from "./friendshipManager"
+import level1 from '../../data/level_1.yaml'
 
 export class Level {
     public humans : Array<Human>
@@ -32,7 +33,7 @@ export class Level {
             ])
 
         this.hateGraph = new HateGraph()
-        this.hateGraph.constrains.push(
+        this.hateGraph.constraints.push(
             { 
                 haveToBePresent: [{name: 'Kate'}, {name: 'Lucian'}], 
                 cannotBePresent: [{name: 'Mathew'}], 
