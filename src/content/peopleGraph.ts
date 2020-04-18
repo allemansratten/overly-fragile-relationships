@@ -3,11 +3,12 @@ import { Human, HumanName } from "./human"
 type NodeKey = string
 
 export class PeopleGraph {
-    private graph: Record<NodeKey, number>
+    private graph: Map<NodeKey, number>
     private oriented: Boolean
 
+
     constructor(people: Human[] = [], initialRelationships: Array<Relationship> = []){
-        this.graph = {}
+        this.graph = new Map
         this.oriented = false
 
         people.forEach(h => {
@@ -24,17 +25,34 @@ export class PeopleGraph {
 
     public setWeight(people: [HumanName, HumanName], weight: number){
         let graphKey = this.getGraphKey(people)
-        this.graph[graphKey] = weight 
+        this.graph.set(graphKey, weight) 
     }
 
     public updateWeight(people: [HumanName, HumanName], weightDelta: number){
         let graphKey = this.getGraphKey(people)
-        this.graph[graphKey] += weightDelta 
+        this.graph.set(graphKey, this.graph.get(graphKey) ?? 0 + weightDelta)
     }
 
     public getWeight(people: [HumanName, HumanName]): number{
         let graphKey = this.getGraphKey(people)
-        return this.graph[graphKey] 
+        let currValue = this.graph.get(graphKey) 
+        if (currValue == null) {
+            this.graph.set(graphKey, 0)
+            return 0
+        }
+        return currValue
+    }
+
+    public getRelationships(person: HumanName): Array<Relationship>{
+        let result = new Array
+
+        this.graph.forEach((val, key) => {
+            if (key.startsWith(person)) {
+                result.push(new Relationship(this.nodeKeyToTwoIdentities(key), val))
+            }
+        })
+
+        return result
     }
 
     private getGraphKey(unorderedPair: [HumanName, HumanName]): NodeKey{
@@ -43,6 +61,14 @@ export class PeopleGraph {
 
         return orderedPair.join('|')
     }
+
+    private nodeKeyToTwoIdentities(key: NodeKey): [HumanName, HumanName]{
+        let names = key.split('|')
+        console.assert(names.length == 2)
+
+        return [names[0], names[1]]
+    }
+
 }
 
 export class Relationship {
