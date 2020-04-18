@@ -10,7 +10,7 @@
     <meta http-equiv="cleartype" content="on">
     <style>
       * {
-        font-family: 'Roboto, sans-serif';
+        font-family: 'Roboto', 'sans-serif';
       }
       html,
       body,
@@ -22,11 +22,20 @@
       #content {
         width: 100%;
         text-align: center;
+        margin-top: 100px;
+      }
+      #about_text {
+        font-size: 1.5em;
+        color: white;
+        margin-top: 10px;
       }
     </style>
   </head>
-  <body>
+  <body style='background-color: black; text-align: center;'>
     <div id="content"></div>
+    <div id='about_text'>
+      A game about relationships.
+    </div>
     <script src="vendors.app.bundle.js"></script>
     <script src="app.bundle.js"></script>
   </body>
