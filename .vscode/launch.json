@@ -1,0 +1,10 @@
+{
+    "type": "node",
+    "request": "launch",
+    "name": "Launch Webpack",
+    "program": "${workspaceFolder}/node_modules/webpack/bin/webpack.js",
+    "args": [
+       "--config", "./some/dir/webpack.config.js"
+    ],
+    "env" : { "NODE_ENV" : "production" }
+}
