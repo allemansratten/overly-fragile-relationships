@@ -17,14 +17,14 @@ let locations = [
 levels.push(
     new Level(
         [
-            new Human('You'),
-            new Human('Kate'),
-            new Human('Lucian'),
-            new Human('Matthew'),
+            new Human('You', [], new Set([HumanTag.angry_drunk])),
+            new Human('Kate', [], new Set([HumanTag.good_bowler])),
+            new Human('Lucian', [], new Set([HumanTag.jealous])),
+            new Human('Matthew', [], new Set([HumanTag.promiscuous])),
         ],
         locations,
         [
-            new Relationship(['Kate', 'Lucian'], new Set(['crush' as RelationshipTag])),
+            new Relationship(['Kate', 'Lucian'], new Set([RelationshipTag.friend_like])),
         ],
         new HateGraph([
             new SimpleSituation(

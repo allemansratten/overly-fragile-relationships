@@ -22,8 +22,7 @@ export class BoardScene extends Phaser.Scene {
             key: 'management',
         });
         this.level = levels[0]
-        this.tripSummary = new TripSummary()
-        this.tripSummary.goPeople.push(this.level.humans[0])
+        this.tripSummary = new TripSummary(this.level.humans[0])
     }
 
     public preload() {
@@ -90,7 +89,7 @@ export class BoardScene extends Phaser.Scene {
     }
 
     private refresh() {
-        this.tripSummary = new TripSummary()
+        this.tripSummary = new TripSummary(this.level.humans[0])
         this.phone?.display(this.level.humans[0], 0)
     }
 }

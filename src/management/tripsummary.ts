@@ -5,6 +5,10 @@ export class TripSummary {
     public goPeople: Array<Human> = new Array<Human>()
     public goLocation?: Location
 
+    constructor(specialGuest: Human) {
+        this.goPeople.push(specialGuest)
+    }
+
     public removeGoPeople(human: Human): boolean {
         let prevSize = this.goPeople.length
         this.goPeople = this.goPeople.filter(x => x.name !== human.name)
