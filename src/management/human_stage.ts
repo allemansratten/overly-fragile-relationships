@@ -7,7 +7,7 @@ export class HumanStage {
     constructor(scene: BoardScene, level: Level) {
         for (let i in level.humans) {
             let human = level.humans[i]
-            let text = scene.add.text(290, 20 + 60 * Number(i), `${human.name} (${human.love})`, { fill: '#f00' })
+            let text = scene.add.text(290, 20 + 60 * Number(i), `${human.name}`, { fill: '#f00' })
                 .setInteractive({ useHandCursor: true })
                 .on('pointerdown', () => {
                     if (scene.tripSummary.flipGoPeople(human)) {

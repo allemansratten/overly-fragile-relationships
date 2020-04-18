@@ -17,9 +17,9 @@ export class Level {
     constructor(path: string) {
         // TODO: nacitani ze souboru
         this.humans = []
-        this.humans.push({name: 'Kate', love: 3})
-        this.humans.push({name: 'Lucian', love: 5})
-        this.humans.push({name: 'Mathew', love: -5})
+        this.humans.push({name: 'Kate', relationships: []})
+        this.humans.push({name: 'Lucian', relationships: []})
+        this.humans.push({name: 'Mathew', relationships: []})
 
         this.locations = []
         this.locations.push({name: 'Park', limit: { min: 2, max: 5}})
