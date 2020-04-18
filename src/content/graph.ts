@@ -8,7 +8,6 @@ export class PeopleGraph {
         this.graph = new Map()
     }
 
-
     public addWeight(people: [Person, Person], weight: number){
         let graphKey = this.getOrderedPair(people)
         this.graph[graphKey] = weight 
@@ -17,6 +16,11 @@ export class PeopleGraph {
     public updateWeight(people: [Person, Person], weightDelta: number){
         let graphKey = this.getOrderedPair(people)
         this.graph[graphKey] += weightDelta 
+    }
+
+    public getWeight(people: [Person, Person]): number{
+        let graphKey = this.getOrderedPair(people)
+        return this.graph[graphKey] 
     }
 
     private getOrderedPair(unorderedPair: [Person, Person]): NodeKey{
