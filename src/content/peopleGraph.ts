@@ -80,6 +80,6 @@ export class Relationship {
     level: number
 
     public toString(): string {
-        return `${this.people[0]} -> ${this.people[1]}: ${this.level}`
+        return `${this.people[0].name} -> ${this.people[1].name}: ${this.level}`
     }
 }
