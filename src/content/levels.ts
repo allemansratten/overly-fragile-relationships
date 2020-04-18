@@ -15,21 +15,21 @@ levels.push(
         [
             {name: 'Kate', relationships: []},
             {name: 'Lucian', relationships: []},
-            {name: 'Mathew', relationships: []},
+            {name: 'Matthew', relationships: []},
         ],
         locations,
         [
-            {people: [{name: 'Kate'}, {name: 'Mathew'}], level: -1},
+            {people: [{name: 'Kate'}, {name: 'Matthew'}], level: -1},
         ],
         new HateGraph([
             {
                 haveToBePresent: [{name: 'Kate'}, {name: 'Lucian'}],
-                cannotBePresent: [{name: 'Mathew'}],
+                cannotBePresent: [{name: 'Matthew'}],
                 allowedLocations: locations,
                 effect: [
                     {people: [{name: 'Kate'}, {name: 'Lucian'}], relationshipChange: +1},
                     {people: [{name: 'Lucian'}, {name: 'Kate'}], relationshipChange: +1},
-                    {people: [{name: 'Mathew'}, {name: 'Kate'}], relationshipChange: -1},
+                    {people: [{name: 'Matthew'}, {name: 'Kate'}], relationshipChange: -1},
                 ],
             },
         ]),
