@@ -17,7 +17,7 @@ export enum HumanTag {
 
 let HumanTagMap: { [key in HumanTag]: string } = {
     [HumanTag.introvert]: 'introvert',
-    [HumanTag.extrovert]: 'extrover',
+    [HumanTag.extrovert]: 'extrovert',
     [HumanTag.angry_drunk]: 'angry when drunk',
     [HumanTag.sad_drunk]: 'sad when drunk',
     [HumanTag.good_bowler]: 'good bowler',
