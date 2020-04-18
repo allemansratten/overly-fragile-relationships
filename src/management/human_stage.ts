@@ -17,7 +17,7 @@ export class HumanStage {
                     }
                 })
                 .on('pointerover', () => {
-                    scene.phone.display(human, Number(i))
+                    scene.phone!.display(human, Number(i))
                 })
             this.allPeopleTexts.push(text)
         }

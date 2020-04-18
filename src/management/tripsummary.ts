@@ -3,7 +3,7 @@ import { Location } from '../content/location'
 
 export class TripSummary {
     public goPeople: Array<Human> = new Array<Human>()
-    public goLocation?: Location = null
+    public goLocation?: Location
 
     public removeGoPeople(human: Human): boolean {
         let prevSize = this.goPeople.length
