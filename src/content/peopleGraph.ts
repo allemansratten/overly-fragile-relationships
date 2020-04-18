@@ -45,7 +45,11 @@ export class PeopleGraph {
     }
 }
 
-export interface Relationship {
+export class Relationship {
     people: [HumanIdentity, HumanIdentity]
     level: number
+
+    public toString(): string {
+        return `${this.people[0]} -> ${this.people[1]}: ${this.level}`
+    }
 }
