@@ -20,7 +20,7 @@ export class FriendshipManager {
 
     private tryResolveConstrian(con: Constrain, peoplePresent: Array<Human>, location: Location) {
         if (con.HaveToBePresent.every(hp => peoplePresent.some(pp => pp.name == hp.name)) &&
-            con.CannotBePresetn.every(cp => !peoplePresent.some(pp => pp.name == cp.name)) &&
+            con.CannotBePresent.every(cp => !peoplePresent.some(pp => pp.name == cp.name)) &&
             con.AllowedLocations.some(loc => loc.name == location.name)) {
             con.Effect.forEach(eff => {
                 this.peopleGraph.updateWeight(eff.People, eff.RelationshipChange);
