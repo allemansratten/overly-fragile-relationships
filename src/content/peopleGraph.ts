@@ -115,6 +115,6 @@ export class Relationship {
     }
 
     public toString(): string {
-        return `- ${this.people[1]}: ${Array.from(this.tags).map((x) => RelationshipTagMap[x]).join(', ')}`
+        return `${this.people[1]}: ${Array.from(this.tags).map((x) => RelationshipTagMap[x]).join(', ')}`
     }
 }

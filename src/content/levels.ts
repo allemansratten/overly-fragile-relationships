@@ -37,6 +37,12 @@ levels.push(
             ['Cecil', HumanTag.introvert],
             ['Dan', HumanTag.extrovert],
             ['Dan', HumanTag.angry_drunk],
+            // ['Matthew', HumanTag.promiscuous],
+            // ['Matthew', HumanTag.disagreeable],
+            // ['Matthew', HumanTag.good_bowler],
+            // ['Matthew', HumanTag.extrovert],
+            // ['Matthew', HumanTag.jealous],
+            // ['Matthew', HumanTag.sad_drunk],
         ]
         ,
         new HateGraph([

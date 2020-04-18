@@ -13,12 +13,13 @@ export class PhoneStage {
             .setOrigin(0, 0)
 
         this.text = scene.add.text(10, 250, '', { fill: 'black', fontFamily: 'Roboto' })
+            .setWordWrapWidth(230)
     }
 
     public display(human: Human, index: number) {
         this.portrait.setFrame(index)
         let tagString = Array.from(human.tags).map((x) => HumanTagMap[x]).join(', ')
-        let relString = human.relationships.join('\n')
-        this.text.setText(`${human.name}\n${tagString}\n${relString}`)
+        let relString = human.relationships.filter(x => x.tags.size != 0).join('\n\n')
+        this.text.setText(`${human.name}\n${tagString}\n\n${relString}`)
     }
 }
