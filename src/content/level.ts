@@ -25,15 +25,23 @@ export class Level {
         this.locations.push({name: 'Woods', limit: { min: 2, max: 4}})
         this.locations.push({name: 'Forest', limit: { min: 2, max: 6}})
 
-        this.peopleGraph = new PeopleGraph(this.humans)
+        this.peopleGraph = new PeopleGraph(
+            this.humans,
+            [
+                [{name: 'Kate'}, {name: 'Mathew'}, -1]
+            ])
+
         this.hateGraph = new HateGraph()
         this.hateGraph.constrains.push(
             { 
                 haveToBePresent: [{name: 'Kate'}, {name: 'Lucian'}], 
-                cannotBePresent: [], 
+                cannotBePresent: [{name: 'Mathew'}], 
                 allowedLocations: this.locations, 
                 effect: [
-                    {people: [{name: 'Kate'}, {name: 'Lucian'}], relationshipChange: +1}
+                    {people: [{name: 'Kate'}, {name: 'Lucian'}], relationshipChange: +1},
+                    {people: [{name: 'Lucian'}, {name: 'Kate'}], relationshipChange: +1},
+
+                    {people: [{name: 'Mathew'}, {name: 'Kate'}], relationshipChange: -1}
                 ]
             }
         )

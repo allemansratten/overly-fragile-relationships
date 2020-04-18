@@ -6,7 +6,7 @@ export class PeopleGraph {
     private graph: Map<[HumanIdentity, HumanIdentity], number>
     private oriented: Boolean
 
-    constructor(people: HumanIdentity[]){
+    constructor(people: HumanIdentity[] = [], initialRelationships: Array<[HumanIdentity, HumanIdentity, number]> = []){
         this.graph = new Map()
         this.oriented = false
 
@@ -15,6 +15,11 @@ export class PeopleGraph {
                 // will set weight for each person with themselves but ¯\_(ツ)_/¯
                 this.setWeight([h, hh], 0)
             });
+        });
+
+        initialRelationships.forEach(rel => {
+            let [p1, p2, w] = rel
+            this.setWeight([p1, p2], w)
         });
     }
 
