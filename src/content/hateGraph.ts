@@ -2,7 +2,7 @@ import { HumanName } from "./human";
 import { Location } from "./location"
 import { TripSummary } from "../management/tripsummary";
 import { RelationshipTag, HumanTag } from "./entityTags";
-import { PeopleGraph } from "./peopleGraph";
+import { PeopleGraph, CoupleKey } from "./peopleGraph";
 
 export class HateGraph {
     public constraints: Array<Situation>
@@ -18,7 +18,7 @@ export interface Situation {
 
 
 export class SituationEffect {
-    people: [HumanName, HumanName]
+    people: CoupleKey
 
     addedRelTags: Set<RelationshipTag>
     removedRelTags: Set<RelationshipTag>
@@ -27,7 +27,7 @@ export class SituationEffect {
     removedHumTags: [Set<HumanTag>, Set<HumanTag>]
 
     constructor(
-        people: [HumanName, HumanName], 
+        people: CoupleKey, 
         addedRelTags?: Set<RelationshipTag>, 
         removedRelTags?: Set<RelationshipTag>, 
         addedHumTags?: [Set<HumanTag>, Set<HumanTag>], 

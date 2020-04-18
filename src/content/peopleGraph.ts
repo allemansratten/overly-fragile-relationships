@@ -2,6 +2,7 @@ import { Human, HumanName } from "./human"
 import { RelationshipTag, RelationshipTagMap, HumanTag } from "./entityTags"
 
 type NodeKey = string
+export type CoupleKey = [HumanName, HumanName]
 
 export class PeopleGraph {
     private relationshipTags: Map<NodeKey, Set<RelationshipTag>>
@@ -46,21 +47,21 @@ export class PeopleGraph {
         return this.humansTags.get(person) ?? new Set()
     }
 
-    public setRelTags(people: [HumanName, HumanName], tags: Set<RelationshipTag>){
+    public setRelTags(people: CoupleKey, tags: Set<RelationshipTag>){
         let graphKey = this.getGraphKey(people)
         this.relationshipTags.set(graphKey, tags) 
     }
 
-    public getRelTags(people: [HumanName, HumanName]): Set<RelationshipTag> {
+    public getRelTags(people: CoupleKey): Set<RelationshipTag> {
         let graphKey = this.getGraphKey(people)
         return this.relationshipTags.get(graphKey)!
     }
 
-    public addRelTag(people: [HumanName, HumanName], tag: RelationshipTag) {
+    public addRelTag(people: CoupleKey, tag: RelationshipTag) {
         this.getRelTags(people)?.add(tag)
     }
 
-    public removeRelTag(people: [HumanName, HumanName], tag: RelationshipTag) : boolean {
+    public removeRelTag(people: CoupleKey, tag: RelationshipTag) : boolean {
         return this.getRelTags(people)?.delete(tag) ?? false
     }
 
@@ -88,14 +89,14 @@ export class PeopleGraph {
         return result
     }
 
-    private getGraphKey(unorderedPair: [HumanName, HumanName]): NodeKey{
+    private getGraphKey(unorderedPair: CoupleKey): NodeKey{
         let [a, b] = unorderedPair
         let orderedPair = a <= b || !this.oriented ? [a, b] : [b, a]
 
         return orderedPair.join('|')
     }
 
-    private nodeKeyToTwoIdentities(key: NodeKey): [HumanName, HumanName]{
+    private nodeKeyToTwoIdentities(key: NodeKey): CoupleKey{
         let names = key.split('|')
         console.assert(names.length == 2)
 
@@ -105,10 +106,10 @@ export class PeopleGraph {
 }
 
 export class Relationship {
-    people: [HumanName, HumanName]
+    people: CoupleKey
     tags: Set<RelationshipTag>
 
-    constructor(people: [HumanName, HumanName], tags?: Set<RelationshipTag>){
+    constructor(people: CoupleKey, tags?: Set<RelationshipTag>){
         this.people = people
         this.tags = tags ?? new Set<RelationshipTag>()
     }
