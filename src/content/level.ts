@@ -29,7 +29,7 @@ export class Level {
         this.peopleGraph = new PeopleGraph(
             this.humans,
             [
-                [{name: 'Kate'}, {name: 'Mathew'}, -1]
+                {people: [{name: 'Kate'}, {name: 'Mathew'}], level: -1},
             ])
 
         this.hateGraph = new HateGraph()
