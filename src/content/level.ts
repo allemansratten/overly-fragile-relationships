@@ -4,7 +4,7 @@ import { TripSummary } from "../management/tripsummary"
 import { PeopleGraph, Relationship } from "./peopleGraph"
 import { HateGraph, SituationEffect } from "./hateGraph"
 import { FriendshipManager } from "./friendshipManager"
-import { HumanTag, RelationshipTag, HumanTagMap, RelationshipTagMap } from "./entityTags"
+import { HumanTag, HumanTagMap, RelationshipTag, RelationshipTagMap } from "./entityTags"
 
 export class Level {
     public humans: Array<Human>
@@ -42,15 +42,12 @@ export class Level {
         let effects = this.friendshipManager.applyMeeting(tripSummary)
 
         // Construct msgs for effects
-<<<<<<< HEAD
-        let { perPersonRelMsg, perPersonHumMsg } = this.reduceEffectsPerPerson(effects)
+
+        let {perPersonRelMsg, perPersonHumMsg} = this.reduceEffectsPerPerson(effects)
         let effectsMsgs = this.createEffectsMsgs(perPersonRelMsg, perPersonHumMsg)
-=======
-        let effectsMsgs = effects.map(effect => {
+        effectsMsgs.concat(effects.map(effect => {
             return effect.description
-            // return `${effect.people[0]} now ${Array(effect.addedRelTags).join(", ")} and no longer ${Array(effect.removedHumTags).join(", ")}  ${effect.people[1]} a bit more.`
-        })
->>>>>>> 40dc27f485bab9b0f19cc0ad61d48bd32408e5ec
+        }))
 
         let effectMsg = effectsMsgs.length > 0
             ? effectsMsgs.join('\n')
@@ -71,7 +68,7 @@ export class Level {
     }
 
     private createEffectsMsgs(
-        perPersonRelMsg: Map<[string, string], [RelationshipTag[], RelationshipTag[]]>, 
+        perPersonRelMsg: Map<[string, string], [RelationshipTag[], RelationshipTag[]]>,
         perPersonHumMsg: Map<string, [HumanTag[], HumanTag[]]>) {
 
         let relMsgs = Array<string>()
@@ -118,6 +115,6 @@ export class Level {
                 perPersonRelMsg.set(rc[0], ppHumMsg)
             })
         })
-        return { perPersonRelMsg, perPersonHumMsg }
+        return {perPersonRelMsg, perPersonHumMsg}
     }
 }
