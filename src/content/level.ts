@@ -1,7 +1,7 @@
 import {Human} from "./human"
 import {Location} from "./location"
 import { TripSummary } from "../management/tripsummary"
-import yf from './level_1.yaml'
+import level1 from '../../data/level_1.yaml'
 
 export class Level {
     public humans : Array<Human>
