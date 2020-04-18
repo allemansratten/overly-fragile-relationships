@@ -24,9 +24,9 @@ export class TripSummary {
 
     public prepare(location: Location): boolean {
         this.goLocation = location
-        if (this.goPeople.length < this.goLocation.limit.min)
+        if (this.goPeople.length +1 < this.goLocation.limit.min)
             return false
-        if (this.goPeople.length > this.goLocation.limit.max)
+        if (this.goPeople.length +1 > this.goLocation.limit.max)
             return false
         return true
     }

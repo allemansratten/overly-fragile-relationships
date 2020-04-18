@@ -22,6 +22,7 @@ export class BoardScene extends Phaser.Scene {
         });
         this.level = levels[0]
         this.tripSummary = new TripSummary()
+        this.tripSummary.goPeople.push(this.level.humans[0])
     }
 
     public preload() {
