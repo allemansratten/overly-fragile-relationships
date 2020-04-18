@@ -1,7 +1,8 @@
 import { HateGraph, SimpleSituation, SituationEffect } from "./hateGraph"
 import { Level } from "./level"
-import { RelationshipTag, Relationship } from "./peopleGraph"
-import { Human, HumanTag } from "./human"
+import { Relationship } from "./peopleGraph"
+import { Human } from "./human"
+import { HumanTag, RelationshipTag } from "./entityTags"
 
 export let levels: Array<Level> = []
 

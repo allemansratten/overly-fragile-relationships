@@ -1,5 +1,5 @@
-import { Human, HumanTagMap } from '../content/human'
-import { RelationshipTagMap } from '../content/peopleGraph'
+import { Human } from '../content/human'
+import { HumanTagMap } from '../content/entityTags'
 
 export class PhoneStage {
     private portrait : Phaser.GameObjects.Image

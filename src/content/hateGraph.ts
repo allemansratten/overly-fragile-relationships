@@ -1,8 +1,7 @@
-import { HumanName, HumanTag } from "./human";
+import { HumanName } from "./human";
 import { Location } from "./location"
 import { TripSummary } from "../management/tripsummary";
-import { RelationshipTag } from "./peopleGraph";
-
+import { RelationshipTag, HumanTag } from "./entityTags";
 
 export class HateGraph {
     public constraints: Array<Constraint>
