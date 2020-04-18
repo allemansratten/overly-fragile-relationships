@@ -1,0 +1,78 @@
+# Andrea
+- relationships:
+	- B: crush
+	- C: crush
+	- D:
+	- E:
+	- F:
+- 
+
+# Beatrice
+- Andrea <3
+- promiscuous
+
+# Cecil
+- Andrea <3
+- introvert
+
+# Dan
+- angry when drunk
+- extrovert
+- agreeable
+
+# E
+- 
+
+# F
+- 
+
+# Obecně
+- když se A vyspí s B a B chodí s C, tak B a C se rozejdou (a nebudou se mít rádi)
+- pokud nějací dva nejsou <3, tak je bude štvát když často chodí spolu ven (ponorka), zvlášť když tam nejsou další lidi
+
+
+# Nápady
+- ex se můžou dát zpět dohromady?
+- 
+
+
+# tagy na lidi:
+- introvert - maybe rozdělit do dvou
+	- chce buď málo lidí, nebo pokud hodně lidí, tak aby to byli jeho kamarádi. Jinak nespoko
+    - třikrát venku s <3 -> začnou spolu chodit
+- extrovert
+	- chce hodně lidí
+- angry when drunk 
+	- v baru sere ostatní
+	- Když se potkaj dva, tak se zbijou - !možná specific event!
+- sad when drunk
+ 	- v baru nespoko
+- good bowler
+- bad bowler
+- promiscuous
+	- pokud se opije a <3 je tam taky, tak se spolu vyspí (viz Obecně)
+- jealous
+	- když je jeho <3 venku s někym jinym, je extra nespoko
+	- když je jeho <3 in a relationship tak je nespoko a nema rad toho s kym je
+- FOMO
+	- víc nespoko když není included
+- attention seeker
+	- problém se dvěma
+
+
+- disagreeable
+	-  Lidi co ho poprvý viděj maj o něm horší mínění
+- agreeable
+	-  Lidi co ho poprvý viděj maj o něm lepší mínění
+- 
+
+
+#tagy na vztahy - neorientovane:
+friend, lover, ex, political disagreement
+
+#tagy na vztahy (orientovane):
+crush, dislike, like (as a friend)
+
+
+Events
+	- 
