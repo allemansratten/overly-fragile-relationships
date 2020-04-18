@@ -20,41 +20,46 @@ levels.push(
     new Level(
         [
             new Human('You'),
-            new Human('Kate'),
-            new Human('Lucian'),
-            new Human('Matthew'),
+            new Human('Alex'),
+            new Human('Beatrice'),
+            new Human('Cecil'),
+            new Human('Dan'),
         ],
         locations,
         [
-            new Relationship(['Kate', 'Lucian'], new Set([RelationshipTag.friend_like])),
+            new Relationship(['Alex', 'Beatrice'], new Set([RelationshipTag.crush])),
+            new Relationship(['Beatrice', 'Alex'], new Set([RelationshipTag.crush])),
+            new Relationship(['Alex', 'Cecil'], new Set([RelationshipTag.crush])),
+            new Relationship(['Cecil', 'Alex'], new Set([RelationshipTag.crush])),
         ],
         [
-            ['You', HumanTag.angry_drunk],
-            ['Kate', HumanTag.good_bowler],
-            ['Lucian', HumanTag.jealous],
-            ['Matthew', HumanTag.promiscuous],
-            ['Matthew', HumanTag.disagreeable],
-            ['Matthew', HumanTag.good_bowler],
-            ['Matthew', HumanTag.extrovert],
-            ['Matthew', HumanTag.jealous],
-            ['Matthew', HumanTag.sad_drunk],
+            ['Alex', HumanTag.promiscuous],
+            ['Cecil', HumanTag.introvert],
+            ['Dan', HumanTag.extrovert],
+            ['Dan', HumanTag.angry_drunk],
+            // ['Matthew', HumanTag.promiscuous],
+            // ['Matthew', HumanTag.disagreeable],
+            // ['Matthew', HumanTag.good_bowler],
+            // ['Matthew', HumanTag.extrovert],
+            // ['Matthew', HumanTag.jealous],
+            // ['Matthew', HumanTag.sad_drunk],
         ]
         ,
         new HateGraph([
-            new SimpleSituation(
-                ['Kate', 'Lucian'],
-                ['Matthew'],
-                locations,
-                [
-                    new SituationEffect(
-                        ['Kate', 'Lucian'], 
-                        new Set([RelationshipTag.crush]), 
-                        undefined, 
-                        [new Set([HumanTag.sad_drunk]), new Set<HumanTag>()],
-                    ),
-                ]
-            )
-            ,
+            // new SimpleSituation(
+            //     ['Kate', 'Lucian'],
+            //     ['Matthew'],
+            //     locations,
+            //     [
+            //         new SituationEffect(
+            //             ['Kate', 'Lucian'],
+            //             new Set([RelationshipTag.crush]),
+            //             undefined,
+            //             [new Set([HumanTag.sad_drunk]), new Set<HumanTag>()],
+            //         ),
+            //     ]
+            // )
+            // ,
         ]),
     ),
 )
