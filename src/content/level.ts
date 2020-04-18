@@ -4,6 +4,7 @@ import { TripSummary } from "../management/tripsummary"
 import { PeopleGraph } from "./peopleGraph"
 import { HateGraph, Constrain } from "./hateGraph"
 import { FriendshipManager } from "./friendshipManager"
+import level1 from '../../data/level_1.yaml'
 
 export class Level {
     public humans : Array<Human>
