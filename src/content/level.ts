@@ -50,8 +50,20 @@ export class Level {
     }
 
     public goOut(tripSummary: TripSummary): string {
+        let effects = this.friendshipManager.ApplyMeeting(tripSummary)
+        console.log(effects)
+
+        let effectsMsgs = effects.map(effect => {
+            return `${effect.people[0].name} now ${effect.relationshipChange > 0 ? "loves" : "hates"}  ${effect.people[1].name} a bit more.`
+        });
+
+        let effectMsg = effectsMsgs.length > 0 
+            ? effectsMsgs.join('\n')
+            : "No one cared for your trip. ╯︿╰"
+
+
         let friendlist: string = tripSummary.goPeople.map((human: Human)=>human.name).join(', ')
-        let statusMessage = `You went out to ${tripSummary.goLocation.name} with ${friendlist}`
+        let statusMessage = `You went out to ${tripSummary.goLocation.name} with ${friendlist}.\n${effectMsg}`
         return statusMessage
     }
 }
