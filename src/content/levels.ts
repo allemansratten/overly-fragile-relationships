@@ -33,6 +33,11 @@ levels.push(
             ['Kate', HumanTag.good_bowler],
             ['Lucian', HumanTag.jealous],
             ['Matthew', HumanTag.promiscuous],
+            ['Matthew', HumanTag.disagreeable],
+            ['Matthew', HumanTag.good_bowler],
+            ['Matthew', HumanTag.extrovert],
+            ['Matthew', HumanTag.jealous],
+            ['Matthew', HumanTag.sad_drunk],
         ]
         ,
         new HateGraph([

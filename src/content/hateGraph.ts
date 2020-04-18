@@ -28,7 +28,7 @@ export class SituationEffect {
         people: CoupleKey, 
         addedRelTags?: Set<RelationshipTag>, 
         removedRelTags?: Set<RelationshipTag>, 
-        addedHumTags?: [Set<HumanTag>, Set<HumanTag>], 
+        addedHumTags?: [Set<HumanTag>, Set<HumanTag>],
         removedHumTags?: [Set<HumanTag>, Set<HumanTag>]) {
             this.people = people
             this.addedRelTags = addedRelTags ?? new Set<RelationshipTag>()
