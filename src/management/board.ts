@@ -1,18 +1,19 @@
-import { Location } from '../content/location'
-import { Human } from '../content/human'
 import { Level } from '../content/level'
 import { TripSummary } from './tripsummary'
 import { Phone } from './phone'
+import { HumanStage } from './human_stage'
+import { LocationStage } from './location_stage'
 
 export class BoardScene extends Phaser.Scene {
     private goButton: Phaser.GameObjects.Text
-    private allLocationTexts: Array<Phaser.GameObjects.Text> = []
-    private allPeopleTexts: Array<Phaser.GameObjects.Text> = []
     private fader: Phaser.GameObjects.Rectangle
     private infoText: Phaser.GameObjects.Text
     private level: Level
-    private tripSummary: TripSummary
-    private phone: Phone
+    
+    public tripSummary: TripSummary
+    public phone: Phone
+    private humanStage: HumanStage
+    private locationStage: LocationStage
 
     constructor() {
         super({
@@ -50,48 +51,11 @@ export class BoardScene extends Phaser.Scene {
             .setInteractive({ useHandCursor: true })
             .on('pointerdown', () => this.goOut())
 
-        for (let i in this.level.locations) {
-            let location = this.level.locations[i]
-            let text = this.add.text(640, 20 + 60 * Number(i), `${location.name}\nMin: ${location.limit.min}, Max: ${location.limit.max}`, { fill: '#f00' })
-                .setInteractive({ useHandCursor: true })
-                .on('pointerdown', () => {
-                    this.bleachLocation()
-                    text.setFill('#0f0')
-                    this.tripSummary.goLocation = location
-                })
-            this.allLocationTexts.push(text)
-        }
 
-        for (let i in this.level.humans) {
-            let human = this.level.humans[i]
-            let text = this.add.text(290, 20 + 60 * Number(i), `${human.name} (${human.love})`, { fill: '#f00' })
-                .setInteractive({ useHandCursor: true })
-                .on('pointerdown', () => {
-                    if (this.tripSummary.flipGoPeople(human)) {
-                        text.setFill('#0f0')
-                    } else {
-                        text.setFill('#f00')
-                    }
-                })
-                .on('pointerover', () => {
-                    this.phone.display(human, Number(i))
-                })
-            this.allPeopleTexts.push(text)
-        }
+        this.locationStage = new LocationStage(this, this.level)
+        this.humanStage = new HumanStage(this, this.level)
 
         this.phone = new Phone(this)
-    }
-
-    private bleachLocation() {
-        for (let text of this.allLocationTexts) {
-            text.setFill('#f00')
-        }
-    }
-
-    private bleachPeople() {
-        for (let text of this.allPeopleTexts) {
-            text.setFill('#f00')
-        }
     }
 
     private goOut() {
@@ -114,8 +78,8 @@ export class BoardScene extends Phaser.Scene {
     }
 
     private goBack() {
-        this.bleachLocation()
-        this.bleachPeople()
+        this.locationStage.bleachLocation()
+        this.humanStage.bleachPeople()
         this.fader.input.enabled = false
         this.add.tween({
             targets: [this.infoText, this.fader],
