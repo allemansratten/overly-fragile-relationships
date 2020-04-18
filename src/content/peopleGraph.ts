@@ -6,7 +6,6 @@ export class PeopleGraph {
     private graph: Map<NodeKey, number>
     private oriented: Boolean
 
-
     constructor(people: Human[] = [], initialRelationships: Array<Relationship> = []){
         this.graph = new Map
         this.oriented = false
@@ -85,13 +84,13 @@ export class PeopleGraph {
 }
 
 export class Relationship {
+    people: [HumanName, HumanName]
+    level: number
+
     constructor(people: [HumanName, HumanName], level: number){
         this.people = people
         this.level = level
     }
-
-    people: [HumanName, HumanName]
-    level: number
 
     public toString(): string {
         return `${this.people[0]} -> ${this.people[1]}: ${this.level}`

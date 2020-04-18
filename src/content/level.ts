@@ -27,7 +27,7 @@ export class Level {
 
     public goOut(tripSummary: TripSummary): string {
         // Update friendships based on trip
-        let effects = this.friendshipManager.ApplyMeeting(tripSummary)
+        let effects = this.friendshipManager.applyMeeting(tripSummary)
 
         // Construct msgs for effects
         let effectsMsgs = effects.map(effect => {

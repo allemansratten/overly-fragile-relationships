@@ -13,7 +13,7 @@ export class FriendshipManager {
         this.peopleGraph = peopleGraph
     }
 
-    public ApplyMeeting(trip: TripSummary): Array<RelationshipEffect> {
+    public applyMeeting(trip: TripSummary): Array<RelationshipEffect> {
         let appliedEffects = new Array<RelationshipEffect>()
 
         this.hateGraph.constraints.forEach(con => {
