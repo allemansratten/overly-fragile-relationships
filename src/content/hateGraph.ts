@@ -2,7 +2,7 @@ import { Human } from "./human";
 import { Location } from "./location"
 
 export class HateGraph {
-    public Data: Array<Constrain>
+    public Constrains: Array<Constrain>
 }
 
 export class RelationShipEffect {
@@ -15,7 +15,7 @@ export class RelationShipEffect {
 export class Constrain {
     public HaveToBePresent: Array<Human>
     public CannotBePresetn: Array<Human>
-    public RequiredLocation: Location
+    public AllowedLocations: Array<Location>
 
     public Effect: Array<RelationShipEffect>
 }
