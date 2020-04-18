@@ -15,6 +15,4 @@ export class Human {
         this.relationships = new Array()
         this.tags = new Set()
     }
-
-
 }

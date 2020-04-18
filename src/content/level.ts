@@ -20,10 +20,15 @@ export class Level {
         this.friendshipManager = new FriendshipManager(hateGraph, peopleGraph)
 
         // Init relationships on people
+        this.updateHumansFromPeopleGraphForDisplay()
+
+    }
+
+    private updateHumansFromPeopleGraphForDisplay() {
         this.humans.forEach(h => {
             h.relationships = this.friendshipManager.peopleGraph.getOutRelationships(h.name)
-        });
-
+            h.tags = this.friendshipManager.peopleGraph.getHumTags(h.name)
+        })
     }
 
     public goOut(tripSummary: TripSummary): string {
@@ -41,9 +46,7 @@ export class Level {
             : "No one cared for your trip. ╯︿╰"
 
         // Update relationships on people
-        this.humans.forEach(h => {
-            h.relationships = this.friendshipManager.peopleGraph.getOutRelationships(h.name)
-        });
+        this.updateHumansFromPeopleGraphForDisplay()
 
         console.log("Effects:", effects)
         console.log("Humans:", this.humans)
