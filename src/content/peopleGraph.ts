@@ -30,7 +30,7 @@ export class PeopleGraph {
 
     public updateWeight(people: [HumanName, HumanName], weightDelta: number){
         let graphKey = this.getGraphKey(people)
-        this.graph.set(graphKey, this.graph.get(graphKey) ?? 0 + weightDelta)
+        this.graph.set(graphKey, (this.graph.get(graphKey) ?? 0) + weightDelta)
     }
 
     public getWeight(people: [HumanName, HumanName]): number{
