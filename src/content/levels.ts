@@ -3,7 +3,7 @@ import { Level } from "./level"
 import { Relationship, CoupleKey } from "./peopleGraph"
 import { Human } from "./human"
 import { HumanTag, RelationshipTag } from "./entityTags"
-import { Complex, SimpleSituation } from "./situationTypes"
+import { Complex, SimpleSituation, NobodyLikesAngryDrunk } from "./situationTypes"
 
 export let levels: Array<Level> = []
 
@@ -66,6 +66,7 @@ levels.push(
                 [[['Alex', 'Beatrice'], RelationshipTag.lover]],
                 [startToDate(["Alex", "Cecil"])]
             ),
+            new NobodyLikesAngryDrunk(),
         ]),
     ),
 )

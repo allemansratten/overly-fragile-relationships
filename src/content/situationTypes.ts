@@ -39,6 +39,31 @@ export class SimpleSituation implements Situation {
     }
 }
 
+export class NobodyLikesAngryDrunk implements Situation {
+    public GetApplicableEffects(trip: TripSummary, currentState: PeopleGraph): Array<SituationEffect> {
+        if (trip.goLocation!.name != "Drink") {
+            return new Array()
+        }
+
+        let effects = new Array()
+        trip.goPeople.forEach(person => {
+            let personTags = currentState.getHumTags(person.name)
+            if (personTags.has(HumanTag.angry_drunk)) {
+                trip.goPeople.filter(p => p != person).forEach(otherPerson => {
+                    effects.push(new SituationEffect(
+                        "Nobody likes drunk people",
+                        [
+                            [[otherPerson.name, person.name], RelationshipTag.dislike]
+                        ]
+                    ))
+                });
+
+            }
+        });
+        return effects
+    }   
+}
+
 export class Complex implements Situation {
     private humReq: Array<HumanName>
     private humBan: Array<HumanName>
