@@ -43,8 +43,8 @@ export class PeopleGraph {
         this.getTags(people)?.add(tag)
     }
 
-    public removeTag(people: [HumanName, HumanName], tag: RelationshipTag) {
-        this.getTags(people)?.delete(tag)
+    public removeTag(people: [HumanName, HumanName], tag: RelationshipTag) : boolean {
+        return this.getTags(people)?.delete(tag) ?? false
     }
 
     public getOutRelationships(person: HumanName): Array<Relationship>{

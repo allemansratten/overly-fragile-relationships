@@ -9,11 +9,13 @@ export type HumanTag =
 export class Human {
     name: HumanName
     relationships: Array<Relationship>
-    tags: Set<HumanTag>
+    public tags: Set<HumanTag>
 
     constructor(name: HumanName, relationships?: Array<Relationship>){
         this.name = name
         this.relationships = relationships ?? new Array()
         this.tags = new Set()
     }
+
+
 }

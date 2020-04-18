@@ -1,6 +1,7 @@
-import { HumanName } from "./human";
+import { HumanName, HumanTag } from "./human";
 import { Location } from "./location"
 import { TripSummary } from "../management/tripsummary";
+import { RelationshipTag } from "./peopleGraph";
 
 
 export class HateGraph {
@@ -11,28 +12,30 @@ export class HateGraph {
     }
 }
 
-export interface RelationshipEffect {
+export interface SituationEffect {
     people: [HumanName, HumanName]
-    relationshipChange: number
 
-    // TODO(?): Add min/max pre=existing relationship level for the change to apply.
+    addedRelTags: Set<RelationshipTag>
+    removedRelTags: Set<RelationshipTag>
+
+    addedHumTags: [Set<HumanTag>, Set<HumanTag>]
+    removedHumTags: [Set<HumanTag>, Set<HumanTag>]
 }
 
 export interface Constraint {
-    DoesConstraintApplies(trip: TripSummary): boolean
-    effect: Array<RelationshipEffect>
+    GetApplicableEffects(trip: TripSummary): Array<SituationEffect>
 }
 
-export class PresenceConstraint implements Constraint {
+export class SimpleSituation implements Constraint {
     private haveToBePresent: Array<HumanName>
     private cannotBePresent: Array<HumanName>
     private allowedLocations: Array<Location>
 
-    public effect: Array<RelationshipEffect>
+    public effect: Array<SituationEffect>
 
     constructor(
 
-        haveToBePresent: Array<HumanName>, cannotBePresent: Array<HumanName>, allowedLocations: Array<Location>, effect: Array<RelationshipEffect>) {
+        haveToBePresent: Array<HumanName>, cannotBePresent: Array<HumanName>, allowedLocations: Array<Location>, effect: Array<SituationEffect>) {
 
         this.haveToBePresent = haveToBePresent
         this.cannotBePresent = cannotBePresent
@@ -40,7 +43,11 @@ export class PresenceConstraint implements Constraint {
         this.effect = effect
     }
 
-    public DoesConstraintApplies(trip: TripSummary): boolean {
+    public GetApplicableEffects(trip: TripSummary): Array<SituationEffect> {
+        return this.isApplicable(trip) ? this.effect : new Array()
+    }
+
+    public isApplicable(trip: TripSummary): boolean {
         let namesPresent = trip.goPeople.map(p => p.name)
 
         return this.haveToBePresent.every(hp => namesPresent.includes(hp)) &&

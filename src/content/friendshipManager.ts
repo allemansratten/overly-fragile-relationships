@@ -1,4 +1,4 @@
-import { HateGraph, Constraint, RelationshipEffect } from "./hateGraph";
+import { HateGraph, Constraint, SituationEffect } from "./hateGraph";
 import { PeopleGraph } from "./peopleGraph";
 import { Human } from "./human";
 import { Location } from "./location"
@@ -13,8 +13,8 @@ export class FriendshipManager {
         this.peopleGraph = peopleGraph
     }
 
-    public applyMeeting(trip: TripSummary): Array<RelationshipEffect> {
-        let appliedEffects = new Array<RelationshipEffect>()
+    public applyMeeting(trip: TripSummary): Array<SituationEffect> {
+        let appliedEffects = new Array<SituationEffect>()
 
         this.hateGraph.constraints.forEach(con => {
             const appEffForCurrCon = this.tryResolveConstraint(con, trip);  // We know it's gonna be assigned
@@ -24,16 +24,19 @@ export class FriendshipManager {
         return appliedEffects
     }
 
-    private tryResolveConstraint(con: Constraint, trip: TripSummary): Array<RelationshipEffect> {
-        let appliedEffects = new Array<RelationshipEffect>()
+    private tryResolveConstraint(con: Constraint, trip: TripSummary): Array<SituationEffect> {
+        let applicableEffects = con.GetApplicableEffects(trip);
 
-        if (con.DoesConstraintApplies(trip)) {
-            con.effect.forEach(eff => {
-                // updateTags
-                appliedEffects.push(eff)
-            });
-        }
+        applicableEffects.forEach(eff => {
+            eff.addedRelTags.forEach(at => this.peopleGraph.addTag(eff.people, at))
+            eff.removedRelTags.forEach(at => this.peopleGraph.removeTag(eff.people, at))
 
-        return appliedEffects;
+
+            // TODO: Petr: do all updates
+
+        });
+
+        return applicableEffects
+        
     }
 }
