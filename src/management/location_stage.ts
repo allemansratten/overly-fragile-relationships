@@ -5,8 +5,8 @@ export class LocationStage {
     private allLocationImage: Array<Phaser.GameObjects.Image> = []
 
     constructor(scene: BoardScene, level: Level) {
-        scene.add.rectangle(680, 0, 120, 500, 0xcccccc)
-            .setOrigin(0, 0)
+        // scene.add.rectangle(680, 0, 120, 500, 0xcccccc)
+        //     .setOrigin(0, 0)
         let text = scene.add.text(700, 10, 'Go to:', { fill: 'black', fontFamily: 'Roboto' })
 
 

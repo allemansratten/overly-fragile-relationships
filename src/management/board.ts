@@ -26,26 +26,27 @@ export class BoardScene extends Phaser.Scene {
     }
 
     public preload() {
-        console.log('preloading')
-        this.load.setBaseURL('assets/')
-        this.load.spritesheet('portrait_big', 'portrait_big.png', { frameWidth: 200, frameHeight: 200 })
-        this.load.spritesheet('location_thumb', 'location_thumb.png', { frameWidth: 200, frameHeight: 200 })
-
         this.transitionFader = this.add.rectangle(0, 0, 800, 500, 0x0)
             .setOrigin(0, 0)
             .setDepth(2001)
     }
 
     public create() {
+        this.add.image(0, 0, 'board_background')
+            .setOrigin(0, 0)
+
         this.tripFader = this.add.rectangle(0, 0, 800, 500, 0x0)
             .setOrigin(0, 0)
             .setDepth(1001)
             .setAlpha(0)
             .setInteractive({ useHandCursor: true })
             .on('pointerdown', () => this.goBack())
-        this.infoText = this.add.text(100, 100, '', { fill: '#fff' })
+        this.infoText = this.add.text(400, 200, '', { fill: '#fff', fontFamily: 'Roboto', fontSize: '20px' })
             .setDepth(1001)
             .setAlpha(0)
+            .setAlign('center')
+            .setWordWrapWidth(400)
+            .setOrigin(0.5, 0.5)
 
         this.locationStage = new LocationStage(this, this.level)
         this.humanStage = new HumanStage(this, this.level)
