@@ -2,6 +2,7 @@ import { Location } from '../content/location'
 import { Human } from '../content/human'
 import { Level } from '../content/level'
 import { TripSummary } from './tripsummary'
+import { Phone } from './phone'
 
 export class BoardScene extends Phaser.Scene {
     private goButton: Phaser.GameObjects.Text
@@ -11,6 +12,7 @@ export class BoardScene extends Phaser.Scene {
     private infoText: Phaser.GameObjects.Text
     private level: Level
     private tripSummary: TripSummary
+    private phone: Phone
 
     constructor() {
         super({
@@ -23,16 +25,10 @@ export class BoardScene extends Phaser.Scene {
     public preload() {
         console.log('preloading')
         this.load.setBaseURL('assets/')
-        this.load.image('portrait_big', 'portrait_big.png')
+        this.load.spritesheet('portrait_big', 'portrait_big.png', { frameWidth: 200, frameHeight: 200 })
     }
 
     public create() {
-        this.add.image(0, 0, 'portrait_big')
-
-        // phone
-        this.add.rectangle(10, 10, 200, 380, 0xcccccc)
-            .setOrigin(0, 0)
-
         // locations 
         this.add.rectangle(630, 10, 160, 200, 0xcccccc)
             .setOrigin(0, 0)
@@ -43,7 +39,7 @@ export class BoardScene extends Phaser.Scene {
             .setAlpha(0)
             .setInteractive({ useHandCursor: true })
             .on('pointerdown', () => this.goBack())
-        this.infoText = this.add.text(100, 100, '', { fill: '#fff'})
+        this.infoText = this.add.text(100, 100, '', { fill: '#fff' })
             .setDepth(1001)
             .setAlpha(0)
 
@@ -71,30 +67,35 @@ export class BoardScene extends Phaser.Scene {
             let text = this.add.text(290, 20 + 60 * Number(i), `${human.name} (${human.love})`, { fill: '#f00' })
                 .setInteractive({ useHandCursor: true })
                 .on('pointerdown', () => {
-                    if(this.tripSummary.flipGoPeople(human)) {
+                    if (this.tripSummary.flipGoPeople(human)) {
                         text.setFill('#0f0')
                     } else {
                         text.setFill('#f00')
                     }
                 })
+                .on('pointerover', () => {
+                    this.phone.display(human, Number(i))
+                })
             this.allPeopleTexts.push(text)
         }
+
+        this.phone = new Phone(this)
     }
 
     private bleachLocation() {
-        for(let text of this.allLocationTexts) {
+        for (let text of this.allLocationTexts) {
             text.setFill('#f00')
         }
     }
 
     private bleachPeople() {
-        for(let text of this.allPeopleTexts) {
+        for (let text of this.allPeopleTexts) {
             text.setFill('#f00')
         }
     }
 
     private goOut() {
-        if(!this.tripSummary.isValid())
+        if (!this.tripSummary.isValid())
             return
         let message = this.level.goOut(this.tripSummary)
         this.fader.input.enabled = false
@@ -102,7 +103,7 @@ export class BoardScene extends Phaser.Scene {
         this.infoText.setText(message)
         this.add.tween({
             targets: [this.infoText, this.fader],
-            alpha: {from: 0, to: 1},
+            alpha: { from: 0, to: 1 },
             duration: 1000,
             onComplete: () => {
                 this.fader.input.enabled = true
@@ -111,14 +112,14 @@ export class BoardScene extends Phaser.Scene {
         })
         this.refresh()
     }
-    
+
     private goBack() {
         this.bleachLocation()
         this.bleachPeople()
         this.fader.input.enabled = false
         this.add.tween({
             targets: [this.infoText, this.fader],
-            alpha: {from: 1, to: 0},
+            alpha: { from: 1, to: 0 },
             duration: 1000,
             onComplete: () => this.fader.input.enabled = true
         })
