@@ -22,9 +22,10 @@ export class Level {
         this.humans.push({name: 'Mathew', love: -5})
 
         this.locations = []
-        this.locations.push({name: 'Park', limit: { min: 2, max: 5}})
-        this.locations.push({name: 'Woods', limit: { min: 2, max: 4}})
+        this.locations.push({name: 'Bowling', limit: { min: 2, max: 5}})
+        this.locations.push({name: 'Drink', limit: { min: 2, max: 4}})
         this.locations.push({name: 'Forest', limit: { min: 2, max: 6}})
+        this.locations.push({name: 'Movie', limit: { min: 2, max: 6}})
 
         this.peopleGraph = new PeopleGraph(
             this.humans,

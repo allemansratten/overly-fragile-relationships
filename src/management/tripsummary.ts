@@ -26,9 +26,8 @@ export class TripSummary {
         }
     }
 
-    public isValid(): boolean {
-        if (this.goLocation == null)
-            return false
+    public prepare(location: Location): boolean {
+        this.goLocation = location
         if (this.goPeople.length < this.goLocation.limit.min)
             return false
         if (this.goPeople.length > this.goLocation.limit.max)
