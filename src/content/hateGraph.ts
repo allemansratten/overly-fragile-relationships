@@ -12,6 +12,11 @@ export class HateGraph {
     }
 }
 
+export interface Constraint {
+    GetApplicableEffects(trip: TripSummary): Array<SituationEffect>
+}
+
+
 export class SituationEffect {
     people: [HumanName, HumanName]
 
@@ -34,10 +39,6 @@ export class SituationEffect {
             this.removedHumTags = removedHumTags ?? [new Set<HumanTag>(), new Set<HumanTag>()]
 
     }
-}
-
-export interface Constraint {
-    GetApplicableEffects(trip: TripSummary): Array<SituationEffect>
 }
 
 export class SimpleSituation implements Constraint {
