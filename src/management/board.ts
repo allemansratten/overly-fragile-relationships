@@ -6,15 +6,14 @@ import { LocationStage } from './location_stage'
 import { Location } from '../content/location'
 
 export class BoardScene extends Phaser.Scene {
-    private goButton: Phaser.GameObjects.Text
-    private fader: Phaser.GameObjects.Rectangle
-    private infoText: Phaser.GameObjects.Text
+    private fader?: Phaser.GameObjects.Rectangle
+    private infoText?: Phaser.GameObjects.Text
     private level: Level
     
     public tripSummary: TripSummary
-    public phone: PhoneStage
-    private humanStage: HumanStage
-    private locationStage: LocationStage
+    public phone?: PhoneStage
+    private humanStage?: HumanStage
+    private locationStage?: LocationStage
 
     constructor() {
         super({
@@ -51,29 +50,29 @@ export class BoardScene extends Phaser.Scene {
         if (!this.tripSummary.prepare(location))
             return
         let message = this.level.goOut(this.tripSummary)
-        this.fader.input.enabled = false
-        this.locationStage.enable(false)
-        this.infoText.setText(message)
+        this.fader!.input.enabled = false
+        this.locationStage!.enable(false)
+        this.infoText!.setText(message)
         this.add.tween({
             targets: [this.infoText, this.fader],
             alpha: { from: 0, to: 1 },
             duration: 1000,
             onComplete: () => {
-                this.fader.input.enabled = true
-                this.locationStage.enable(true)
+                this.fader!.input.enabled = true
+                this.locationStage!.enable(true)
             }
         })
         this.refresh()
     }
 
     private goBack() {
-        this.humanStage.bleachPeople()
-        this.fader.input.enabled = false
+        this.humanStage!.bleachPeople()
+        this.fader!.input.enabled = false
         this.add.tween({
             targets: [this.infoText, this.fader],
             alpha: { from: 1, to: 0 },
             duration: 1000,
-            onComplete: () => this.fader.input.enabled = true
+            onComplete: () => this.fader!.input.enabled = true
         })
     }
 
