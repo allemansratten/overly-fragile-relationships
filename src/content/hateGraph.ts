@@ -4,6 +4,10 @@ import { Location } from "./location"
 
 export class HateGraph {
     public constrains: Array<Constrain>
+
+    constructor() {
+        this.constrains = []
+    }
 }
 
 export class RelationShipEffect {
