@@ -3,11 +3,11 @@ import { HumanIdentity } from "./human"
 type NodeKey = string
 
 export class PeopleGraph {
-    private graph: Record<NodeKey, number>
+    private graph: Map<NodeKey, number>
     private oriented: Boolean
 
     constructor(people: HumanIdentity[] = [], initialRelationships: Array<Relationship> = []){
-        this.graph = {}
+        this.graph = new Map
         this.oriented = false
 
         people.forEach(h => {
@@ -24,17 +24,34 @@ export class PeopleGraph {
 
     public setWeight(people: [HumanIdentity, HumanIdentity], weight: number){
         let graphKey = this.getGraphKey(people)
-        this.graph[graphKey] = weight 
+        this.graph.set(graphKey, weight) 
     }
 
     public updateWeight(people: [HumanIdentity, HumanIdentity], weightDelta: number){
         let graphKey = this.getGraphKey(people)
-        this.graph[graphKey] += weightDelta 
+        this.graph.set(graphKey, this.graph.get(graphKey) ?? 0 + weightDelta) 
     }
 
     public getWeight(people: [HumanIdentity, HumanIdentity]): number{
         let graphKey = this.getGraphKey(people)
-        return this.graph[graphKey] 
+        let currValue = this.graph.get(graphKey) 
+        if (currValue == null) {
+            this.graph.set(graphKey, 0)
+            return 0
+        }
+        return currValue
+    }
+
+    public getRelationships(person: HumanIdentity): Array<Relationship>{
+        let result = new Array
+
+        this.graph.forEach((val, key) => {
+            if (key.startsWith(person.name)) {
+                result.push(new Relationship(this.nodeKeyToTwoIdentities(key), val))
+            }
+        })
+
+        return result
     }
 
     private getGraphKey(unorderedPair: [HumanIdentity, HumanIdentity]): NodeKey{
@@ -43,6 +60,14 @@ export class PeopleGraph {
 
         return orderedPair.join('|')
     }
+
+    private nodeKeyToTwoIdentities(key: NodeKey): [HumanIdentity, HumanIdentity]{
+        let names = key.split('|')
+        console.assert(names.length == 2)
+
+        return [{name: names[0]}, {name:names[1]}]
+    }
+
 }
 
 export class Relationship {

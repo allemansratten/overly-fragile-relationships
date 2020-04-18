@@ -51,18 +51,23 @@ export class Level {
     }
 
     public goOut(tripSummary: TripSummary): string {
+        // Update friendships based on trip
         let effects = this.friendshipManager.ApplyMeeting(tripSummary)
-        console.log(effects)
 
+        // Construct msgs for effects
         let effectsMsgs = effects.map(effect => {
             return `${effect.people[0].name} now ${effect.relationshipChange > 0 ? "loves" : "hates"}  ${effect.people[1].name} a bit more.`
         });
-
         let effectMsg = effectsMsgs.length > 0 
             ? effectsMsgs.join('\n')
             : "No one cared for your trip. ╯︿╰"
 
-
+        // Update relationships on people
+        this.humans.forEach(h => {
+            h.relationships = this.friendshipManager.peopleGraph.getRelationships(h)
+        });
+    
+        // Construct final msg
         let friendlist: string = tripSummary.goPeople.map((human: Human)=>human.name).join(', ')
         let statusMessage = `You went out to ${tripSummary.goLocation?.name} with ${friendlist}.\n${effectMsg}`
         return statusMessage
