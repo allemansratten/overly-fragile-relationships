@@ -23,7 +23,7 @@ levels.push(
         ],
         locations,
         [
-            new Relationship(['Kate', 'Lucian'], new Set(['crush' as RelationshipTag])),
+            new Relationship(['Kate', 'Lucian'], new Set([RelationshipTag["like (as a friend)"]])),
         ],
         new HateGraph([
             new PresenceConstraint(

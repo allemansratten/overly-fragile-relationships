@@ -2,12 +2,17 @@ import { Human, HumanName } from "./human"
 
 type NodeKey = string
 
-
-type RelationshipTagO = 'crush' | 'dislike' | 'like (as a friend)'
-type RelationshipTagU = 'friend' | 'lover' | 'ex' | 'political disagreement'
-export type RelationshipTag = RelationshipTagO | RelationshipTagU
-
-
+export enum RelationshipTag { crush, dislike, friend_like, friend, lover, ex, political_dis }
+let RelationshipTagMap : {[key in RelationshipTag]: string} = {
+    [RelationshipTag.crush]: 'crush',
+    [RelationshipTag.dislike]: 'dislike',
+    [RelationshipTag.friend_like]: 'like as a friend',
+    [RelationshipTag.friend]: 'friend',
+    [RelationshipTag.lover]: 'lover',
+    [RelationshipTag.ex]: 'ex',
+    [RelationshipTag.political_dis]: 'political disagreement',
+}
+export { RelationshipTagMap }
 
 export class PeopleGraph {
     private graph: Map<NodeKey, Set<RelationshipTag>>
