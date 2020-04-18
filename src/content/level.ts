@@ -37,7 +37,7 @@ export class Level {
 
         // Construct msgs for effects
         let effectsMsgs = effects.map(effect => {
-            return `${effect.people[0]} now ${effect.addedHumTags.join(", ")} and no longer ${effect.removedHumTags.join(", ")}  ${effect.people[1]} a bit more.`
+            return `${effect.people[0]} now ${Array(effect.addedRelTags).join(", ")} and no longer ${Array(effect.removedHumTags).join(", ")}  ${effect.people[1]} a bit more.`
         })
 
         let effectMsg = effectsMsgs.length > 0
