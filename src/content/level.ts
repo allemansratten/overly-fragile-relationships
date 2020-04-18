@@ -14,19 +14,6 @@ export class Level {
     public friendshipManager: FriendshipManager
 
     constructor(humans: Array<Human>, locations: Array<Location>, relationships: Array<Relationship>, hateGraph: HateGraph) {
-        // this.humans = []
-        // this.humans.push({name: 'Kate', relationships: []})
-        // this.humans.push({name: 'Lucian', relationships: []})
-        // this.humans.push({name: 'Mathew', relationships: []})
-        //
-        // this.locations = []
-        //
-        // this.peopleGraph = new PeopleGraph(
-        //     this.humans,
-        //     [
-        //         {people: [{name: 'Kate'}, {name: 'Mathew'}], level: -1},
-        //     ])
-
         this.humans = humans
         this.locations = locations
         this.peopleGraph = new PeopleGraph(this.humans, relationships)
