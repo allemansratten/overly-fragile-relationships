@@ -86,12 +86,13 @@ export class Level {
     }
 
     private reduceEffectsPerPerson(effects: SituationEffect[]) {
+        // first array in keys is always added tags, second removed
         let perPersonRelMsg = new Map<[HumanName, HumanName], [Array<RelationshipTag>, Array<RelationshipTag>]>()
         let perPersonHumMsg = new Map<HumanName, [Array<HumanTag>, Array<HumanTag>]>()
 
-        let addToMap = function<K, V>(key: K, value: V, valueStore: Map<K, [Array<V>, Array<V>]>, valueIndex: 0|1) {
+        let addToMap = function<K, V>(key: K, value: V, valueStore: Map<K, [Array<V>, Array<V>]>, addedRemovedStoreSwitch: 0|1) {
             let perKeyStore = valueStore.get(key) ?? [new Array<V>(), new Array<V>()]
-            perKeyStore[valueIndex].push(value)
+            perKeyStore[addedRemovedStoreSwitch].push(value)
             valueStore.set(key, perKeyStore)
         }
 
@@ -100,9 +101,8 @@ export class Level {
             effect.removedHumTags.forEach(rh => addToMap(rh[0], rh[1], perPersonHumMsg, 1))
             effect.addedRelTags.forEach(ah => addToMap(ah[0], ah[1], perPersonRelMsg, 0))
             effect.removedRelTags.forEach(ah => addToMap(ah[0], ah[1], perPersonRelMsg, 1))
-
         })
-        
+
         return { perPersonRelMsg, perPersonHumMsg }
     }
 }
