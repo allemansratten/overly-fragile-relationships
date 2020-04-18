@@ -1,9 +1,8 @@
 import { Relationship } from "./peopleGraph";
 
-export interface Human extends HumanIdentity {
-    relationships: Array<Relationship>
-}
+export type HumanName = string
 
-export interface HumanIdentity {
-    name: string,
+export interface Human {
+    name: HumanName
+    relationships: Array<Relationship>
 }

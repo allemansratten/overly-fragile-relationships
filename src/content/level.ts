@@ -28,7 +28,7 @@ export class Level {
         console.log(effects)
 
         let effectsMsgs = effects.map(effect => {
-            return `${effect.people[0].name} now ${effect.relationshipChange > 0 ? "loves" : "hates"}  ${effect.people[1].name} a bit more.`
+            return `${effect.people[0]} now ${effect.relationshipChange > 0 ? "loves" : "hates"}  ${effect.people[1]} a bit more.`
         })
 
         let effectMsg = effectsMsgs.length > 0

@@ -1,4 +1,4 @@
-import { HumanIdentity } from "./human"
+import { Human, HumanName } from "./human"
 
 type NodeKey = string
 
@@ -6,14 +6,14 @@ export class PeopleGraph {
     private graph: Record<NodeKey, number>
     private oriented: Boolean
 
-    constructor(people: HumanIdentity[] = [], initialRelationships: Array<Relationship> = []){
+    constructor(people: Human[] = [], initialRelationships: Array<Relationship> = []){
         this.graph = {}
         this.oriented = false
 
         people.forEach(h => {
             people.forEach(hh => {
                 // will set weight for each person with themselves but ¯\_(ツ)_/¯
-                this.setWeight([h, hh], 0)
+                this.setWeight([h.name, hh.name], 0)
             });
         });
 
@@ -22,23 +22,23 @@ export class PeopleGraph {
         });
     }
 
-    public setWeight(people: [HumanIdentity, HumanIdentity], weight: number){
+    public setWeight(people: [HumanName, HumanName], weight: number){
         let graphKey = this.getGraphKey(people)
         this.graph[graphKey] = weight 
     }
 
-    public updateWeight(people: [HumanIdentity, HumanIdentity], weightDelta: number){
+    public updateWeight(people: [HumanName, HumanName], weightDelta: number){
         let graphKey = this.getGraphKey(people)
         this.graph[graphKey] += weightDelta 
     }
 
-    public getWeight(people: [HumanIdentity, HumanIdentity]): number{
+    public getWeight(people: [HumanName, HumanName]): number{
         let graphKey = this.getGraphKey(people)
         return this.graph[graphKey] 
     }
 
-    private getGraphKey(unorderedPair: [HumanIdentity, HumanIdentity]): NodeKey{
-        let [a, b] = unorderedPair.map(n => n.name)
+    private getGraphKey(unorderedPair: [HumanName, HumanName]): NodeKey{
+        let [a, b] = unorderedPair
         let orderedPair = a <= b || !this.oriented ? [a, b] : [b, a]
 
         return orderedPair.join('|')
@@ -46,12 +46,12 @@ export class PeopleGraph {
 }
 
 export class Relationship {
-    constructor(people: [HumanIdentity, HumanIdentity], level: number){
+    constructor(people: [HumanName, HumanName], level: number){
         this.people = people
         this.level = level
     }
 
-    people: [HumanIdentity, HumanIdentity]
+    people: [HumanName, HumanName]
     level: number
 
     public toString(): string {
