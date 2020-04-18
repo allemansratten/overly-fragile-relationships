@@ -13,8 +13,9 @@ export class PeopleGraph {
 
         people.forEach(h => {
             people.forEach(hh => {
-                // will set weight for each person with themselves but ¯\_(ツ)_/¯
-                this.setWeight([h.name, hh.name], 0)
+                if (hh.name != h.name) {
+                    this.setWeight([h.name, hh.name], 0)
+                }
             });
         });
 
@@ -43,11 +44,23 @@ export class PeopleGraph {
         return currValue
     }
 
-    public getRelationships(person: HumanName): Array<Relationship>{
+    public getOutRelationships(person: HumanName): Array<Relationship>{
         let result = new Array
 
         this.graph.forEach((val, key) => {
             if (key.startsWith(person)) {
+                result.push(new Relationship(this.nodeKeyToTwoIdentities(key), val))
+            }
+        })
+
+        return result
+    }
+
+    public getInRelationships(person: HumanName): Array<Relationship>{
+        let result = new Array
+
+        this.graph.forEach((val, key) => {
+            if (key.endsWith(person)) {
                 result.push(new Relationship(this.nodeKeyToTwoIdentities(key), val))
             }
         })
