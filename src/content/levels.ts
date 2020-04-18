@@ -34,8 +34,8 @@ levels.push(
                 [
                     {
                         people: ['Kate', 'Lucian'], 
-                        addedRelTags: new Set(['crush' as RelationshipTag]), 
-                        addedHumTags: [new Set(['sad when drunk' as HumanTag]), new Set<HumanTag>()],
+                        addedRelTags: new Set([RelationshipTag.crush]), 
+                        addedHumTags: [new Set([HumanTag.sad_drunk]), new Set<HumanTag>()],
                         removedRelTags: new Set<RelationshipTag>(),
                         removedHumTags: [new Set<HumanTag>(),new Set<HumanTag>()],
                     },
