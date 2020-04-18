@@ -1,6 +1,7 @@
 import { TripSummary } from "../management/tripsummary";
 import { RelationshipTag, HumanTag } from "./entityTags";
 import { PeopleGraph, CoupleKey } from "./peopleGraph";
+import { HumanName } from "./human";
 
 export class HateGraph {
     public constraints: Array<Situation>
@@ -16,25 +17,21 @@ export interface Situation {
 
 
 export class SituationEffect {
-    people: CoupleKey
+    addedRelTags: Array<[CoupleKey, RelationshipTag]>
+    removedRelTags: Array<[CoupleKey, RelationshipTag]>
 
-    addedRelTags: Set<RelationshipTag>
-    removedRelTags: Set<RelationshipTag>
-
-    addedHumTags: [Set<HumanTag>, Set<HumanTag>]
-    removedHumTags: [Set<HumanTag>, Set<HumanTag>]
+    addedHumTags: Array<[HumanName, HumanTag]>
+    removedHumTags: Array<[HumanName, HumanTag]>
 
     constructor(
-        people: CoupleKey, 
-        addedRelTags?: Set<RelationshipTag>, 
-        removedRelTags?: Set<RelationshipTag>, 
-        addedHumTags?: [Set<HumanTag>, Set<HumanTag>],
-        removedHumTags?: [Set<HumanTag>, Set<HumanTag>]) {
-            this.people = people
-            this.addedRelTags = addedRelTags ?? new Set<RelationshipTag>()
-            this.removedRelTags = removedRelTags ?? new Set<RelationshipTag>()
-            this.addedHumTags = addedHumTags ??  [new Set<HumanTag>(), new Set<HumanTag>()]
-            this.removedHumTags = removedHumTags ?? [new Set<HumanTag>(), new Set<HumanTag>()]
+        addedRelTags?: Array<[CoupleKey, RelationshipTag]>, 
+        removedRelTags?: Array<[CoupleKey, RelationshipTag]>, 
+        addedHumTags?: Array<[HumanName, HumanTag]>,
+        removedHumTags?: Array<[HumanName, HumanTag]>) {
+            this.addedRelTags = addedRelTags ?? new Array()
+            this.removedRelTags = removedRelTags ?? new Array()
+            this.addedHumTags = addedHumTags ??  new Array()
+            this.removedHumTags = removedHumTags ?? new Array()
 
     }
 }

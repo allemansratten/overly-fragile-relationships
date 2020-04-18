@@ -26,14 +26,11 @@ export class FriendshipManager {
         let applicableEffects = con.GetApplicableEffects(trip, this.peopleGraph);
 
         applicableEffects.forEach(eff => {
-            eff.addedRelTags.forEach(at => this.peopleGraph.addRelTag(eff.people, at))
-            eff.removedRelTags.forEach(at => this.peopleGraph.removeRelTag(eff.people, at))
+            eff.addedRelTags.forEach(at => this.peopleGraph.addRelTag(at[0], at[1]))
+            eff.removedRelTags.forEach(at => this.peopleGraph.removeRelTag(at[0], at[1]))
 
-            eff.addedHumTags[0].forEach(ah0 => this.peopleGraph.addHumTag(eff.people[0], ah0))
-            eff.addedHumTags[1].forEach(ah1 => this.peopleGraph.addHumTag(eff.people[1], ah1))
-
-            eff.removedHumTags[0].forEach(rh0 => this.peopleGraph.removeHumTag(eff.people[0], rh0))
-            eff.removedHumTags[1].forEach(rh1 => this.peopleGraph.removeHumTag(eff.people[1], rh1))
+            eff.addedHumTags.forEach(ah => this.peopleGraph.addHumTag(ah[0], ah[1]))
+            eff.removedHumTags.forEach(rh => this.peopleGraph.removeHumTag(rh[0], rh[1]))
         });
 
         return applicableEffects
