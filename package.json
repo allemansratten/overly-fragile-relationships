@@ -1,0 +1,29 @@
+{
+  "name": "levy-sluchat",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack",
+    "dev": "webpack-dev-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/allemansratten/levy-sluchat.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/allemansratten/levy-sluchat/issues"
+  },
+  "homepage": "https://github.com/allemansratten/levy-sluchat#readme",
+  "dependencies": {
+    "copy-webpack-plugin": "^5.1.1",
+    "phaser": "^3.22.0",
+    "ts-loader": "^7.0.0",
+    "typescript": "^3.8.3",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3"
+  }
+}
