@@ -43,11 +43,23 @@ export class PeopleGraph {
         return currValue
     }
 
-    public getRelationships(person: HumanName): Array<Relationship>{
+    public getOutRelationships(person: HumanName): Array<Relationship>{
         let result = new Array
 
         this.graph.forEach((val, key) => {
             if (key.startsWith(person)) {
+                result.push(new Relationship(this.nodeKeyToTwoIdentities(key), val))
+            }
+        })
+
+        return result
+    }
+
+    public getInRelationships(person: HumanName): Array<Relationship>{
+        let result = new Array
+
+        this.graph.forEach((val, key) => {
+            if (key.endsWith(person)) {
                 result.push(new Relationship(this.nodeKeyToTwoIdentities(key), val))
             }
         })

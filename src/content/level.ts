@@ -35,7 +35,7 @@ export class Level {
 
         // Update relationships on people
         this.humans.forEach(h => {
-            h.relationships = this.friendshipManager.peopleGraph.getRelationships(h.name)
+            h.relationships = this.friendshipManager.peopleGraph.getOutRelationships(h.name)
         });
 
         console.log("Effects:", effects)
