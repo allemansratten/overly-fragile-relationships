@@ -1,5 +1,6 @@
 # Andrea
 - relationships:
+	- A:
 	- B: crush
 	- C: crush
 	- D:
@@ -8,23 +9,54 @@
 - 
 
 # Beatrice
-- Andrea <3
+- relationships:
+	- A: crush
+	- B: 
+	- C: 
+	- D:
+	- E:
+	- F:
 - promiscuous
 
 # Cecil
-- Andrea <3
+- relationships:
+	- A: crush
+	- B: 
+	- C: 
+	- D:
+	- E:
+	- F:
 - introvert
 
 # Dan
+- relationships:
+	- A:
+	- B: 
+	- C: 
+	- D:
+	- E:
+	- F:
 - angry when drunk
 - extrovert
 - agreeable
 
 # E
-- 
+- relationships:
+	- A:
+	- B: 
+	- C: 
+	- D:
+	- E:
+	- F:
 
 # F
-- 
+- relationships:
+	- A:
+	- B: 
+	- C: 
+	- D:
+	- E:
+	- F:
 
 # Obecně
 - když se A vyspí s B a B chodí s C, tak B a C se rozejdou (a nebudou se mít rádi)
@@ -58,8 +90,8 @@
 	- víc nespoko když není included
 - attention seeker
 	- problém se dvěma
-
-
+- supportive friend
+ 	- on + 1 friend -> oba víc spoko?
 - disagreeable
 	-  Lidi co ho poprvý viděj maj o něm horší mínění
 - agreeable
@@ -75,4 +107,8 @@ crush, dislike, like (as a friend)
 
 
 Events
+	- Bad bowler + good bowler
+	- angry when drunk + angry when drunk + bar
+	- promiscuous + crush + bar
+	- všichni kromě FOMO
 	- 
