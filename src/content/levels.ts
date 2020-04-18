@@ -33,7 +33,7 @@ levels.push(
             new Relationship(['Cecil', 'Alex'], new Set([RelationshipTag.crush])),
         ],
         [
-            ['Alex', HumanTag.promiscuous],
+            ['Beatrice', HumanTag.promiscuous],
             ['Cecil', HumanTag.introvert],
             ['Dan', HumanTag.extrovert],
             ['Dan', HumanTag.angry_drunk],
@@ -47,14 +47,18 @@ levels.push(
         ,
         new HateGraph([
             new SimpleSituation(
-                ['Kate', 'Lucian'],
-                ['Matthew'],
+                ['Alex', 'Beatrice'],
+                ['Cecil'],
                 locations,
                 [
                     new SituationEffect(
-                        [[['Kate', 'Lucian'], RelationshipTag.crush]],
+                        "Alex and Beatrice started to date!",
+                        [
+                            [['Alex', 'Beatrice'], RelationshipTag.lover],
+                            [['Beatrice', 'Alex'], RelationshipTag.lover],
+                        ],
                         [],
-                        [['Kate', HumanTag.sad_drunk]],
+                        [],
                         []
                     )
                 ]
