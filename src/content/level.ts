@@ -42,8 +42,15 @@ export class Level {
         let effects = this.friendshipManager.applyMeeting(tripSummary)
 
         // Construct msgs for effects
+<<<<<<< HEAD
         let { perPersonRelMsg, perPersonHumMsg } = this.reduceEffectsPerPerson(effects)
         let effectsMsgs = this.createEffectsMsgs(perPersonRelMsg, perPersonHumMsg)
+=======
+        let effectsMsgs = effects.map(effect => {
+            return effect.description
+            // return `${effect.people[0]} now ${Array(effect.addedRelTags).join(", ")} and no longer ${Array(effect.removedHumTags).join(", ")}  ${effect.people[1]} a bit more.`
+        })
+>>>>>>> 40dc27f485bab9b0f19cc0ad61d48bd32408e5ec
 
         let effectMsg = effectsMsgs.length > 0
             ? effectsMsgs.join('\n')

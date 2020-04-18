@@ -1,7 +1,7 @@
 import { HumanName } from "./human"
-import { SituationEffect, Situation } from "./hateGraph"
+import { Situation, SituationEffect } from "./hateGraph"
 import { TripSummary } from "../management/tripsummary"
-import { PeopleGraph, CoupleKey } from "./peopleGraph"
+import { CoupleKey, PeopleGraph } from "./peopleGraph"
 import { Location } from "./location"
 import { HumanTag, RelationshipTag } from "./entityTags"
 
@@ -14,8 +14,11 @@ export class SimpleSituation implements Situation {
     public effect: Array<SituationEffect>
 
     constructor(
-
-        haveToBePresent: Array<HumanName>, cannotBePresent: Array<HumanName>, allowedLocations: Array<Location>, effect: Array<SituationEffect>) {
+        haveToBePresent: Array<HumanName>,
+        cannotBePresent: Array<HumanName>,
+        allowedLocations: Array<Location>,
+        effect: Array<SituationEffect>
+    ) {
 
         this.haveToBePresent = haveToBePresent
         this.cannotBePresent = cannotBePresent
@@ -50,12 +53,12 @@ export class Complex implements Situation {
     public effect: Array<SituationEffect>
 
     constructor(
-
-        haveToBePresent: Array<HumanName>, cannotBePresent: Array<HumanName>, 
-        allowedLocations: Array<Location>, 
+        haveToBePresent: Array<HumanName>, cannotBePresent: Array<HumanName>,
+        allowedLocations: Array<Location>,
         humTagsReq: Array<[HumanName, HumanTag]>, humTagsBan: Array<[HumanName, HumanTag]>,
         relTagsReq: Array<[CoupleKey, RelationshipTag]>, relTagsBan: Array<[CoupleKey, RelationshipTag]>,
-        effect: Array<SituationEffect>) {
+        effect: Array<SituationEffect>
+    ) {
 
         this.humReq = haveToBePresent
         this.humBan = cannotBePresent
