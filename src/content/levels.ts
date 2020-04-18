@@ -1,6 +1,7 @@
 import { HateGraph, PresenceConstraint } from "./hateGraph"
 import { Level } from "./level"
 import { RelationshipTag, Relationship } from "./peopleGraph"
+import { Human } from "./human"
 
 export let levels: Array<Level> = []
 
@@ -16,10 +17,10 @@ let locations = [
 levels.push(
     new Level(
         [
-            {name: 'You', relationships: []},
-            {name: 'Kate', relationships: []},
-            {name: 'Lucian', relationships: []},
-            {name: 'Matthew', relationships: []},
+            new Human('You'),
+            new Human('Kate'),
+            new Human('Lucian'),
+            new Human('Matthew'),
         ],
         locations,
         [
