@@ -44,5 +44,9 @@ export class PeopleGraph {
 
         return orderedPair.join('|')
     }
+}
 
+export interface Relationship {
+    people: [HumanIdentity, HumanIdentity]
+    relationship: number
 }

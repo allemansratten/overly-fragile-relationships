@@ -10,17 +10,17 @@ export class HateGraph {
     }
 }
 
-export class RelationshipEffect {
-    public people: [HumanIdentity, HumanIdentity]
-    public relationshipChange: number
+export interface RelationshipEffect {
+    people: [HumanIdentity, HumanIdentity]
+    relationshipChange: number
 
     // TODO(?): Add min/max pre=existing relationship level for the change to apply.
 }
 
-export class Constraint {
-    public haveToBePresent: Array<HumanIdentity>
-    public cannotBePresent: Array<HumanIdentity>
-    public allowedLocations: Array<Location>
+export interface Constraint {
+    haveToBePresent: Array<HumanIdentity>
+    cannotBePresent: Array<HumanIdentity>
+    allowedLocations: Array<Location>
 
-    public effect: Array<RelationshipEffect>
+    effect: Array<RelationshipEffect>
 }
