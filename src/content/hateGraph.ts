@@ -26,10 +26,10 @@ export class SituationEffect {
     removedHumTags: [Set<HumanTag>, Set<HumanTag>]
 
     constructor(
-        people: [HumanName, HumanName], 
-        addedRelTags?: Set<RelationshipTag>, 
-        removedRelTags?: Set<RelationshipTag>, 
-        addedHumTags?: [Set<HumanTag>, Set<HumanTag>], 
+        people: [HumanName, HumanName],
+        addedRelTags?: Set<RelationshipTag>,
+        removedRelTags?: Set<RelationshipTag>,
+        addedHumTags?: [Set<HumanTag>, Set<HumanTag>],
         removedHumTags?: [Set<HumanTag>, Set<HumanTag>]) {
             this.people = people
             this.addedRelTags = addedRelTags ?? new Set<RelationshipTag>()
@@ -48,8 +48,11 @@ export class SimpleSituation implements Situation {
     public effect: Array<SituationEffect>
 
     constructor(
-
-        haveToBePresent: Array<HumanName>, cannotBePresent: Array<HumanName>, allowedLocations: Array<Location>, effect: Array<SituationEffect>) {
+        haveToBePresent: Array<HumanName>,
+        cannotBePresent: Array<HumanName>,
+        allowedLocations: Array<Location>,
+        effect: Array<SituationEffect>,
+    ) {
 
         this.haveToBePresent = haveToBePresent
         this.cannotBePresent = cannotBePresent

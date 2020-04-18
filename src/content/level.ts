@@ -12,7 +12,13 @@ export class Level {
 
     public friendshipManager: FriendshipManager
 
-    constructor(humans: Array<Human>, locations: Array<Location>, relationships: Array<Relationship>, initialTags: Array<[HumanName, HumanTag]>, hateGraph: HateGraph) {
+    constructor(
+        humans: Array<Human>,
+        locations: Array<Location>,
+        relationships: Array<Relationship>,
+        initialTags: Array<[HumanName, HumanTag]>,
+        hateGraph: HateGraph,
+    ) {
         this.humans = humans
         this.locations = locations
         let peopleGraph = new PeopleGraph(this.humans, relationships, initialTags)
