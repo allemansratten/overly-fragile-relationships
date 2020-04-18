@@ -1,5 +1,6 @@
-import { locations, Location } from '../content/location'
-import { humans, Human } from '../content/human'
+import { Location } from '../content/location'
+import { Human } from '../content/human'
+import { Level } from '../content/level'
 
 export class ManagementScene extends Phaser.Scene {
     private goButton: Phaser.GameObjects.Text
@@ -9,12 +10,14 @@ export class ManagementScene extends Phaser.Scene {
     private allPeopleTexts: Array<Phaser.GameObjects.Text> = []
     private fader: Phaser.GameObjects.Rectangle
     private infoText: Phaser.GameObjects.Text
+    private level: Level
 
 
     constructor() {
         super({
             key: 'management',
         });
+        this.level = new Level("foo")
     }
 
     public create() {
@@ -43,8 +46,8 @@ export class ManagementScene extends Phaser.Scene {
             .setInteractive({ useHandCursor: true })
             .on('pointerdown', () => this.goOut())
 
-        for (let i in locations) {
-            let location = locations[i]
+        for (let i in this.level.locations) {
+            let location = this.level.locations[i]
             let text = this.add.text(600, 20 + 60 * Number(i), `Location ${location.name}\nMin: ${location.limit.min}, Max: ${location.limit.max}`, { fill: '#f00' })
                 .setInteractive({ useHandCursor: true })
                 .on('pointerdown', () => {
@@ -55,8 +58,8 @@ export class ManagementScene extends Phaser.Scene {
             this.allLocationTexts.push(text)
         }
 
-        for (let i in humans) {
-            let human = humans[i]
+        for (let i in this.level.humans) {
+            let human = this.level.humans[i]
             let text = this.add.text(290, 20 + 60 * Number(i), `${human.name} (${human.love})`, { fill: '#f00' })
                 .setInteractive({ useHandCursor: true })
                 .on('pointerdown', () => {
