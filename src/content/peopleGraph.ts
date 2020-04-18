@@ -13,7 +13,9 @@ export class PeopleGraph {
 
         people.forEach(h => {
             people.forEach(hh => {
-                this.setTags([h.name, hh.name], new Set<RelationshipTag>())
+                if (h.name != hh.name) {
+                    this.setTags([h.name, hh.name], new Set<RelationshipTag>())
+                }
             });
         });
 
