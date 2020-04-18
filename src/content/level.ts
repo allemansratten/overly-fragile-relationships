@@ -42,15 +42,8 @@ export class Level {
         let effects = this.friendshipManager.applyMeeting(tripSummary)
 
         // Construct msgs for effects
-<<<<<<< HEAD
         let { perPersonRelMsg, perPersonHumMsg } = this.reduceEffectsPerPerson(effects)
         let effectsMsgs = this.createEffectsMsgs(perPersonRelMsg, perPersonHumMsg)
-=======
-        let effectsMsgs = effects.map(effect => {
-            return effect.description
-            // return `${effect.people[0]} now ${Array(effect.addedRelTags).join(", ")} and no longer ${Array(effect.removedHumTags).join(", ")}  ${effect.people[1]} a bit more.`
-        })
->>>>>>> 40dc27f485bab9b0f19cc0ad61d48bd32408e5ec
 
         let effectMsg = effectsMsgs.length > 0
             ? effectsMsgs.join('\n')
@@ -96,28 +89,20 @@ export class Level {
         let perPersonRelMsg = new Map<[HumanName, HumanName], [Array<RelationshipTag>, Array<RelationshipTag>]>()
         let perPersonHumMsg = new Map<HumanName, [Array<HumanTag>, Array<HumanTag>]>()
 
+        let addToMap = function<K, V>(key: K, value: V, valueStore: Map<K, [Array<V>, Array<V>]>, valueIndex: 0|1) {
+            let perKeyStore = valueStore.get(key) ?? [new Array<V>(), new Array<V>()]
+            perKeyStore[valueIndex].push(value)
+            valueStore.set(key, perKeyStore)
+        }
+
         effects.forEach(effect => {
-            effect.addedHumTags.forEach(ah => {
-                let ppHumMsg = perPersonHumMsg.get(ah[0]) ?? [new Array(), new Array()]
-                ppHumMsg[0].push(ah[1])
-                perPersonHumMsg.set(ah[0], ppHumMsg)
-            })
-            effect.removedHumTags.forEach(rh => {
-                let ppHumMsg = perPersonHumMsg.get(rh[0]) ?? [new Array(), new Array()]
-                ppHumMsg[1].push(rh[1])
-                perPersonHumMsg.set(rh[0], ppHumMsg)
-            })
-            effect.addedRelTags.forEach(ac => {
-                let ppHumMsg = perPersonRelMsg.get(ac[0]) ?? [new Array(), new Array()]
-                ppHumMsg[0].push(ac[1])
-                perPersonRelMsg.set(ac[0], ppHumMsg)
-            })
-            effect.removedRelTags.forEach(rc => {
-                let ppHumMsg = perPersonRelMsg.get(rc[0]) ?? [new Array(), new Array()]
-                ppHumMsg[1].push(rc[1])
-                perPersonRelMsg.set(rc[0], ppHumMsg)
-            })
+            effect.addedHumTags.forEach(ah => addToMap(ah[0], ah[1], perPersonHumMsg, 0))
+            effect.removedHumTags.forEach(rh => addToMap(rh[0], rh[1], perPersonHumMsg, 1))
+            effect.addedRelTags.forEach(ah => addToMap(ah[0], ah[1], perPersonRelMsg, 0))
+            effect.removedRelTags.forEach(ah => addToMap(ah[0], ah[1], perPersonRelMsg, 1))
+
         })
+        
         return { perPersonRelMsg, perPersonHumMsg }
     }
 }
