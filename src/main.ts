@@ -1,20 +1,20 @@
 import * as Phaser from 'phaser'
-import { SampleScene } from './scenes/sample'
+import { ManagementScene } from './scenes/management'
 
 const gameConfig: Phaser.Types.Core.GameConfig = {
-  title: 'Sample',
+  title: 'Sustainable Friendship',
  
   type: Phaser.AUTO,
  
   scale: {
     width: 800,
-    height: 400,
+    height: 500,
   },
  
   parent: 'content',
-  backgroundColor: '#333',
+  backgroundColor: '#888',
 
-  scene:  SampleScene,
+  scene:  ManagementScene,
 };
  
 export const game = new Phaser.Game(gameConfig);
