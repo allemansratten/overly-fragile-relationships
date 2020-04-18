@@ -1,0 +1,11 @@
+people:
+  - alex:
+      relations:
+        - bob:
+            value: 3
+            tags:
+              - sibling
+  - bob:
+
+  - cecil
+  - dominika
