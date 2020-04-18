@@ -30,7 +30,6 @@ export class Level {
         // Construct msgs for effects
         let effectsMsgs = effects.map(effect => {
             return `${effect.people[0].name} now ${effect.relationshipChange > 0 ? "loves" : "hates"}  ${effect.people[1].name} a bit more.`
-<<<<<<< HEAD
         });
         let effectMsg = effectsMsgs.length > 0 
             ? effectsMsgs.join('\n')
@@ -43,16 +42,6 @@ export class Level {
     
         // Construct final msg
         let friendlist: string = tripSummary.goPeople.map((human: Human)=>human.name).join(', ')
-=======
-        })
-
-        let effectMsg = effectsMsgs.length > 0
-            ? effectsMsgs.join('\n')
-            : "No one cared for your trip. ╯︿╰"
-
-
-        let friendlist: string = tripSummary.goPeople.map((human: Human) => human.name).join(', ')
->>>>>>> 76e5b8d5c9739a5f8ae5486daa43af964b07d960
         let statusMessage = `You went out to ${tripSummary.goLocation?.name} with ${friendlist}.\n${effectMsg}`
 
         return statusMessage
