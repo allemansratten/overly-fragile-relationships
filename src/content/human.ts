@@ -3,9 +3,9 @@ export interface Human {
     love: number
 }
 
-let humans : Array<Human> = []
-humans.push({name: 'Kate', love: 3})
-humans.push({name: 'Lucian', love: 5})
-humans.push({name: 'Mathew', love: -5})
-
-export { humans }
+// let humans : Array<Human> = []
+// humans.push({name: 'Kate', love: 3})
+// humans.push({name: 'Lucian', love: 5})
+// humans.push({name: 'Mathew', love: -5})
+//
+// export { humans }

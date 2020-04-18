@@ -1,13 +1,14 @@
-import { locations } from '../content/location'
-import { humans } from '../content/human'
+import {Level} from "../content/level"
 
 export class ManagementScene extends Phaser.Scene {
     private goButton: Phaser.GameObjects.Text
+    private level : Level
 
     constructor() {
         super({
             key: 'management',
         });
+        this.level = new Level("foo")
     }
 
     public create() {
@@ -26,15 +27,15 @@ export class ManagementScene extends Phaser.Scene {
             this.add.text(650, 450, "Let's go", { fill: '#ff0' })
             .setInteractive({ useHandCursor: true })
 
-        for(let i in locations) {
-            let location = locations[i]
+        for(let i in this.level.locations) {
+            let location = this.level.locations[i]
             this.add.text(600, 20 + 60*Number(i), `Location ${location.name}\nMin: ${location.limit.min}, Max: ${location.limit.max}`, { fill: '#ff0' })
             .setInteractive({ useHandCursor: true })
         }
 
 
-        for(let i in humans) {
-            let human = humans[i]
+        for(let i in this.level.humans) {
+            let human = this.level.humans[i]
             this.add.text(290, 20 + 60*Number(i), `${human.name} (${human.love})`, { fill: '#ff0' })
             .setInteractive({ useHandCursor: true })
         }
