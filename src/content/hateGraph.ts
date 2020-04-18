@@ -2,6 +2,7 @@ import { HumanName } from "./human";
 import { Location } from "./location"
 import { TripSummary } from "../management/tripsummary";
 import { RelationshipTag, HumanTag } from "./entityTags";
+import { PeopleGraph } from "./peopleGraph";
 
 export class HateGraph {
     public constraints: Array<Situation>
@@ -12,7 +13,7 @@ export class HateGraph {
 }
 
 export interface Situation {
-    GetApplicableEffects(trip: TripSummary): Array<SituationEffect>
+    GetApplicableEffects(trip: TripSummary, currentState: PeopleGraph): Array<SituationEffect>
 }
 
 
@@ -57,7 +58,7 @@ export class SimpleSituation implements Situation {
         this.effect = effect
     }
 
-    public GetApplicableEffects(trip: TripSummary): Array<SituationEffect> {
+    public GetApplicableEffects(trip: TripSummary, _: PeopleGraph): Array<SituationEffect> {
         return this.isApplicable(trip) ? this.effect : new Array()
     }
 

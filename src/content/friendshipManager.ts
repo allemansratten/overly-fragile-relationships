@@ -23,7 +23,7 @@ export class FriendshipManager {
     }
 
     private tryApplyConstraint(con: Situation, trip: TripSummary): Array<SituationEffect> {
-        let applicableEffects = con.GetApplicableEffects(trip);
+        let applicableEffects = con.GetApplicableEffects(trip, this.peopleGraph);
 
         applicableEffects.forEach(eff => {
             eff.addedRelTags.forEach(at => this.peopleGraph.addRelTag(eff.people, at))
