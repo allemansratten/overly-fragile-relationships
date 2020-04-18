@@ -1,5 +1,6 @@
 import {Human} from "./human"
 import {Location} from "./location"
+import { TripSummary } from "../management/tripsummary"
 
 export class Level {
     public humans : Array<Human>
@@ -16,5 +17,11 @@ export class Level {
         this.locations.push({name: 'Park', limit: { min: 2, max: 5}})
         this.locations.push({name: 'Woods', limit: { min: 2, max: 4}})
         this.locations.push({name: 'Forest', limit: { min: 2, max: 6}})
+    }
+
+    public goOut(tripSummary: TripSummary): string {
+        let friendlist: string = tripSummary.goPeople.map((human: Human)=>human.name).join(', ')
+        let statusMessage = `You went out to ${tripSummary.goLocation.name} with ${friendlist}`
+        return statusMessage
     }
 }
