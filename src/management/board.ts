@@ -1,9 +1,10 @@
-import { Level } from '../content/level'
+import {levels } from '../content/levels'
 import { TripSummary } from './tripsummary'
 import { Phone } from './phone'
 import { HumanStage } from './human_stage'
 import { LocationStage } from './location_stage'
 import { Location } from '../content/location'
+import {Level} from "../content/level"
 
 export class BoardScene extends Phaser.Scene {
     private goButton: Phaser.GameObjects.Text
@@ -20,7 +21,7 @@ export class BoardScene extends Phaser.Scene {
         super({
             key: 'management',
         });
-        this.level = new Level("foo")
+        this.level = levels[0]
         this.tripSummary = new TripSummary()
     }
 
