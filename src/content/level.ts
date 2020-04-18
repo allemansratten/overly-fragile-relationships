@@ -9,18 +9,14 @@ export class Level {
     public humans: Array<Human>
     public locations: Array<Location>
 
-    public peopleGraph: PeopleGraph
-    public hateGraph: HateGraph
     public friendshipManager: FriendshipManager
 
     constructor(humans: Array<Human>, locations: Array<Location>, relationships: Array<Relationship>, hateGraph: HateGraph) {
         this.humans = humans
         this.locations = locations
-        this.peopleGraph = new PeopleGraph(this.humans, relationships)
+        let peopleGraph = new PeopleGraph(this.humans, relationships)
 
-        this.hateGraph = hateGraph
-        this.hateGraph.constraints.push()
-        this.friendshipManager = new FriendshipManager(this.hateGraph, this.peopleGraph)
+        this.friendshipManager = new FriendshipManager(hateGraph, peopleGraph)
     }
 
     public goOut(tripSummary: TripSummary): string {
@@ -39,6 +35,10 @@ export class Level {
         this.humans.forEach(h => {
             h.relationships = this.friendshipManager.peopleGraph.getRelationships(h)
         });
+
+        console.log("Effects:", effects)
+        console.log("Humans:", this.humans)
+        console.log("Relationships", this.friendshipManager.peopleGraph)
     
         // Construct final msg
         let friendList: string = tripSummary.goPeople.map((human: Human)=>human.name).join(', ')
