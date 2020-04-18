@@ -1,26 +1,26 @@
-import { Level } from '../content/level'
+import {levels } from '../content/levels'
 import { TripSummary } from './tripsummary'
-import { Phone } from './phone'
+import { PhoneStage } from './phone_stage'
 import { HumanStage } from './human_stage'
 import { LocationStage } from './location_stage'
 import { Location } from '../content/location'
+import {Level} from "../content/level"
 
 export class BoardScene extends Phaser.Scene {
-    private goButton: Phaser.GameObjects.Text
-    private fader: Phaser.GameObjects.Rectangle
-    private infoText: Phaser.GameObjects.Text
+    private fader?: Phaser.GameObjects.Rectangle
+    private infoText?: Phaser.GameObjects.Text
     private level: Level
     
     public tripSummary: TripSummary
-    public phone: Phone
-    private humanStage: HumanStage
-    private locationStage: LocationStage
+    public phone?: PhoneStage
+    private humanStage?: HumanStage
+    private locationStage?: LocationStage
 
     constructor() {
         super({
             key: 'management',
         });
-        this.level = new Level("foo")
+        this.level = levels[0]
         this.tripSummary = new TripSummary()
     }
 
@@ -32,7 +32,6 @@ export class BoardScene extends Phaser.Scene {
     }
 
     public create() {
-
         this.fader = this.add.rectangle(0, 0, 800, 500, 0x0)
             .setOrigin(0, 0)
             .setDepth(1001)
@@ -45,37 +44,36 @@ export class BoardScene extends Phaser.Scene {
 
         this.locationStage = new LocationStage(this, this.level)
         this.humanStage = new HumanStage(this, this.level)
-
-        this.phone = new Phone(this)
+        this.phone = new PhoneStage(this)
     }
 
     public goOut(location: Location) {
         if (!this.tripSummary.prepare(location))
             return
         let message = this.level.goOut(this.tripSummary)
-        this.fader.input.enabled = false
-        this.locationStage.enable(false)
-        this.infoText.setText(message)
+        this.fader!.input.enabled = false
+        this.locationStage!.enable(false)
+        this.infoText!.setText(message)
         this.add.tween({
             targets: [this.infoText, this.fader],
             alpha: { from: 0, to: 1 },
             duration: 1000,
             onComplete: () => {
-                this.fader.input.enabled = true
-                this.locationStage.enable(true)
+                this.fader!.input.enabled = true
+                this.locationStage!.enable(true)
             }
         })
         this.refresh()
     }
 
     private goBack() {
-        this.humanStage.bleachPeople()
-        this.fader.input.enabled = false
+        this.humanStage!.bleachPeople()
+        this.fader!.input.enabled = false
         this.add.tween({
             targets: [this.infoText, this.fader],
             alpha: { from: 1, to: 0 },
             duration: 1000,
-            onComplete: () => this.fader.input.enabled = true
+            onComplete: () => this.fader!.input.enabled = true
         })
     }
 

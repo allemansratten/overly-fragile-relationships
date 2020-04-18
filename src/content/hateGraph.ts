@@ -5,8 +5,8 @@ import { Location } from "./location"
 export class HateGraph {
     public constraints: Array<Constraint>
 
-    constructor() {
-        this.constraints = []
+    constructor(constraints: Array<Constraint>) {
+        this.constraints = constraints
     }
 }
 

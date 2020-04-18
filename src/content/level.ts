@@ -1,52 +1,25 @@
-import {Human} from "./human"
-import {Location} from "./location"
+import { Human } from "./human"
+import { Location } from "./location"
 import { TripSummary } from "../management/tripsummary"
-import { PeopleGraph } from "./peopleGraph"
-import { HateGraph, Constraint } from "./hateGraph"
+import { PeopleGraph, Relationship } from "./peopleGraph"
+import { HateGraph } from "./hateGraph"
 import { FriendshipManager } from "./friendshipManager"
-import level1 from '../../data/level_1.yaml'
 
 export class Level {
-    public humans : Array<Human>
-    public locations : Array<Location>
+    public humans: Array<Human>
+    public locations: Array<Location>
 
-    public peopleGraph : PeopleGraph
-    public hateGraph : HateGraph
+    public peopleGraph: PeopleGraph
+    public hateGraph: HateGraph
     public friendshipManager: FriendshipManager
 
-    constructor(path: string) {
-        // TODO: nacitani ze souboru
-        this.humans = []
-        this.humans.push({name: 'Kate', relationships: []})
-        this.humans.push({name: 'Lucian', relationships: []})
-        this.humans.push({name: 'Mathew', relationships: []})
+    constructor(humans: Array<Human>, locations: Array<Location>, relationships: Array<Relationship>, hateGraph: HateGraph) {
+        this.humans = humans
+        this.locations = locations
+        this.peopleGraph = new PeopleGraph(this.humans, relationships)
 
-        this.locations = []
-        this.locations.push({name: 'Bowling', limit: { min: 2, max: 5}})
-        this.locations.push({name: 'Drink', limit: { min: 2, max: 4}})
-        this.locations.push({name: 'Forest', limit: { min: 2, max: 6}})
-        this.locations.push({name: 'Movie', limit: { min: 2, max: 6}})
-
-        this.peopleGraph = new PeopleGraph(
-            this.humans,
-            [
-                {people: [{name: 'Kate'}, {name: 'Mathew'}], level: -1},
-            ])
-
-        this.hateGraph = new HateGraph()
-        this.hateGraph.constraints.push(
-            { 
-                haveToBePresent: [{name: 'Kate'}, {name: 'Lucian'}], 
-                cannotBePresent: [{name: 'Mathew'}], 
-                allowedLocations: this.locations, 
-                effect: [
-                    {people: [{name: 'Kate'}, {name: 'Lucian'}], relationshipChange: +1},
-                    {people: [{name: 'Lucian'}, {name: 'Kate'}], relationshipChange: +1},
-
-                    {people: [{name: 'Mathew'}, {name: 'Kate'}], relationshipChange: -1}
-                ]
-            }
-        )
+        this.hateGraph = hateGraph
+        this.hateGraph.constraints.push()
         this.friendshipManager = new FriendshipManager(this.hateGraph, this.peopleGraph)
     }
 
@@ -57,6 +30,7 @@ export class Level {
         // Construct msgs for effects
         let effectsMsgs = effects.map(effect => {
             return `${effect.people[0].name} now ${effect.relationshipChange > 0 ? "loves" : "hates"}  ${effect.people[1].name} a bit more.`
+<<<<<<< HEAD
         });
         let effectMsg = effectsMsgs.length > 0 
             ? effectsMsgs.join('\n')
@@ -69,7 +43,18 @@ export class Level {
     
         // Construct final msg
         let friendlist: string = tripSummary.goPeople.map((human: Human)=>human.name).join(', ')
+=======
+        })
+
+        let effectMsg = effectsMsgs.length > 0
+            ? effectsMsgs.join('\n')
+            : "No one cared for your trip. ╯︿╰"
+
+
+        let friendlist: string = tripSummary.goPeople.map((human: Human) => human.name).join(', ')
+>>>>>>> 76e5b8d5c9739a5f8ae5486daa43af964b07d960
         let statusMessage = `You went out to ${tripSummary.goLocation?.name} with ${friendlist}.\n${effectMsg}`
+
         return statusMessage
     }
 }
