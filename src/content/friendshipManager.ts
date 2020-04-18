@@ -14,11 +14,11 @@ export class FriendshipManager {
     }
 
     public ApplyMeeting(trip: TripSummary): Array<RelationshipEffect> {
-        let appliedEffects = []
+        let appliedEffects = new Array<RelationshipEffect>()
 
         this.hateGraph.constraints.forEach(con => {
-            const appliedEffectsForCurrConstr = this.tryResolveConstrain(con, trip.goPeople, trip.goLocation);
-            appliedEffects = appliedEffects.concat(appliedEffectsForCurrConstr);
+            const appEffForCurrCon = this.tryResolveConstrain(con, trip.goPeople, trip.goLocation as Location);  // We know it's gonna be assigned 
+            appliedEffects = appliedEffects.concat(appEffForCurrCon);
 
         });
         return appliedEffects
@@ -26,7 +26,7 @@ export class FriendshipManager {
 
     private tryResolveConstrain(con: Constraint, peoplePresent: Array<Human>, location: Location): Array<RelationshipEffect> {
 
-        let appliedEffects = []
+        let appliedEffects = new Array<RelationshipEffect>()
 
         if (false){
             // TODO: Figure out how to use debugger with this build system

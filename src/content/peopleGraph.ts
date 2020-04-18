@@ -3,11 +3,11 @@ import { HumanIdentity } from "./human"
 type NodeKey = string
 
 export class PeopleGraph {
-    private graph: Map<[HumanIdentity, HumanIdentity], number>
+    private graph: Record<NodeKey, number>
     private oriented: Boolean
 
     constructor(people: HumanIdentity[] = [], initialRelationships: Array<Relationship> = []){
-        this.graph = new Map()
+        this.graph = {}
         this.oriented = false
 
         people.forEach(h => {
@@ -46,6 +46,11 @@ export class PeopleGraph {
 }
 
 export class Relationship {
+    constructor(people: [HumanIdentity, HumanIdentity], level: number){
+        this.people = people
+        this.level = level
+    }
+
     people: [HumanIdentity, HumanIdentity]
     level: number
 
