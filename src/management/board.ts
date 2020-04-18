@@ -1,6 +1,6 @@
 import { Level } from '../content/level'
 import { TripSummary } from './tripsummary'
-import { Phone } from './phone'
+import { PhoneStage } from './phone_stage'
 import { HumanStage } from './human_stage'
 import { LocationStage } from './location_stage'
 import { Location } from '../content/location'
@@ -12,7 +12,7 @@ export class BoardScene extends Phaser.Scene {
     private level: Level
     
     public tripSummary: TripSummary
-    public phone: Phone
+    public phone: PhoneStage
     private humanStage: HumanStage
     private locationStage: LocationStage
 
@@ -32,7 +32,6 @@ export class BoardScene extends Phaser.Scene {
     }
 
     public create() {
-
         this.fader = this.add.rectangle(0, 0, 800, 500, 0x0)
             .setOrigin(0, 0)
             .setDepth(1001)
@@ -45,8 +44,7 @@ export class BoardScene extends Phaser.Scene {
 
         this.locationStage = new LocationStage(this, this.level)
         this.humanStage = new HumanStage(this, this.level)
-
-        this.phone = new Phone(this)
+        this.phone = new PhoneStage(this)
     }
 
     public goOut(location: Location) {
