@@ -148,6 +148,11 @@ export class HumanStage {
     }
 
     public redrawLines(level: Level) {
+        for(let g of this.allPeopleLines) {
+            g.destroy(true)
+        }
+        this.allPeopleLines = []
+
         let peopleGraph = level.friendshipManager.peopleGraph
         for (let hi1 in level.humans) {
             let human1 = level.humans[hi1]
