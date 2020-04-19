@@ -172,9 +172,9 @@ export class HumanStage {
                     
                     let avgX = (this.positionsInner[hi1].x + this.positionsInner[hi2].x) / 2
                     let avgY = (this.positionsInner[hi1].y + this.positionsInner[hi2].y) / 2 + 60
-                    let symbol = this.scene.add.image(avgX, avgY, 'rel_tags')
+                    let symbol = this.scene.add.image(avgX+Number(i)*27, avgY, 'rel_tags')
                        .setFrame(tag)
-                    symbol.setPosition(avgX, avgY)
+                       .setDisplaySize(25, 25)
                     group.add(symbol)
                 }
             }
