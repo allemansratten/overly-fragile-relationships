@@ -195,7 +195,7 @@ export class Complex implements Situation {
 
     constructor(
         fields?: {
-            haveToBePresent?: Array<HumanName>, cannotBePresent?: Array<HumanName>,
+            humReq?: Array<HumanName>, humBan?: Array<HumanName>,
             allowedLocations?: Array<LocationName>,
             humTagsReq?: Array<[HumanName, HumanTag]>, humTagsBan?: Array<[HumanName, HumanTag]>,
             relTagsReq?: Array<[CoupleKey, RelationshipTag]>, relTagsBan?: Array<[CoupleKey, RelationshipTag]>,

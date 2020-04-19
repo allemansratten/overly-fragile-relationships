@@ -18,7 +18,7 @@ export const relationshipTagMap: Map<RelationshipTag, string> = new Map([
 export enum HumanTag {
     introvert, extrovert, angry_drunk, sad_drunk,
     good_bowler, bad_bowler, promiscuous, jealous, disagreeable,
-    agreeable, supportive, attention
+    agreeable, supportive, attention, flavie_angry
 
 }
 

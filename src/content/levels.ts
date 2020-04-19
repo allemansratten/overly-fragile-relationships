@@ -12,6 +12,7 @@ import {
 } from "../model/situationTypes"
 import { HumanName } from "./humans"
 import { LocationName } from "./locations"
+import { SituationEffect } from "../model/situation"
 
 export let levels: Array<Level> = []
 
@@ -89,6 +90,26 @@ levels.push(
             new NobodyLikesAngryDrunk(),
             new MutualCrush(),
             new EternalCouple(HumanName.Dan, HumanName.Flavie),
+            new Complex({    //Flavie FOMO event 2
+                humReq: [HumanName.Alex, HumanName.Beatrice, HumanName.Cecil, HumanName.Dan, HumanName.Eric],
+                allowedLocations: [],
+                humTagsReq: [[HumanName.Flavie, HumanTag.flavie_angry]],
+                effect: [new SituationEffect().changeFondness([[[HumanName.Flavie, HumanName.You], -10]])]
+            }),
+            new Complex({    //Flavie FOMO event 1
+                humReq: [HumanName.Alex, HumanName.Beatrice, HumanName.Cecil, HumanName.Dan, HumanName.Eric],
+                allowedLocations: [],
+                humTagsBan: [[HumanName.Flavie, HumanTag.flavie_angry]],
+                effect: [new SituationEffect().changeFondness([
+                    [[HumanName.Flavie, HumanName.Alex], -1],
+                    [[HumanName.Flavie, HumanName.Beatrice], -1],
+                    [[HumanName.Flavie, HumanName.Cecil], -1],
+                    [[HumanName.Flavie, HumanName.Dan], -1],
+                    [[HumanName.Flavie, HumanName.Eric], -1],
+                    [[HumanName.Flavie, HumanName.You], -3]
+                ]).addHumTags([[HumanName.Flavie, HumanTag.flavie_angry]])]
+            }),
+
         ],
     ),
-)
+)        
