@@ -13,8 +13,8 @@ export class PhoneStage {
         this.portrait = scene.add.image(20, 20, 'portrait_big')
             .setOrigin(0, 0)
 
-        this.text = scene.add.text(20, 250, '', { fill: 'black', fontFamily: 'Roboto' })
-            .setWordWrapWidth(230)
+        this.text = scene.add.text(25, 245, '', { fill: 'black', fontFamily: 'Roboto' })
+            .setWordWrapWidth(190)
     }
 
     public display(human: Human, index: number) {
