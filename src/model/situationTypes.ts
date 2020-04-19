@@ -149,6 +149,7 @@ export class EternalCouple implements Situation {
     together: boolean = false
     nBreakups = 0
     nMakeups = 0
+    danBustedMessageFired = false
 
     constructor(a: HumanName, b: HumanName) {
         this.a = a
@@ -200,10 +201,16 @@ export class EternalCouple implements Situation {
                 `${description}, to nobody's surprise.`,
             ]
 
-            wrapperIndex = Math.min(wrapperIndex, wrappedDescriptions.length - 1)
-
-            effect.setDescription(wrappedDescriptions[wrapperIndex])
-
+            if (!this.danBustedMessageFired && currentState.getHumTags(HumanName.Dan).has(HumanTag.dan_busted)) {
+                this.danBustedMessageFired = true
+                effect.setDescription(
+                    "What? Even after Dan's shenanigans," +
+                    " it seems that Flavie forgave him and they got back together...!?"
+                )
+            } else {
+                wrapperIndex = Math.min(wrapperIndex, wrappedDescriptions.length - 1)
+                effect.setDescription(wrappedDescriptions[wrapperIndex])
+            }
 
             return [effect]
         } else {

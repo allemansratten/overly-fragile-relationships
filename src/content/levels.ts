@@ -60,6 +60,7 @@ const danTwoGirlfriendsBusted = new Complex({
         SituationUtils.breakUp([HumanName.Dan, HumanName.Beatrice]),
         SituationUtils.breakUp([HumanName.Dan, HumanName.Flavie]),
         new SituationEffect()
+            .addHumTags([[HumanName.Dan, HumanTag.dan_busted]])
             .changeFondness([
                 [[HumanName.Dan, HumanName.You], -5],
                 [[HumanName.Beatrice, HumanName.Dan], -7],
