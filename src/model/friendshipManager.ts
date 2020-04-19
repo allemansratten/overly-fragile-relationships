@@ -49,7 +49,7 @@ export class FriendshipManager {
             )
 
             eff.newFutureSituations.forEach(newSit => {
-                this.situationAddCalendar.set(newSit[0], newSit[1])
+                this.situationAddCalendar.set(this.tripCount + newSit[0], newSit[1])
             });
         })
 
