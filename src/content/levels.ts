@@ -1,20 +1,45 @@
 import { HateGraph } from "./hateGraph"
 import { Level } from "./level"
 import { Relationship } from "./peopleGraph"
-import { Human } from "./human"
+import { Human, HumanName } from "./human"
 import { HumanTag, RelationshipTag } from "./entityTags"
-import { Complex, NobodyLikesAngryDrunk, MutualCrush, SituationUtils } from "./situationTypes"
+import { Complex, MutualCrush, NobodyLikesAngryDrunk, SituationUtils } from "./situationTypes"
 
 export let levels: Array<Level> = []
 
 let locations = [
-    { name: 'Bowling', limit: { min: 2, max: 5 } },
-    { name: 'Drink', limit: { min: 2, max: 4 } },
-    { name: 'Forest', limit: { min: 2, max: 6 } },
-    { name: 'Movie', limit: { min: 2, max: 6 } },
+    {name: 'Bowling', limit: {min: 2, max: 5}},
+    {name: 'Drink', limit: {min: 2, max: 4}},
+    {name: 'Forest', limit: {min: 2, max: 6}},
+    {name: 'Movie', limit: {min: 2, max: 6}},
 ]
 
 // You is always on the zeroth position
+
+function mutualRelationship(people: [HumanName, HumanName], tags: RelationshipTag[]): [Relationship, Relationship] {
+    const tagSet = new Set(tags)
+    const [a, b] = people
+
+    return [
+        new Relationship([a, b], tagSet),
+        new Relationship([b, a], tagSet),
+    ]
+}
+
+function flattenRelationshipList(relationships: Array<Relationship | [Relationship, Relationship]>) {
+    let res = []
+
+    for (const r of relationships) {
+        if (r instanceof Relationship) {
+            res.push(r)
+        } else {
+            const [ra, rb] = r
+            res.push(ra, rb)
+        }
+    }
+
+    return res
+}
 
 levels.push(
     new Level(
@@ -24,27 +49,22 @@ levels.push(
             new Human('Beatrice'),
             new Human('Cecil'),
             new Human('Dan'),
+            new Human('Eric'),
         ],
         locations,
-        [
-            new Relationship(['Alex', 'Beatrice'], new Set([RelationshipTag.crush])),
-            new Relationship(['Beatrice', 'Alex'], new Set([RelationshipTag.crush])),
-            new Relationship(['Alex', 'Cecil'], new Set([RelationshipTag.crush])),
-            new Relationship(['Cecil', 'Alex'], new Set([RelationshipTag.crush])),
+        flattenRelationshipList([
+            mutualRelationship(['Alex', 'Beatrice'], [RelationshipTag.crush]),
+            mutualRelationship(['Alex', 'Cecil'], [RelationshipTag.crush]),
             new Relationship(['Dan', 'Beatrice'], new Set([RelationshipTag.ex])),
             new Relationship(['Dan', 'You'], new Set([RelationshipTag.ex])),
-        ],
+            mutualRelationship(['Eric', 'Alex'], [RelationshipTag.crush]),
+            mutualRelationship(['Eric', 'Beatrice'], [RelationshipTag.crush]),
+        ]),
         [
             ['Beatrice', HumanTag.promiscuous],
             ['Cecil', HumanTag.introvert],
             ['Dan', HumanTag.extrovert],
             ['Dan', HumanTag.angry_drunk],
-            // ['Matthew', HumanTag.promiscuous],
-            // ['Matthew', HumanTag.disagreeable],
-            // ['Matthew', HumanTag.good_bowler],
-            // ['Matthew', HumanTag.extrovert],
-            // ['Matthew', HumanTag.jealous],
-            // ['Matthew', HumanTag.sad_drunk],
         ]
         ,
         new HateGraph([
@@ -56,7 +76,7 @@ levels.push(
                 [],
                 [],
                 [[['Alex', 'Cecil'], RelationshipTag.lover]],
-                [SituationUtils.startToDate(["Alex", "Beatrice"])]
+                [SituationUtils.startToDate(["Alex", "Beatrice"])],
             ),
             new Complex(
                 ['Alex', 'Cecil'],
@@ -66,7 +86,7 @@ levels.push(
                 [],
                 [],
                 [[['Alex', 'Beatrice'], RelationshipTag.lover]],
-                [SituationUtils.startToDate(["Alex", "Cecil"])]
+                [SituationUtils.startToDate(["Alex", "Cecil"])],
             ),
             new NobodyLikesAngryDrunk(),
             new MutualCrush(),
