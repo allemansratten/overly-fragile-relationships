@@ -6,8 +6,10 @@ import { HumanTag, RelationshipTag } from "../content/entityTags"
 import { HumanName } from "../content/humans"
 import { LocationName } from "../content/locations"
 
+
 export class SituationUtils {
-    public static startToDate(couple: CoupleKey) {
+
+    public static startToDate(couple: CoupleKey): SituationEffect {
         const [a, b] = couple
 
         return new SituationEffect(
@@ -19,6 +21,22 @@ export class SituationUtils {
             [
                 [[a, b], RelationshipTag.crush],
                 [[b, a], RelationshipTag.crush],
+            ],
+        )
+    }
+
+    public static breakUp(couple: CoupleKey): SituationEffect {
+        const [a, b] = couple
+
+        return new SituationEffect(
+            `Did you hear? {a} and ${b} broke up!`,
+            [
+                [[a, b], RelationshipTag.ex],
+                [[b, a], RelationshipTag.ex],
+            ],
+            [
+                [[a, b], RelationshipTag.lover],
+                [[b, a], RelationshipTag.lover],
             ],
         )
     }
@@ -113,6 +131,40 @@ export class MutualCrush implements Situation {
     }
 }
 
+export class EternalCouple implements Situation {
+    a: HumanName
+    b: HumanName
+
+    constructor(a: HumanName, b: HumanName) {
+        this.a = a
+        this.b = b
+    }
+
+    public GetApplicableEffects(trip: TripSummary, currentState: PeopleGraph): Array<SituationEffect> {
+        let relationships = currentState.getMutualRelationshipsBetween(this.a, this.b)
+
+        if (relationships.includes(RelationshipTag.eternal_couple_apart_3)) {
+            return [
+                SituationUtils.startToDate([this.a, this.b])
+                    .setDescription(`${this.a} and ${this.b} are back together again.`),
+                new SituationEffect()
+                    .removeRelTags([[[this.a, this.b], RelationshipTag.eternal_couple_apart_3]])
+                    .addRelTags([[[this.a, this.b], RelationshipTag.eternal_couple_together_1]])
+            ]
+        } else if (relationships.includes(RelationshipTag.eternal_couple_together_3)) {
+            return [
+                SituationUtils.breakUp([this.a, this.b])
+                    .setDescription(`${this.a} and ${this.b} broke up again.`),
+                new SituationEffect()
+                    .removeRelTags([[[this.a, this.b], RelationshipTag.eternal_couple_together_3]])
+                    .addRelTags([[[this.a, this.b], RelationshipTag.eternal_couple_apart_1]])
+            ]
+        } else {
+            return []
+        }
+    }
+}
+
 export class Complex implements Situation {
     private humReq: Array<HumanName>
     private humBan: Array<HumanName>
@@ -175,12 +227,8 @@ export class TimerSituation implements Situation {
         [
             RelationshipTag.eternal_couple_together_1,
             RelationshipTag.eternal_couple_together_2,
-            RelationshipTag.eternal_couple_together_3
+            RelationshipTag.eternal_couple_together_3,
         ],
-        [
-            RelationshipTag.lover,
-            RelationshipTag.ex,
-        ]
     ]
 
     static getRelationshipSteps(): Map<RelationshipTag, RelationshipTag> {
@@ -188,7 +236,7 @@ export class TimerSituation implements Situation {
 
         for (const chain of this.relationshipChains) {
             for (let i = 0; i < chain.length - 1; i++) {
-                res.set(chain[i], chain[i+1])
+                res.set(chain[i], chain[i + 1])
             }
         }
 

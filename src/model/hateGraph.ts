@@ -26,17 +26,48 @@ export class SituationEffect {
     removedHumTags: Array<[HumanName, HumanTag]>
 
     constructor(
-        description: string,
+        description?: string,
         addedRelTags?: Array<[CoupleKey, RelationshipTag]>,
         removedRelTags?: Array<[CoupleKey, RelationshipTag]>,
         addedHumTags?: Array<[HumanName, HumanTag]>,
         removedHumTags?: Array<[HumanName, HumanTag]>,
     ) {
-        this.description = description
+        this.description = description ?? ""
         this.addedRelTags = addedRelTags ?? new Array()
         this.removedRelTags = removedRelTags ?? new Array()
         this.addedHumTags = addedHumTags ?? new Array()
         this.removedHumTags = removedHumTags ?? new Array()
     }
-}
 
+    addRelTags(tags: Array<[CoupleKey, RelationshipTag]>): SituationEffect {
+        this.addedRelTags.push(...tags)
+        return this
+    }
+
+    removeRelTags(tags: Array<[CoupleKey, RelationshipTag]>): SituationEffect {
+        this.removedRelTags.push(...tags)
+        return this
+    }
+
+    addHumTags(tags: Array<[HumanName, HumanTag]>): SituationEffect {
+        this.addedHumTags.push(...tags)
+        return this
+    }
+
+    removeHumTags(tags: Array<[HumanName, HumanTag]>): SituationEffect {
+        this.removedHumTags.push(...tags)
+        return this
+    }
+
+    setDescription(description: string) {
+        this.description = description
+        return this
+    }
+
+    apply(effect: SituationEffect) {
+        this.addedHumTags = this.addedHumTags.concat(effect.addedHumTags)
+        this.removedHumTags = this.removedHumTags.concat(effect.removedHumTags)
+        this.addedRelTags = this.addedRelTags.concat(effect.addedRelTags)
+        this.removedRelTags = this.removedRelTags.concat(effect.removedRelTags)
+    }
+}

@@ -42,4 +42,3 @@ export const humanTagMap: Map<HumanTag, string> = new Map([
     [HumanTag.supportive, 'supportive friend]'],
     [HumanTag.attention, 'attention seeker]'],
 ])
-
