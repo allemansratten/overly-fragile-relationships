@@ -19,7 +19,7 @@ export class HumanStage {
         const centerX = 450
         const centerY = 200
         const radius = 150
-        const radiusInner = 140
+        const radiusInner = 100
 
         this.positions = level.humans.map((_, i: number) => {
             const angle = 2 * Math.PI * (i + 0.5) / level.humans.length
@@ -204,8 +204,8 @@ export class HumanStage {
                     let diffYN = diffY / Math.sqrt(diffX * diffX + diffY * diffY)
 
                     let line = this.scene.add.line(0, 0,
-                        this.positionsInner[hi1].x - 40 * diffXN, this.positionsInner[hi1].y + 60 - 40 * diffYN,
-                        this.positionsInner[hi2].x + 40 * diffXN, this.positionsInner[hi2].y + 60 + 40 * diffYN,
+                        this.positionsInner[hi1].x - 0 * diffXN, this.positionsInner[hi1].y + 60 - 0 * diffYN,
+                        this.positionsInner[hi2].x + 0 * diffXN, this.positionsInner[hi2].y + 60 + 0 * diffYN,
                         this.linearScaleBlack(fondness), 0.3)
                     line.setOrigin(0, 0)
                         .setLineWidth(2)
