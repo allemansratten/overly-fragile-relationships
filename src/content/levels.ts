@@ -13,7 +13,6 @@ let locations: LocationName[] = [
     LocationName.Bowling,
     LocationName.Drink,
     LocationName.Park,
-    LocationName.Movie,
 ]
 
 // You is always on the zeroth position
