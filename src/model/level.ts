@@ -47,24 +47,31 @@ export class Level {
         // Update friendships based on trip
         let effects = this.friendshipManager.applyMeeting(tripSummary)
 
+        // Update relationships on people
+        this.updateHumansFromPeopleGraphForDisplay()
+
+        // Debug log
+        console.log("Effects:", effects)
+        console.log("Humans:", this.humans)
+        console.log("Relationships", this.friendshipManager.peopleGraph)
+
         // Construct msgs for effects
-        let { perPersonRelMsg, perPersonHumMsg } = this.reduceEffectsPerPerson(effects)
-        this.reduceTagsShadowing(perPersonRelMsg)
+        let { perPersonRelChanges, perPersonHumChanges } = this.reduceEffectsPerPerson(effects)
+        this.reduceTagsShadowing(perPersonRelChanges)
 
         let effectsMsgs = Array.from(new Set(effects.map(effect => this.fixAgreement(effect.description))))
         effectsMsgs.push("") // separator dummy
-        effectsMsgs = effectsMsgs.concat(this.createEffectsMsgs(perPersonRelMsg, perPersonHumMsg))
+        effectsMsgs = effectsMsgs.concat(this.createEffectsMsgs(perPersonRelChanges, perPersonHumChanges))
+
+        console.log("Msgs:", effectsMsgs)
+        effectsMsgs = effectsMsgs.filter(msg => {
+            let gonePeople = this.friendshipManager.peopleGraph.getPeopleWithTags(HumanTag.gone)
+            return gonePeople.every(gp => !msg.includes(gp))
+        })
 
         let effectMsg = effectsMsgs.length > 0
             ? effectsMsgs.join('\n')
             : "Nothing significant occured."
-
-        // Update relationships on people
-        this.updateHumansFromPeopleGraphForDisplay()
-
-        console.log("Effects:", effects)
-        console.log("Humans:", this.humans)
-        console.log("Relationships", this.friendshipManager.peopleGraph)
 
         // Construct final msg
         let friendList: string = tripSummary.goPeople.filter((x: Human) => x.name != 'You').map((human: Human) => human.name).join(', ')
@@ -184,8 +191,8 @@ export class Level {
 
     private reduceEffectsPerPerson(effects: SituationEffect[]) {
         // first array in keys is always added tags, second removed
-        let perPersonRelMsg = new Map<EdgeKey, [Array<RelationshipTag>, Array<RelationshipTag>]>()
-        let perPersonHumMsg = new Map<HumanName, [Array<HumanTag>, Array<HumanTag>]>()
+        let perPersonRelChanges = new Map<EdgeKey, [Array<RelationshipTag>, Array<RelationshipTag>]>()
+        let perPersonHumChanges = new Map<HumanName, [Array<HumanTag>, Array<HumanTag>]>()
 
         let addToMap = function <K, V>(key: K, value: V, valueStore: Map<K, [Array<V>, Array<V>]>, addedRemovedStoreSwitch: 0 | 1) {
             let perKeyStore = valueStore.get(key) ?? [new Array<V>(), new Array<V>()]
@@ -194,14 +201,14 @@ export class Level {
         }
 
         effects.forEach(effect => {
-            effect.addedHumTags.forEach(ah => addToMap(ah[0], ah[1], perPersonHumMsg, 0))
-            effect.removedHumTags.forEach(rh => addToMap(rh[0], rh[1], perPersonHumMsg, 1))
-            effect.addedRelTags.forEach(ah => addToMap(CoupleUtils.toEdgeKey(ah[0]), ah[1], perPersonRelMsg, 0))
-            effect.removedRelTags.forEach(ah => addToMap(CoupleUtils.toEdgeKey(ah[0]), ah[1], perPersonRelMsg, 1))
+            effect.addedHumTags.forEach(ah => addToMap(ah[0], ah[1], perPersonHumChanges, 0))
+            effect.removedHumTags.forEach(rh => addToMap(rh[0], rh[1], perPersonHumChanges, 1))
+            effect.addedRelTags.forEach(ah => addToMap(CoupleUtils.toEdgeKey(ah[0]), ah[1], perPersonRelChanges, 0))
+            effect.removedRelTags.forEach(ah => addToMap(CoupleUtils.toEdgeKey(ah[0]), ah[1], perPersonRelChanges, 1))
         })
 
 
 
-        return { perPersonRelMsg, perPersonHumMsg }
+        return { perPersonRelChanges, perPersonHumChanges }
     }
 }

@@ -152,6 +152,17 @@ export class PeopleGraph {
         return this.people.map(p => p.name)
     }
 
+    public getPeopleWithTags(tag: HumanTag): Array<HumanName>{
+        let res = Array()
+        this.humansTags.forEach((tags, name) => {
+            if (tags.has(tag)) {
+                res.push(name)
+            }
+        })
+        return res
+
+    }
+
 }
 
 export class CoupleUtils {
