@@ -1,4 +1,4 @@
-# Andrea
+# Alex
 - relationships:
 	- A:
 	- B: crush
@@ -124,17 +124,28 @@ Events - Specific
 	- pokud se A a B vyspí, a A a C nebyli ve vztahu, A a B se dají dohromady
 	- A + C 3x venku spolu -> daj se dohromady
 	- A+C vydrží dýl než A+B, A+B se můžou dát zpátky dohromady v baru maybe
-	- Pokud jsou spolu A+B, mohl by být někdo proti gay relationship?
+	- Pokud jsou spolu A+B, mohl by být někdo proti gay relationship? - Eric
 
- 	- Někdo je depressed, je víc nespoko se všema over time, je potřeba s nim někam jít jen ve 2? maybe s supportive friend?
+ 	- Beatrice je depressed, je víc nespoko se všema over time, je potřeba s nim někam jít jen ve 2? maybe s supportive friend?
+ 		- Supportive friend je ale Alex, takže je potřeba je dát někam jinam než do baru, asi jen potom co se rozejdou s Danem
+ 		- ten progression je B + D -> rozedjou se naturally nebo tim ze dan ma dalsi holku -> B je sad po breakupu, pokud s ni nic neuděláš, tak i když ji bereš ven tak eventually failnes -> Alex a Beatrice musíš dát mimo bar
 
- 	- Potom, co jsou nějakou dobu spolu, holka otěhotní, chce potrat, někdo je proti - kluk? někdo jinej? - Cecil + Alex
-
+ 	
  	- Don Juan type postava, chodí s dvěma lidma zároveň, můžeš ho exposenout - Dan
 
  	- Couple co se dáva dohromady a rozchází periodicky - Dan + Flavie
 
- 	- D je competitive v bowlingu, C je dobrej, když s nima jdes na bowling, tak se na sebe naserou, protoze Dan prohraje, a zacne se do 
+ 	- D je competitive v bowlingu, C je dobrej, když s nima jdes na bowling, tak se na sebe naserou, protoze Dan prohraje, a je sore loser
+
+ 	- pokud A a B datej, tak je zacne Eric hatit for religious reasons. Pak pokud je v pohodě s Cecilem tak na něj bude mít crush, a můžou datit, a pak přestane hatit A a B
+
+ 	- poprvý co jsou spolu A a F v parku, tak si A dela srandu z alergii F a ta se urazi
+
+ 	- Cat - Dog dilema - v parku viděj psa? kočku? a maj minor disagreement
+
+ 	- Vegan to lidem pushuje
+
+
 
 
  # Lidi
@@ -147,6 +158,12 @@ Events - Specific
  	- Dan
  		- Extrovert, initially likable chlápek, fuccboi, macho, bruh type, reálně docela debílek, attention seeker
  	- Eric
- 		- religious, docela v pohodě, vychází s lidma, ale má issues s věcma proti jeho religion - lgbtq+ stuff, abortion? (Možná trochu moc edgy, idk)
+ 		- religious, docela v pohodě, vychází s lidma, ale má issues s věcma proti jeho religion - lgbtq+ stuff
+ 		- closeted gay, crush na Cecila potom, possibly na Dana, až hodně specificky
  	- Flavie
- 		- attention seeker, 
+ 		- FOMO, docela fragile - jednoduše je upset, Vegan 
+
+
+ 	B+D -> rozpadne se -> B je sad -> A comfortuje B -> A a B zacnou datit bez toho aby meli sex predtim, budou si tim jistejsi -> stable -> E je zacne hatit -> E comene out -> E+C -> breakup -> D+F -> C chodi ven s F kdyz neni s D -> C+F -> D je sad -> E+D
+
+

@@ -117,20 +117,24 @@ const bowlingbrawl = new Complex({
     }
 })
 
-const leftOut = new Complex({    
+const PRESENT_FONDNESS_CHANGE = +2
+const ABSENT_FONDNESS_CHANGE = -1
+
+const baseFondnessChanges = new Complex({
     processEffects: function(trip, currentState, baseEffects) {
-        let leftOutDislikeEffect = new SituationEffect()
+        let effect = new SituationEffect()
         currentState.getAllHumanNames().forEach(hName =>{
             if (!trip.goPeople.map(p => p.name).includes(hName)) {
-                leftOutDislikeEffect.changedFondness.push([[hName, HumanName.You], -1])
+                effect.changedFondness.push([[hName, HumanName.You], ABSENT_FONDNESS_CHANGE])
+            } else {
+                effect.changedFondness.push([[hName, HumanName.You], PRESENT_FONDNESS_CHANGE])
             }
         })
-        baseEffects.push(leftOutDislikeEffect);
+        baseEffects.push(effect);
 
         return baseEffects
     }
 })
-
 
 levels.push(
     new Level(
@@ -177,7 +181,7 @@ levels.push(
             flavieFomo2, // 2 must be before 1 (else both happen simultaneously)
             flavieFomo1,
             danTwoGirlfriendsBusted,
-            leftOut
+            baseFondnessChanges,
         ],
     ),
 )        
