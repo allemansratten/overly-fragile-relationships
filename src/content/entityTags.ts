@@ -31,6 +31,15 @@ export const relationshipTagBidirectional: Set<RelationshipTag> = new Set([
     RelationshipTag.ex,
 ])
 
+// If the first item is in NEW, the second is removed from REM
+export const relationshipTagShadowingNewRem: Array<[RelationshipTag, RelationshipTag]> = [
+    [RelationshipTag.lover, RelationshipTag.crush],
+]
+
+// If the first item is in REM, the second is removed from NEW
+export const relationshipTagShadowingRemNew: Array<[RelationshipTag, RelationshipTag]> = [
+]
+
 export enum HumanTag {
     introvert, extrovert, angry_drunk, sad_drunk,
     good_bowler, bad_bowler, promiscuous, jealous, disagreeable,

@@ -21,7 +21,6 @@ let locations: LocationName[] = [
     LocationName.Bowling,
     LocationName.Drink,
     LocationName.Park,
-    LocationName.Movie,
 ]
 
 // You is always on the zeroth position
@@ -96,7 +95,7 @@ const flavieFomo2 = new Complex({    //Flavie FOMO event 2
     effects: [new SituationEffect().changeFondness([[[HumanName.Flavie, HumanName.You], -10]])
         .setDescription('Flavie came uninvited, chewed you out, and left. Forever.')],
 })
-const bowlingbrawl = new Complex({    // Bowling Brawl     TODO: efekt na ostatní co tam jdou
+const bowlingbrawl = new Complex({    
     humReq: [HumanName.Cecil, HumanName.Dan],
     allowedLocations: [LocationName.Bowling],
     relTagsBan: [[[HumanName.Cecil, HumanName.Dan], RelationshipTag.bowling_brawl]],
@@ -115,6 +114,21 @@ const bowlingbrawl = new Complex({    // Bowling Brawl     TODO: efekt na ostatn
         return baseEffects;
     }
 })
+
+const leftOut = new Complex({    
+    processEffects: function(trip, currentState, baseEffects) {
+        let leftOutDislikeEffect = new SituationEffect()
+        currentState.getAllHumanNames().forEach(hName =>{
+            if (!trip.goPeople.map(p => p.name).includes(hName)) {
+                leftOutDislikeEffect.changedFondness.push([[hName, HumanName.You], -1])
+            }
+        })
+        baseEffects.push(leftOutDislikeEffect);
+
+        return baseEffects
+    }
+})
+
 
 levels.push(
     new Level(
@@ -161,6 +175,7 @@ levels.push(
             flavieFomo2, // 2 must be before 1 (else both happen simultaneously)
             flavieFomo1,
             danTwoGirlfriendsBusted,
+            leftOut
         ],
     ),
 )        

@@ -4,6 +4,7 @@ import { Couple, PeopleGraph } from "../model/peopleGraph"
 import { HumanTag, RelationshipTag } from "./entityTags"
 import { HumanName } from "./humans"
 import { LocationName } from "./locations"
+import { Human } from "../model/human"
 
 
 export class SituationUtils {
@@ -56,6 +57,13 @@ export class SituationUtils {
                 [[b, a], fondnessChange],
             ])
     }
+
+    public static getSomeoneOnTripWithTag(trip: TripSummary, person: Human, currentState: PeopleGraph, tag: RelationshipTag) {
+        return trip.goPeople
+                    .filter(oPerson => oPerson.name != person.name)
+                    .find(oPerson => currentState.getRelationshipsBetween(person.name, oPerson.name).some(t => t == tag))
+    }
+
 }
 
 export class SimpleSituation implements Situation {
@@ -118,12 +126,15 @@ export class NobodyLikesAngryDrunk implements Situation {
 
 export class MutualCrush implements Situation {
     public GetApplicableEffects(trip: TripSummary, currentState: PeopleGraph): Array<SituationEffect> {
-        // I know this is _terribly_ inefficient :(
         let effects = new Array()
-
         let crushesMap: Map<HumanName, HumanName[]> = new Map()
 
         for (const person of trip.goPeople) {
+            let loverOnTrip = SituationUtils.getSomeoneOnTripWithTag(trip, person, currentState, RelationshipTag.lover)
+            if (loverOnTrip) {
+                continue
+            }
+
             let crushesPresent = trip.goPeople.filter(
                 b => currentState.getMutualRelationshipsBetween(person.name, b.name).includes(RelationshipTag.crush),
             ).map(h => h.name)
@@ -131,11 +142,11 @@ export class MutualCrush implements Situation {
         }
 
         for (const person of trip.goPeople) {
-            const crushes = crushesMap.get(person.name)!
-            if (crushes.length === 1) {
+            const crushes = crushesMap.get(person.name)
+            if (crushes?.length === 1) {
                 const crush = crushes[0]
                 // Break symmetry by comparing names
-                if (crushesMap.get(crush)!.length === 1 && crush <= person.name) {
+                if (crushesMap.get(crush)?.length === 1 && crush <= person.name) {
                     effects.push(
                         SituationUtils.startToDate([person.name, crush]),
                     )

@@ -10,6 +10,7 @@ export const DEFAULT_FONDNESS = 5
 export const MAX_FONDNESS = 10
 
 export class PeopleGraph {
+    private people: Array<Human>
     private relationshipTags: Map<EdgeKey, Set<RelationshipTag>> = new Map()
     private fondness: Map<EdgeKey, number> = new Map()
     private humansTags: Map<HumanName, Set<HumanTag>> = new Map()
@@ -21,6 +22,8 @@ export class PeopleGraph {
         initialTags: Array<[HumanName, HumanTag]>,
         initialFondness: Array<[Couple, number]>,
     ) {
+        this.people = people
+
         people.forEach(h => {
             people.forEach(hh => {
                 if (h.name != hh.name) {
@@ -143,6 +146,10 @@ export class PeopleGraph {
         })
 
         return res
+    }
+
+    public getAllHumanNames(): Array<HumanName> {
+        return this.people.map(p => p.name)
     }
 
 }
