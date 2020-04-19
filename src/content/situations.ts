@@ -1,9 +1,9 @@
-import { Situation, SituationEffect } from "./situation"
-import { TripSummary } from "./tripSummary"
-import { Couple, PeopleGraph } from "./peopleGraph"
-import { HumanTag, RelationshipTag } from "../content/entityTags"
-import { HumanName } from "../content/humans"
-import { LocationName } from "../content/locations"
+import { Situation, SituationEffect } from "../model/situation"
+import { TripSummary } from "../model/tripSummary"
+import { Couple, PeopleGraph } from "../model/peopleGraph"
+import { HumanTag, RelationshipTag } from "./entityTags"
+import { HumanName } from "./humans"
+import { LocationName } from "./locations"
 
 
 export class SituationUtils {

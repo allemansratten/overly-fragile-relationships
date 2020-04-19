@@ -8,7 +8,7 @@ import {
     MutualCrush,
     NobodyLikesAngryDrunk,
     SituationUtils,
-} from "../model/situationTypes"
+} from "./situations"
 import { HumanName } from "./humans"
 import { LocationName } from "./locations"
 import { SituationEffect } from "../model/situation"
@@ -152,8 +152,7 @@ levels.push(
             new NobodyLikesAngryDrunk(),
             new MutualCrush(),
             new EternalCouple(HumanName.Dan, HumanName.Flavie),
-
-
+            // new Sympathies(),
 
             bowlingbrawl,
             flavieFomo2, // 2 must be before 1 (else both happen simultaneously)
