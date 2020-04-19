@@ -1,4 +1,4 @@
-import { HateGraph, Situation, SituationEffect } from "./hateGraph"
+import { Situation, SituationEffect } from "./situation"
 import { PeopleGraph } from "./peopleGraph"
 import { TripSummary } from "./tripSummary"
 
@@ -6,25 +6,26 @@ export class FriendshipManager {
     private tripCount: number
     private situationAddCalendar: Map<number, Situation>
 
-    public hateGraph: HateGraph
+    public situations: Situation[]
     public peopleGraph: PeopleGraph
 
-    constructor(hateGraph: HateGraph, peopleGraph: PeopleGraph) {
+    constructor(situations: Situation[], peopleGraph: PeopleGraph) {
         this.tripCount = 0
         this.situationAddCalendar = new Map()
 
-        this.hateGraph = hateGraph
+        this.situations = situations
         this.peopleGraph = peopleGraph
     }
 
     public applyMeeting(trip: TripSummary): Array<SituationEffect> {
         // update system with newly added situations
         let newSitForThisMeeting = this.situationAddCalendar.get(this.tripCount) ?? new Array()
-        this.hateGraph.constraints.concat(newSitForThisMeeting)
+        this.situations.concat(newSitForThisMeeting)
 
+        // try to apply all situations
         let appliedEffects = new Array<SituationEffect>()
-        this.hateGraph.constraints.forEach(con => {
-            const appEffForCurrCon = this.tryApplyConstraint(con, trip)  // We know it's gonna be assigned
+        this.situations.forEach(situation => {
+            const appEffForCurrCon = this.tryApplyConstraint(situation, trip)  // We know it's gonna be assigned
             appliedEffects = appliedEffects.concat(appEffForCurrCon)
         })
 

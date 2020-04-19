@@ -40,10 +40,9 @@ export class HumanStage {
             let human = level.humans[i]
             const position = this.positions[i]
 
-            let image = scene.add.image(0, 0, 'portrait_big', i)
+            let image = scene.add.image(0, 0, 'portrait_small', i)
                 .setOrigin(0.5, -0.2)
-                .setScale(0.3)
-                .setInteractive({ useHandCursor: true })
+                .setInteractive({useHandCursor: true})
                 .on('pointerover', () => {
                     this.display(human, Number(i))
                 })
@@ -51,7 +50,7 @@ export class HumanStage {
             let circle = scene.add.ellipse(0, 0, 80, 80, 0xcccccc)
                 .setOrigin(0.5, 0.5)
                 .setAlpha((Number(i) == 0 ? this.CIRCLE_ALPHA_OK : this.CIRCLE_ALPHA_BD))
-                .setInteractive({ useHandCursor: true })
+                .setInteractive({useHandCursor: true})
                 .on('pointerover', () => {
                     this.display(human, Number(i))
                 })
@@ -59,10 +58,10 @@ export class HumanStage {
             let text = scene.add.text(0, 0, `${human.name}`, {
                 fill: '#e0e0e0',
                 fontFamily: 'Roboto',
-                fontSize: '18px'
+                fontSize: '18px',
             })
                 .setOrigin(0.5, 0.5)
-                .setInteractive({ useHandCursor: true })
+                .setInteractive({useHandCursor: true})
                 .setAlpha(Number(i) == 0 ? this.TEXT_ALPHA_OK : this.TEXT_ALPHA_BD)
                 .on('pointerover', () => {
                     this.display(human, Number(i))
@@ -79,23 +78,23 @@ export class HumanStage {
                     if (scene.tripSummary.flipGoPeople(human)) {
                         scene.tweens.add({
                             targets: text,
-                            alpha: { from: this.TEXT_ALPHA_BD, to: this.TEXT_ALPHA_OK },
+                            alpha: {from: this.TEXT_ALPHA_BD, to: this.TEXT_ALPHA_OK},
                             duration: 500,
                         })
                         scene.tweens.add({
                             targets: circle,
-                            alpha: { from: this.CIRCLE_ALPHA_BD, to: this.CIRCLE_ALPHA_OK },
+                            alpha: {from: this.CIRCLE_ALPHA_BD, to: this.CIRCLE_ALPHA_OK},
                             duration: 500,
                         })
                     } else {
                         scene.tweens.add({
                             targets: text,
-                            alpha: { from: this.TEXT_ALPHA_OK, to: this.TEXT_ALPHA_BD },
+                            alpha: {from: this.TEXT_ALPHA_OK, to: this.TEXT_ALPHA_BD},
                             duration: 500,
                         })
                         scene.tweens.add({
                             targets: circle,
-                            alpha: { from: this.CIRCLE_ALPHA_OK, to: this.CIRCLE_ALPHA_BD },
+                            alpha: {from: this.CIRCLE_ALPHA_OK, to: this.CIRCLE_ALPHA_BD},
                             duration: 500,
                         })
                     }
@@ -130,7 +129,7 @@ export class HumanStage {
                 for (let child of this.allPeopleLines[i].children.getArray()) {
                     this.scene.tweens.add({
                         targets: child,
-                        alpha: { from: (child as Phaser.GameObjects.Line).alpha, to: 1 },
+                        alpha: {from: (child as Phaser.GameObjects.Line).alpha, to: 1},
                         duration: 300,
                     })
                 }
@@ -138,7 +137,7 @@ export class HumanStage {
                 for (let child of this.allPeopleLines[i].children.getArray()) {
                     this.scene.tweens.add({
                         targets: child,
-                        alpha: { from: (child as Phaser.GameObjects.Line).alpha, to: 0 },
+                        alpha: {from: (child as Phaser.GameObjects.Line).alpha, to: 0},
                         duration: 300,
                     })
                 }
@@ -165,8 +164,8 @@ export class HumanStage {
                 let tags = Array
                     .from(peopleGraph.getRelTags([human1.name, human2.name]))
                     .filter((x) => relationshipTagMap.has(x))
-                    
-                for(let i in tags) {
+
+                for (let i in tags) {
                     let tag = tags[i]
                     let line = this.scene.add.line(0, 0,
                         this.positionsInner[hi1].x - 5, this.positionsInner[hi1].y + 60,
@@ -174,12 +173,12 @@ export class HumanStage {
                         0xffffff, 0.1)
                     line.setOrigin(0, 0)
                     group.add(line)
-                    
+
                     let avgX = (this.positionsInner[hi1].x + this.positionsInner[hi2].x) / 2
                     let avgY = (this.positionsInner[hi1].y + this.positionsInner[hi2].y) / 2 + 60
-                    let symbol = this.scene.add.image(avgX+Number(i)*27, avgY, 'rel_tags')
-                       .setFrame(tag)
-                       .setDisplaySize(25, 25)
+                    let symbol = this.scene.add.image(avgX + (Number(i) - tags.length / 2 + 0.4) * 27, avgY, 'rel_tags')
+                        .setFrame(tag)
+                        .setDisplaySize(25, 25)
                     group.add(symbol)
                 }
             }

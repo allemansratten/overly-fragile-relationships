@@ -3,14 +3,6 @@ import { HumanTag, RelationshipTag } from "../content/entityTags"
 import { CoupleKey, PeopleGraph } from "./peopleGraph"
 import { HumanName } from "../content/humans"
 
-export class HateGraph {
-    public constraints: Array<Situation>
-
-    constructor(constraints: Array<Situation>) {
-        this.constraints = constraints
-    }
-}
-
 export interface Situation {
     GetApplicableEffects(trip: TripSummary, currentState: PeopleGraph, tripCount: number): Array<SituationEffect>
 }
