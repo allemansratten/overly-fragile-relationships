@@ -108,6 +108,21 @@ const bowlingbrawl = new Complex({
     }
 })
 
+const leftOut = new Complex({    
+    processEffects: function(trip, currentState, baseEffects) {
+        let leftOutDislikeEffect = new SituationEffect()
+        currentState.getAllHumanNames().forEach(hName =>{
+            if (!trip.goPeople.map(p => p.name).includes(hName)) {
+                leftOutDislikeEffect.changedFondness.push([[hName, HumanName.You], -1])
+            }
+        })
+        baseEffects.push(leftOutDislikeEffect);
+
+        return baseEffects
+    }
+})
+
+
 levels.push(
     new Level(
         [
@@ -152,6 +167,7 @@ levels.push(
             flavieFomo2, // 2 must be before 1 (else both happen simultaneously)
             flavieFomo1,
             danTwoGirlfriendsBusted,
+            leftOut
         ],
     ),
 )        
