@@ -1,5 +1,6 @@
-import { Human, HumanName } from "./human"
+import { Human } from "./human"
 import { HumanTag, RelationshipTag, relationshipTagMap } from "../content/entityTags"
+import { HumanName } from "../content/humans"
 
 type EdgeKey = string
 export type CoupleKey = [HumanName, HumanName]
@@ -69,7 +70,7 @@ export class PeopleGraph {
         let result = new Array
 
         this.relationshipTags.forEach((val, key) => {
-            if (key.startsWith(person)) {
+            if (key.startsWith(HumanName[person])) {
                 result.push(new Relationship(this.fromEdgeKey(key), val))
             }
         })
@@ -81,7 +82,7 @@ export class PeopleGraph {
         let result = new Array
 
         this.relationshipTags.forEach((val, key) => {
-            if (key.endsWith(person)) {
+            if (key.endsWith(HumanName[person])) {
                 result.push(new Relationship(this.fromEdgeKey(key), val))
             }
         })
@@ -115,14 +116,14 @@ export class PeopleGraph {
         let [a, b] = unorderedPair
         let orderedPair = a <= b || this.oriented ? [a, b] : [b, a]
 
-        return orderedPair.join('|')
+        return orderedPair.map(v => HumanName[v]).join('|')
     }
 
     private fromEdgeKey(key: EdgeKey): CoupleKey {
         let names = key.split('|')
         console.assert(names.length == 2)
 
-        return [names[0], names[1]]
+        return [HumanName[names[0] as keyof typeof HumanName], HumanName[names[1] as keyof typeof HumanName]]
     }
 }
 
@@ -136,7 +137,7 @@ export class Relationship {
     }
 
     public toString(): string {
-        return `${this.people[1]}: ${Array.from(this.tags).map((x) => relationshipTagMap.get(x) ?? "?").join(', ')}`
+        return `${HumanName[this.people[1]]}: ${Array.from(this.tags).map((x) => relationshipTagMap.get(x) ?? "?").join(', ')}`
     }
 }
 

@@ -1,5 +1,6 @@
 import { Human } from '../model/human'
 import { humanTagMap } from '../content/entityTags'
+import { HumanName } from '../content/humans'
 
 export class PhoneStage {
     private portrait : Phaser.GameObjects.Image
@@ -23,6 +24,6 @@ export class PhoneStage {
             .filter(x => x !== undefined)
             .join(', ')
         let relString = human.relationships.filter(x => x.tags.size != 0).join('\n\n')
-        this.text.setText(`${human.name}\n${tagString}\n\n${relString}`)
+        this.text.setText(`${HumanName[human.name]}\n${tagString}\n\n${relString}`)
     }
 }

@@ -1,7 +1,6 @@
 import { Relationship } from "./peopleGraph";
 import { HumanTag } from "../content/entityTags";
-
-export type HumanName = string
+import { HumanName } from "../content/humans";
 
 export class Human {
     name: HumanName
