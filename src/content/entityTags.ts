@@ -20,8 +20,8 @@ export const relationshipTagMap: Map<RelationshipTag, string> = new Map([
 
 export const relationshipTagMapStory: Map<RelationshipTag, [string, string]> = new Map([
     [RelationshipTag.crush, ['SUBJ now has a crush on OBJ', 'SUBJ lost a crush on OBJ']],
-    [RelationshipTag.lover, ['SUBJ and OBJ are now lovers', 'SUBJ and OBJ are no longer lovers']],
-    [RelationshipTag.ex, ['SUBJ is now an ex of OBJ', 'SUBJ is not an ex of OBJ anymore']],
+    [RelationshipTag.lover, [`SUBJ and OBJ started dating!`, 'SUBJ and OBJ are no longer lovers']],
+    [RelationshipTag.ex, [`Did you hear? SUBJ and OBJ broke up!`, 'SUBJ is not an ex of OBJ anymore']],
     [RelationshipTag.political_dis, ['SUBJ now has a political disagreement with OBJ', 'SUBJ no longer has a political disagreement with OBJ']],
 ])
 
@@ -34,6 +34,8 @@ export const relationshipTagBidirectional: Set<RelationshipTag> = new Set([
 // If the first item is in NEW, the second is removed from REM
 export const relationshipTagShadowingNewRem: Array<[RelationshipTag, RelationshipTag]> = [
     [RelationshipTag.lover, RelationshipTag.crush],
+    [RelationshipTag.ex, RelationshipTag.lover],
+
 ]
 
 // If the first item is in REM, the second is removed from NEW
