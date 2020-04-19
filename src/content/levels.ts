@@ -77,6 +77,7 @@ const danTwoGirlfriendsBusted = new Complex({
 
 const flavieFomo1 = new Complex({    //Flavie FOMO event 1
     humReq: [HumanName.Alex, HumanName.Beatrice, HumanName.Cecil, HumanName.Dan, HumanName.Eric],
+    humBan: [HumanName.Flavie],
     humTagsBan: [[HumanName.Flavie, HumanTag.flavie_angry]],
     effects: [new SituationEffect().changeFondness([
         [[HumanName.Flavie, HumanName.Alex], -1],
@@ -91,6 +92,7 @@ const flavieFomo1 = new Complex({    //Flavie FOMO event 1
 
 const flavieFomo2 = new Complex({    //Flavie FOMO event 2
     humReq: [HumanName.Alex, HumanName.Beatrice, HumanName.Cecil, HumanName.Dan, HumanName.Eric],
+    humBan: [HumanName.Flavie],
     humTagsReq: [[HumanName.Flavie, HumanTag.flavie_angry]],
     effects: [new SituationEffect().changeFondness([[[HumanName.Flavie, HumanName.You], -10]])
         .setDescription('Flavie came uninvited, chewed you out, and left. Forever.')],
