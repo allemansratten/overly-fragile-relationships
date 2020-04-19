@@ -1,6 +1,5 @@
 import { Human } from '../model/human'
 import { humanTagMap } from '../content/entityTags'
-import { HumanName } from '../content/humans'
 
 export class PhoneStage {
     private portrait : Phaser.GameObjects.Image
@@ -13,7 +12,7 @@ export class PhoneStage {
         this.portrait = scene.add.image(20, 20, 'portrait_big')
             .setOrigin(0, 0)
 
-        this.text = scene.add.text(25, 250, '', { fill: 'black', fontFamily: 'Roboto' })
+        this.text = scene.add.text(20, 250, '', { fill: 'black', fontFamily: 'Roboto' })
             .setWordWrapWidth(230)
     }
 
@@ -24,6 +23,6 @@ export class PhoneStage {
             .filter(x => x !== undefined)
             .join(', ')
         let relString = human.relationships.filter(x => x.tags.size != 0).join('\n\n')
-        this.text.setText(`${HumanName[human.name]}\n${tagString}\n\n${relString}`)
+        this.text.setText(`${human.name}\n${tagString}\n\n${relString}`)
     }
 }

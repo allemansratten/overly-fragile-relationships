@@ -1,9 +1,6 @@
 import { Level } from "../model/level"
 import { BoardScene } from "./board"
-import { HateGraph } from "../model/hateGraph"
-import { PeopleGraph } from "../model/peopleGraph"
 import { Human } from "../model/human"
-import { HumanName } from "../content/humans"
 
 export class HumanStage {
     private allPeopleTexts: Array<Phaser.GameObjects.Text> = []
@@ -58,7 +55,7 @@ export class HumanStage {
                     this.display(human, Number(i))
                 })
 
-            let text = scene.add.text(0, 0, `${HumanName[human.name]}`, {
+            let text = scene.add.text(0, 0, `${human.name}`, {
                 fill: '#e0e0e0',
                 fontFamily: 'Roboto',
                 fontSize: '18px'
