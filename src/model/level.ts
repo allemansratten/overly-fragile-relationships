@@ -4,7 +4,7 @@ import { TripSummary } from "./tripSummary"
 import { Couple, PeopleGraph, Relationship, EdgeKey, CoupleUtils } from "./peopleGraph"
 import { Situation, SituationEffect } from "./situation"
 import { FriendshipManager } from "./friendshipManager"
-import { HumanTag, humanTagMap, RelationshipTag, relationshipTagMap } from "../content/entityTags"
+import { HumanTag, humanTagMap, RelationshipTag, relationshipTagMap, relationshipTagMapStory, relationshipTagBidirectional } from "../content/entityTags"
 import { HumanName } from "../content/humans"
 
 export class Level {
@@ -70,64 +70,79 @@ export class Level {
     private createEffectsMsgs(
         perPersonRelMsg: Map<EdgeKey, [RelationshipTag[], RelationshipTag[]]>,
         perPersonHumMsg: Map<HumanName, [HumanTag[], HumanTag[]]>
-    ) : Array<string> {
-        let effectMsg : Array<string> = []
+    ): Array<string> {
+        let effectMsg: Array<string> = []
 
         perPersonHumMsg.forEach((changes, person) => {
             let newTags = changes[0]
             let remTags = changes[1]
             let remTagsArr = []
-            for(let remTag of remTags) {
-                if(humanTagMap.has(remTag)) {
+            for (let remTag of remTags) {
+                if (humanTagMap.has(remTag)) {
                     remTagsArr.push(humanTagMap.get(remTag))
                 }
             }
             let newTagsArr = []
-            for(let newTag of newTags) {
-                if(humanTagMap.has(newTag)) {
+            for (let newTag of newTags) {
+                if (humanTagMap.has(newTag)) {
                     newTagsArr.push(humanTagMap.get(newTag))
                 }
             }
-            if(remTagsArr.length != 0 && newTagsArr.length != 0) {
+            if (remTagsArr.length != 0 && newTagsArr.length != 0) {
                 effectMsg.push(`${person} lost ${remTagsArr.join(', ')}, but gained ${newTagsArr.join(', ')}`)
-            } else if(remTagsArr.length != 0) {
+            } else if (remTagsArr.length != 0) {
                 effectMsg.push(`${person} lost ${remTagsArr.join(', ')}`)
-            } else if(newTagsArr.length != 0) {
+            } else if (newTagsArr.length != 0) {
                 effectMsg.push(`${person} gained ${newTagsArr.join(', ')}`)
             }
         })
+
+        
+        let relationshipTemplates : Array<[string, Couple]> = []
+        let addIfNotContains = (tag: RelationshipTag, message: string, couple: Couple) : boolean => {
+            // If it's not bidirectional explicitly, we don't deduplicate
+            if(!relationshipTagBidirectional.has(tag)) {
+                relationshipTemplates.push([message, couple])
+                return true
+            }
+
+            for(let x of relationshipTemplates) {
+                if (x[0] == message && ((x[1][0] == couple[0] && x[1][1] == couple[1]) || (x[1][0] == couple[1] && x[1][1] == couple[0])) )
+                    return false
+            }
+            relationshipTemplates.push([message, couple])
+            return true
+        }
 
         perPersonRelMsg.forEach((changes, edgeKey) => {
             let couple = CoupleUtils.fromEdgeKey(edgeKey)
             let newTags = changes[0]
             let remTags = changes[1]
-            for(let remTag of remTags) {
-                if(relationshipTagMap.has(remTag)) {
-                    effectMsg.push(`${couple[0]} no longer ${relationshipTagMap.get(remTag)} ${couple[1]}`)
+            for (let remTag of remTags) {
+                if (relationshipTagMapStory.has(remTag)) {
+                    addIfNotContains(
+                        remTag,
+                        (relationshipTagMapStory.get(remTag) as [string, string])[1],
+                        couple
+                    )
                 }
             }
-            for(let newTag of newTags) {
-                if(relationshipTagMap.has(newTag)) {
-                    effectMsg.push(`${couple[0]} now ${relationshipTagMap.get(newTag)} ${couple[1]}`)
+            for (let newTag of newTags) {
+                if (relationshipTagMapStory.has(newTag)) {
+                    addIfNotContains(
+                        newTag,
+                        (relationshipTagMapStory.get(newTag) as [string, string])[0],
+                        couple
+                    )
                 }
             }
         })
-        
-        // let relMsgs = Array<string>()
-        // perPersonRelMsg.forEach((changes, couple) => {
-        //     // TODO: empty tag names will not look nice, as well as empty newRelTags or oldRelTags
-        //     let newRelTags = changes[0].map(t => relationshipTagMap.get(t) ?? "").join(", ")
-        //     let oldRelTags = changes[1].map(t => relationshipTagMap.get(t) ?? "").join(", ")
-        //     relMsgs.push(`${couple[0]} now ${newRelTags} and no longer ${oldRelTags}  ${couple[1]}.`)
-        // })
 
-        // let humMsgs = Array<string>()
-        // perPersonHumMsg.forEach((changes, person) => {
-        //     let newHumTags = changes[0].map(t => humanTagMap.get(t) ?? "").join(", ")
-        //     let oldHumTags = changes[1].map(t => humanTagMap.get(t) ?? "").join(", ")
-        //     relMsgs.push(`${person} is now ${newHumTags} and no longer ${oldHumTags}.`)
-        // })
-        // let effectMsg = relMsgs.concat(humMsgs)
+        for(let x of relationshipTemplates) {
+            effectMsg.push(
+                x[0].replace('SUBJ', x[1][0]).replace('OBJ', x[1][1])
+            )
+        }
 
         return effectMsg
     }
