@@ -1,5 +1,5 @@
 import { Human } from '../model/human'
-import { humanTagMap, relationshipTagMap, RelationshipTag } from '../content/entityTags'
+import { humanTagMap, relationshipTagMap } from '../content/entityTags'
 import { HumanName } from '../content/humans'
 
 export class PhoneStage {

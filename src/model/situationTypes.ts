@@ -11,34 +11,41 @@ export class SituationUtils {
 
     public static startToDate(couple: CoupleKey): SituationEffect {
         const [a, b] = couple
-
-        return new SituationEffect(
-            `${a} and ${b} started dating!`,
-            [
-                [[a, b], RelationshipTag.lover],
-                [[b, a], RelationshipTag.lover],
-            ],
-            [
-                [[a, b], RelationshipTag.crush],
-                [[b, a], RelationshipTag.crush],
-            ],
-        )
+        return this.changeRelationship(
+            couple,
+            [RelationshipTag.lover],
+            [RelationshipTag.crush, RelationshipTag.ex, RelationshipTag.dislike]
+        ).setDescription(`${a} and ${b} started dating!`)
     }
 
     public static breakUp(couple: CoupleKey): SituationEffect {
         const [a, b] = couple
+        return this.changeRelationship(
+            couple,
+            [RelationshipTag.ex],
+            [RelationshipTag.lover]
+        ).setDescription(`Did you hear? ${a} and ${b} broke up!`)
+    }
 
-        return new SituationEffect(
-            `Did you hear? {a} and ${b} broke up!`,
-            [
-                [[a, b], RelationshipTag.ex],
-                [[b, a], RelationshipTag.ex],
-            ],
-            [
-                [[a, b], RelationshipTag.lover],
-                [[b, a], RelationshipTag.lover],
-            ],
-        )
+    public static changeRelationship(
+        couple: CoupleKey,
+        addedRelTags: RelationshipTag[],
+        removedRelTags: RelationshipTag[],
+    ): SituationEffect {
+        const [a, b] = couple
+
+        function broadcast(tags: RelationshipTag[]): Array<[CoupleKey, RelationshipTag]> {
+            let res = new Array
+            for (const tag of tags) {
+                res.push([[a, b], tag])
+                res.push([[b, a], tag])
+            }
+            return res
+        }
+
+        return new SituationEffect()
+            .addRelTags(broadcast(addedRelTags))
+            .removeRelTags(broadcast(removedRelTags))
     }
 }
 
@@ -198,9 +205,13 @@ export class Complex implements Situation {
     public isApplicable(trip: TripSummary, currentState: PeopleGraph): boolean {
         let namesPresent = trip.goPeople.map(p => p.name)
 
-        return this.humReq.every(hp => namesPresent.includes(hp)) &&
+        // If no locations are set, this means all locations are allowed
+        let locationOk = (this.allowedLocations.length === 0)
+            || this.allowedLocations.some(loc => loc.name == trip.goLocation?.name)
+
+        return locationOk &&
+            this.humReq.every(hp => namesPresent.includes(hp)) &&
             this.humBan.every(cp => !namesPresent.includes(cp)) &&
-            this.allowedLocations.some(loc => loc.name == trip.goLocation?.name) &&
 
             this.humTagsReq.every(hr => currentState.getHumTags(hr[0]).has(hr[1])) &&
             this.humTagsBan.every(br => !currentState.getHumTags(br[0]).has(br[1])) &&
