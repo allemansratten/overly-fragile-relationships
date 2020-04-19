@@ -92,13 +92,12 @@ levels.push(
             new EternalCouple(HumanName.Dan, HumanName.Flavie),
             new Complex({    //Flavie FOMO event 2
                 humReq: [HumanName.Alex, HumanName.Beatrice, HumanName.Cecil, HumanName.Dan, HumanName.Eric],
-                allowedLocations: [],
                 humTagsReq: [[HumanName.Flavie, HumanTag.flavie_angry]],
-                effect: [new SituationEffect().changeFondness([[[HumanName.Flavie, HumanName.You], -10]])]
+                effect: [new SituationEffect().changeFondness([[[HumanName.Flavie, HumanName.You], -10]])
+                .setDescription('Flavie came uninvited, chewed you out, and left. Forever.')]
             }),
             new Complex({    //Flavie FOMO event 1
                 humReq: [HumanName.Alex, HumanName.Beatrice, HumanName.Cecil, HumanName.Dan, HumanName.Eric],
-                allowedLocations: [],
                 humTagsBan: [[HumanName.Flavie, HumanTag.flavie_angry]],
                 effect: [new SituationEffect().changeFondness([
                     [[HumanName.Flavie, HumanName.Alex], -1],
@@ -107,7 +106,21 @@ levels.push(
                     [[HumanName.Flavie, HumanName.Dan], -1],
                     [[HumanName.Flavie, HumanName.Eric], -1],
                     [[HumanName.Flavie, HumanName.You], -3]
-                ]).addHumTags([[HumanName.Flavie, HumanTag.flavie_angry]])]
+                ]).addHumTags([[HumanName.Flavie, HumanTag.flavie_angry]])
+                .setDescription('Flavie is angry that you invited everybody except her.')]
+            }),
+            new Complex({    // Bowling Brawl     TODO: efekt na ostatní co tam jdou
+                humReq: [HumanName.Cecil, HumanName.Dan],
+                allowedLocations: [LocationName.Bowling],
+                relTagsBan: [[[HumanName.Cecil, HumanName.Dan], RelationshipTag.bowling_brawl]],
+                effect: [new SituationEffect().changeFondness([
+                    [[HumanName.Cecil, HumanName.Dan], -2],
+                    [[HumanName.Dan, HumanName.Cecil,],-2]])
+                .addRelTags([[[HumanName.Cecil, HumanName.Dan], RelationshipTag.bowling_brawl]])
+                .setDescription('Cecil and Dan bet who could score the most in bowling.' + 
+                    ' Dan thought he would win easily, but Cecil did.' + 
+                    ' So Dan accused him of cheating, and they got into a fight!')]
+
             }),
 
         ],
