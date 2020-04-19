@@ -4,7 +4,7 @@ import { TripSummary } from "../management/tripsummary"
 import { PeopleGraph, Relationship } from "./peopleGraph"
 import { HateGraph, SituationEffect } from "./hateGraph"
 import { FriendshipManager } from "./friendshipManager"
-import { HumanTag, HumanTagMap, RelationshipTag, relationshipTagMap } from "./entityTags"
+import { HumanTag, humanTagMap, RelationshipTag, relationshipTagMap } from "./entityTags"
 
 export class Level {
     public humans: Array<Human>
@@ -81,8 +81,8 @@ export class Level {
 
         let humMsgs = Array<string>()
         perPersonHumMsg.forEach((changes, person) => {
-            let newHumTags = changes[0].map(t => HumanTagMap[t]).join(", ")
-            let oldHumTags = changes[1].map(t => HumanTagMap[t]).join(", ")
+            let newHumTags = changes[0].map(t => humanTagMap.get(t) ?? "").join(", ")
+            let oldHumTags = changes[1].map(t => humanTagMap.get(t) ?? "").join(", ")
             relMsgs.push(`${person[0]} is now ${newHumTags} and no longer ${oldHumTags}.`)
         })
         let effectsMsgs = relMsgs.concat(humMsgs)
