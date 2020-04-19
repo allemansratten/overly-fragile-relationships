@@ -195,10 +195,16 @@ export class HumanStage {
                     .filter((x) => relationshipTagMap.has(x))
                 let fondness = peopleGraph.getFondness([human1.name, human2.name])
 
+
                 if (fondness != DEFAULT_FONDNESS || tags.length != 0) {
+                    let diffX = (this.positionsInner[hi1].x - this.positionsInner[hi2].x)
+                    let diffY = (this.positionsInner[hi1].y - this.positionsInner[hi2].y)
+                    let diffXN = diffX/Math.sqrt(diffX*diffX + diffY*diffY)
+                    let diffYN = diffY/Math.sqrt(diffX*diffX + diffY*diffY)
+
                     let line = this.scene.add.line(0, 0,
-                        this.positionsInner[hi1].x - 5, this.positionsInner[hi1].y + 60,
-                        this.positionsInner[hi2].x - 5, this.positionsInner[hi2].y + 60,
+                        this.positionsInner[hi1].x - 5-10*diffXN, this.positionsInner[hi1].y + 60-10*diffYN,
+                        this.positionsInner[hi2].x - 5+10*diffXN, this.positionsInner[hi2].y + 60+10*diffYN,
                         this.linearScaleBlack(fondness), 0.3)
                     line.setOrigin(0, 0)
                         .setLineWidth(2)
