@@ -49,7 +49,7 @@ const danTwoGirlfriendsBusted = new Complex({
         [[HumanName.Dan, HumanName.Beatrice], RelationshipTag.lover], // should be symmetric anyways
         [[HumanName.Dan, HumanName.Flavie], RelationshipTag.lover],
     ],
-    effect: [
+    effects: [
         SituationUtils.breakUp([HumanName.Dan, HumanName.Beatrice]),
         SituationUtils.breakUp([HumanName.Dan, HumanName.Flavie]),
         new SituationEffect()
@@ -71,7 +71,7 @@ const danTwoGirlfriendsBusted = new Complex({
 const flavieFomo1 = new Complex({    //Flavie FOMO event 1
     humReq: [HumanName.Alex, HumanName.Beatrice, HumanName.Cecil, HumanName.Dan, HumanName.Eric],
     humTagsBan: [[HumanName.Flavie, HumanTag.flavie_angry]],
-    effect: [new SituationEffect().changeFondness([
+    effects: [new SituationEffect().changeFondness([
         [[HumanName.Flavie, HumanName.Alex], -1],
         [[HumanName.Flavie, HumanName.Beatrice], -1],
         [[HumanName.Flavie, HumanName.Cecil], -1],
@@ -85,21 +85,27 @@ const flavieFomo1 = new Complex({    //Flavie FOMO event 1
 const flavieFomo2 = new Complex({    //Flavie FOMO event 2
     humReq: [HumanName.Alex, HumanName.Beatrice, HumanName.Cecil, HumanName.Dan, HumanName.Eric],
     humTagsReq: [[HumanName.Flavie, HumanTag.flavie_angry]],
-    effect: [new SituationEffect().changeFondness([[[HumanName.Flavie, HumanName.You], -10]])
+    effects: [new SituationEffect().changeFondness([[[HumanName.Flavie, HumanName.You], -10]])
         .setDescription('Flavie came uninvited, chewed you out, and left. Forever.')],
 })
 const bowlingbrawl = new Complex({    // Bowling Brawl     TODO: efekt na ostatní co tam jdou
     humReq: [HumanName.Cecil, HumanName.Dan],
     allowedLocations: [LocationName.Bowling],
     relTagsBan: [[[HumanName.Cecil, HumanName.Dan], RelationshipTag.bowling_brawl]],
-    effect: [new SituationEffect().changeFondness([
+    effects: [new SituationEffect().changeFondness([
         [[HumanName.Cecil, HumanName.Dan], -2],
         [[HumanName.Dan, HumanName.Cecil,], -2]])
         .addRelTags([[[HumanName.Cecil, HumanName.Dan], RelationshipTag.bowling_brawl]])
         .setDescription('Cecil and Dan bet who could score the most in bowling.' +
             ' Dan thought he would win easily, but Cecil did.' +
-            ' So Dan accused him of cheating, and they got into a fight!')]
-
+            ' So Dan accused him of cheating, and they got into a fight!')],
+    processEffects: function(trip, currentState, baseEffects) {
+        trip.goPeople.filter(p => (p.name != HumanName.Cecil) && (p.name != HumanName.Dan)).forEach(p => {
+            baseEffects[0].changedFondness.push([[p.name, HumanName.Cecil], -2])
+            baseEffects[0].changedFondness.push([[p.name, HumanName.Dan], -1])
+        })
+        return baseEffects;
+    }
 })
 
 levels.push(

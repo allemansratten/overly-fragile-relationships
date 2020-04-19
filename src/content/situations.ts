@@ -230,7 +230,8 @@ export class Complex implements Situation {
     public relTagsReq: Array<[Couple, RelationshipTag]> = Array()
     public relTagsBan: Array<[Couple, RelationshipTag]> = Array()
 
-    public effect: Array<SituationEffect> = Array()
+    public effects: Array<SituationEffect> = Array()
+    public processEffects?: (trip: TripSummary, currentState: PeopleGraph, baseEffects: Array<SituationEffect>) => Array<SituationEffect>
 
     constructor(
         fields?: {
@@ -238,13 +239,16 @@ export class Complex implements Situation {
             allowedLocations?: Array<LocationName>,
             humTagsReq?: Array<[HumanName, HumanTag]>, humTagsBan?: Array<[HumanName, HumanTag]>,
             relTagsReq?: Array<[Couple, RelationshipTag]>, relTagsBan?: Array<[Couple, RelationshipTag]>,
-            effect?: Array<SituationEffect>,
+            effects?: Array<SituationEffect>,
+            processEffects?: (trip: TripSummary, currentState: PeopleGraph, baseEffects: Array<SituationEffect>) => Array<SituationEffect>
         }) {
         if (fields) Object.assign(this, fields)
     }
 
     public GetApplicableEffects(trip: TripSummary, currentState: PeopleGraph): Array<SituationEffect> {
-        return this.isApplicable(trip, currentState) ? this.effect : new Array()
+        return this.isApplicable(trip, currentState) 
+            ? this.processEffects ? this.processEffects(trip, currentState, this.effects) : this.effects 
+            : new Array()
     }
 
     public isApplicable(trip: TripSummary, currentState: PeopleGraph): boolean {
