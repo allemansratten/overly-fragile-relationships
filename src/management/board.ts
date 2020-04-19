@@ -68,11 +68,11 @@ export class BoardScene extends Phaser.Scene {
 
     public goOut(location: LocationName) {
         if (this.tripSummary.goPeople.length <= 1) {
-            if (location == 'Park') {
+            if (location == 'Hiking') {
                 new ModalDialog(this, `You can't go to the park alone.`)
             } else if (location == 'Bowling') {
                 new ModalDialog(this, `You can't go bowling alone.`)
-            } else if (location == 'Drink') {
+            } else if (location == 'Drinking') {
                 new ModalDialog(this, `You can't go drinking alone.`)
             }
             return
