@@ -111,9 +111,7 @@ export class NobodyLikesAngryDrunk implements Situation {
 
 export class MutualCrush implements Situation {
     public GetApplicableEffects(trip: TripSummary, currentState: PeopleGraph): Array<SituationEffect> {
-        // I know this is _terribly_ inefficient :(
         let effects = new Array()
-
         let crushesMap: Map<HumanName, HumanName[]> = new Map()
 
         for (const person of trip.goPeople) {

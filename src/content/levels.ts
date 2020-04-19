@@ -88,7 +88,7 @@ const flavieFomo2 = new Complex({    //Flavie FOMO event 2
     effects: [new SituationEffect().changeFondness([[[HumanName.Flavie, HumanName.You], -10]])
         .setDescription('Flavie came uninvited, chewed you out, and left. Forever.')],
 })
-const bowlingbrawl = new Complex({    // Bowling Brawl     TODO: efekt na ostatní co tam jdou
+const bowlingbrawl = new Complex({    
     humReq: [HumanName.Cecil, HumanName.Dan],
     allowedLocations: [LocationName.Bowling],
     relTagsBan: [[[HumanName.Cecil, HumanName.Dan], RelationshipTag.bowling_brawl]],
