@@ -3,7 +3,7 @@ import { TripSummary } from '../model/tripSummary'
 import { PhoneStage } from './phone_stage'
 import { HumanStage } from './human_stage'
 import { LocationStage } from './location_stage'
-import { Location } from '../model/location'
+import { LocationName } from '../content/locations'
 import {Level} from "../model/level"
 
 export class BoardScene extends Phaser.Scene {
@@ -29,9 +29,15 @@ export class BoardScene extends Phaser.Scene {
         this.transitionFader = this.add.rectangle(0, 0, 800, 500, 0x0)
             .setOrigin(0, 0)
             .setDepth(2001)
+
+        let music = this.sound.add('main_music', {
+            volume: 0.5,
+            loop: true,
+        }).play()
     }
 
     public create() {
+
         this.add.image(0, 0, 'board_background')
             .setOrigin(0, 0)
 
@@ -59,9 +65,8 @@ export class BoardScene extends Phaser.Scene {
         })
     }
 
-    public goOut(location: Location) {
-        if (!this.tripSummary.prepare(location))
-            return
+    public goOut(location: LocationName) {
+        this.tripSummary.prepare(location)
         let message = this.level.goOut(this.tripSummary)
         this.tripFader!.input.enabled = false
         this.locationStage!.enable(false)

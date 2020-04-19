@@ -161,7 +161,8 @@ export class HumanStage {
                     .from(peopleGraph.getRelTags([human1.name, human2.name]))
                     .filter((x) => relationshipTagMap.has(x))
                     
-                if (tags.length != 0) {
+                for(let i in tags) {
+                    let tag = tags[i]
                     let line = this.scene.add.line(0, 0,
                         this.positionsInner[hi1].x - 5, this.positionsInner[hi1].y + 60,
                         this.positionsInner[hi2].x - 5, this.positionsInner[hi2].y + 60,
@@ -171,9 +172,9 @@ export class HumanStage {
                     
                     let avgX = (this.positionsInner[hi1].x + this.positionsInner[hi2].x) / 2
                     let avgY = (this.positionsInner[hi1].y + this.positionsInner[hi2].y) / 2 + 60
-                    let symbol = this.scene.add.image(avgX, avgY, 'rel_tags')
-                       .setFrame(Array.from(tags)[0])
-                    symbol.setPosition(avgX, avgY)
+                    let symbol = this.scene.add.image(avgX+Number(i)*27, avgY, 'rel_tags')
+                       .setFrame(tag)
+                       .setDisplaySize(25, 25)
                     group.add(symbol)
                 }
             }
