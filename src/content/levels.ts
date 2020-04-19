@@ -150,7 +150,7 @@ levels.push(
 
 
 
-
+            bowlingbrawl,
             flavieFomo2, // 2 must be before 1 (else both happen simultaneously)
             flavieFomo1,
             danTwoGirlfriendsBusted,
