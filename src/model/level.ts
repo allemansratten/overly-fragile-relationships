@@ -45,10 +45,11 @@ export class Level {
         // Construct msgs for effects
 
         let {perPersonRelMsg, perPersonHumMsg} = this.reduceEffectsPerPerson(effects)
-        let effectsMsgs = this.createEffectsMsgs(perPersonRelMsg, perPersonHumMsg)
-        effectsMsgs.concat(effects.map(effect => {
+        let effectsMsgs = effects.map(effect => {
             return effect.description
-        }))
+        })
+        effectsMsgs.push("") // separator dummy
+        effectsMsgs = effectsMsgs.concat(this.createEffectsMsgs(perPersonRelMsg, perPersonHumMsg))
 
         let effectMsg = effectsMsgs.length > 0
             ? effectsMsgs.join('\n')
