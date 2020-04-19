@@ -8,7 +8,7 @@ export class LocationStage {
     constructor(scene: BoardScene, level: Level) {
         // scene.add.rectangle(680, 0, 120, 500, 0xcccccc)
         //     .setOrigin(0, 0)
-        let text = scene.add.text(700, 10, 'Go to:', { fill: 'black', fontFamily: 'Roboto' })
+        let text = scene.add.text(700, 20, 'Go to:', { fill: 'black', fontFamily: 'Roboto' })
 
 
         for (let i in level.locations) {
