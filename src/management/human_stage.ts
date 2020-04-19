@@ -125,20 +125,24 @@ export class HumanStage {
 
     public display(human: Human, index: number) {
         for(let i in this.allPeopleLines) {
+            // I very much admit that this is super slow and unoptimized
+            // BUT WTF IS NOT GROUP ALPHA EXPOSED PUBLICLY
             if(Number(i) == index) {
-                // this.scene.tweens.add({
-                //     targets: this.allPeopleLines[i],
-                //     alpha: { from: 0, to: 1 },
-                //     duration: 500,
-                // })
-                this.allPeopleLines[i].setAlpha(1)
+                for(let child of this.allPeopleLines[i].children.getArray()) {
+                    this.scene.tweens.add({
+                        targets: child,
+                        alpha: { from: (child as Phaser.GameObjects.Line).alpha, to: 1 },
+                        duration: 300,
+                    })
+                }
             } else {
-                // this.scene.tweens.add({
-                //     targets: this.allPeopleLines[i],
-                //     alpha: { from: 1, to: 0 },
-                //     duration: 500,
-                // })
-                this.allPeopleLines[i].setAlpha(0)
+                for(let child of this.allPeopleLines[i].children.getArray()) {
+                    this.scene.tweens.add({
+                        targets: child,
+                        alpha: { from: (child as Phaser.GameObjects.Line).alpha, to: 0 },
+                        duration: 300,
+                    })
+                }
             }
         }
         this.scene.phone!.display(human, Number(index))
