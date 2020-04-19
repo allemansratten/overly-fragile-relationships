@@ -50,6 +50,51 @@ function flattenRelationshipList(relationships: Array<Relationship | [Relationsh
     return res
 }
 
+const danTwoGirlfriendsBusted = new Complex({
+    humReq: [HumanName.Dan, HumanName.Beatrice, HumanName.Flavie],
+    relTagsReq: [
+        [[HumanName.Dan, HumanName.Beatrice], RelationshipTag.lover], // should be symmetric anyways
+        [[HumanName.Dan, HumanName.Flavie], RelationshipTag.lover],
+    ],
+    effect: [
+        SituationUtils.breakUp([HumanName.Dan, HumanName.Beatrice]),
+        SituationUtils.breakUp([HumanName.Dan, HumanName.Flavie]),
+        new SituationEffect()
+            .changeFondness([
+                [[HumanName.Dan, HumanName.You], -5],
+                [[HumanName.Beatrice, HumanName.Dan], -7],
+                [[HumanName.Dan, HumanName.Beatrice], -2],
+                [[HumanName.Flavie, HumanName.Dan], -7],
+                [[HumanName.Dan, HumanName.Flavie], -2],
+                [[HumanName.Flavie, HumanName.Beatrice], +4],
+                [[HumanName.Beatrice, HumanName.Flavie], +4],
+            ])
+            .setDescription("Uh oh... Dan was dating Beatrice and Flavie at the same time," +
+                " and now they found out! No more Dan Juan."),
+    ],
+})
+
+const flavieFomo1 = new Complex({    //Flavie FOMO event 1
+    humReq: [HumanName.Alex, HumanName.Beatrice, HumanName.Cecil, HumanName.Dan, HumanName.Eric],
+    humTagsBan: [[HumanName.Flavie, HumanTag.flavie_angry]],
+    effect: [new SituationEffect().changeFondness([
+        [[HumanName.Flavie, HumanName.Alex], -1],
+        [[HumanName.Flavie, HumanName.Beatrice], -1],
+        [[HumanName.Flavie, HumanName.Cecil], -1],
+        [[HumanName.Flavie, HumanName.Dan], -1],
+        [[HumanName.Flavie, HumanName.Eric], -1],
+        [[HumanName.Flavie, HumanName.You], -3],
+    ]).addHumTags([[HumanName.Flavie, HumanTag.flavie_angry]])
+        .setDescription('Flavie is angry that you invited everybody except her.')],
+})
+
+const flavieFomo2 = new Complex({    //Flavie FOMO event 2
+    humReq: [HumanName.Alex, HumanName.Beatrice, HumanName.Cecil, HumanName.Dan, HumanName.Eric],
+    humTagsReq: [[HumanName.Flavie, HumanTag.flavie_angry]],
+    effect: [new SituationEffect().changeFondness([[[HumanName.Flavie, HumanName.You], -10]])
+        .setDescription('Flavie came uninvited, chewed you out, and left. Forever.')],
+})
+
 levels.push(
     new Level(
         [
@@ -65,11 +110,10 @@ levels.push(
         flattenRelationshipList([
             mutualRelationship([HumanName.Alex, HumanName.Beatrice], [RelationshipTag.crush]),
             mutualRelationship([HumanName.Alex, HumanName.Cecil], [RelationshipTag.crush]),
-            new Relationship([HumanName.Dan, HumanName.Beatrice], new Set([RelationshipTag.ex, RelationshipTag.crush])),
-            new Relationship([HumanName.Dan, HumanName.You], new Set([RelationshipTag.ex])),
             mutualRelationship([HumanName.Eric, HumanName.Alex], [RelationshipTag.crush]),
             mutualRelationship([HumanName.Eric, HumanName.Beatrice], [RelationshipTag.crush]),
-            mutualRelationship([HumanName.Dan, HumanName.Flavie], [RelationshipTag.eternal_couple_apart_1]),
+            mutualRelationship([HumanName.Dan, HumanName.Beatrice], [RelationshipTag.crush]),
+            mutualRelationship([HumanName.Dan, HumanName.Flavie], [RelationshipTag.crush]),
         ]),
         [
             [HumanName.Beatrice, HumanTag.promiscuous],
@@ -90,39 +134,25 @@ levels.push(
             new NobodyLikesAngryDrunk(),
             new MutualCrush(),
             new EternalCouple(HumanName.Dan, HumanName.Flavie),
-            new Complex({    //Flavie FOMO event 2
-                humReq: [HumanName.Alex, HumanName.Beatrice, HumanName.Cecil, HumanName.Dan, HumanName.Eric],
-                humTagsReq: [[HumanName.Flavie, HumanTag.flavie_angry]],
-                effect: [new SituationEffect().changeFondness([[[HumanName.Flavie, HumanName.You], -10]])
-                .setDescription('Flavie came uninvited, chewed you out, and left. Forever.')]
-            }),
-            new Complex({    //Flavie FOMO event 1
-                humReq: [HumanName.Alex, HumanName.Beatrice, HumanName.Cecil, HumanName.Dan, HumanName.Eric],
-                humTagsBan: [[HumanName.Flavie, HumanTag.flavie_angry]],
-                effect: [new SituationEffect().changeFondness([
-                    [[HumanName.Flavie, HumanName.Alex], -1],
-                    [[HumanName.Flavie, HumanName.Beatrice], -1],
-                    [[HumanName.Flavie, HumanName.Cecil], -1],
-                    [[HumanName.Flavie, HumanName.Dan], -1],
-                    [[HumanName.Flavie, HumanName.Eric], -1],
-                    [[HumanName.Flavie, HumanName.You], -3]
-                ]).addHumTags([[HumanName.Flavie, HumanTag.flavie_angry]])
-                .setDescription('Flavie is angry that you invited everybody except her.')]
-            }),
+
             new Complex({    // Bowling Brawl     TODO: efekt na ostatní co tam jdou
                 humReq: [HumanName.Cecil, HumanName.Dan],
                 allowedLocations: [LocationName.Bowling],
                 relTagsBan: [[[HumanName.Cecil, HumanName.Dan], RelationshipTag.bowling_brawl]],
                 effect: [new SituationEffect().changeFondness([
                     [[HumanName.Cecil, HumanName.Dan], -2],
-                    [[HumanName.Dan, HumanName.Cecil,],-2]])
-                .addRelTags([[[HumanName.Cecil, HumanName.Dan], RelationshipTag.bowling_brawl]])
-                .setDescription('Cecil and Dan bet who could score the most in bowling.' + 
-                    ' Dan thought he would win easily, but Cecil did.' + 
-                    ' So Dan accused him of cheating, and they got into a fight!')]
+                    [[HumanName.Dan, HumanName.Cecil,], -2]])
+                    .addRelTags([[[HumanName.Cecil, HumanName.Dan], RelationshipTag.bowling_brawl]])
+                    .setDescription('Cecil and Dan bet who could score the most in bowling.' +
+                        ' Dan thought he would win easily, but Cecil did.' +
+                        ' So Dan accused him of cheating, and they got into a fight!')]
 
             }),
 
+
+            flavieFomo2, // 2 must be before 1 (else both happen simultaneously)
+            flavieFomo1,
+            danTwoGirlfriendsBusted,
         ],
     ),
 )        

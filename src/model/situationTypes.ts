@@ -14,7 +14,7 @@ export class SituationUtils {
             couple,
             [RelationshipTag.lover],
             [RelationshipTag.crush, RelationshipTag.ex],
-            `${a} and ${b} started dating!`
+            `${a} and ${b} started dating!`,
         )
     }
 
@@ -24,7 +24,7 @@ export class SituationUtils {
             couple,
             [RelationshipTag.ex],
             [RelationshipTag.lover],
-            `Did you hear? ${a} and ${b} broke up!`
+            `Did you hear? ${a} and ${b} broke up!`,
         )
     }
 
@@ -32,7 +32,7 @@ export class SituationUtils {
         couple: Couple,
         addedRelTags: RelationshipTag[],
         removedRelTags: RelationshipTag[],
-        description?: string
+        description?: string,
     ): SituationEffect {
         const [a, b] = couple
 
@@ -98,8 +98,8 @@ export class NobodyLikesAngryDrunk implements Situation {
                     // TODO: make this be one effect (so that we have one description and can say "the others weren't happy"
                     effects.push(
                         new SituationEffect(
-                            `${person.name} got drunk and angry; ${otherPerson.name} wasn't happy about that.`
-                        ).changeFondness([[[otherPerson.name, person.name], -1]])
+                            `${person.name} got drunk and angry; ${otherPerson.name} wasn't happy about that.`,
+                        ).changeFondness([[[otherPerson.name, person.name], -1]]),
                     )
                 })
 
@@ -144,39 +144,71 @@ export class EternalCouple implements Situation {
     a: HumanName
     b: HumanName
 
+    lastChange: number = 0
+    static CHANGE_AFTER = 3
+    together: boolean = false
+    nBreakups = 0
+    nMakeups = 0
+
     constructor(a: HumanName, b: HumanName) {
         this.a = a
         this.b = b
     }
 
-    public GetApplicableEffects(trip: TripSummary, currentState: PeopleGraph): Array<SituationEffect> {
+    public GetApplicableEffects(trip: TripSummary, currentState: PeopleGraph, tripCount: number): Array<SituationEffect> {
         let relationships = currentState.getMutualRelationshipsBetween(this.a, this.b)
-        // TODO: this could break if they get together/break up in another way
-        let res = []
 
-        if (relationships.includes(RelationshipTag.eternal_couple_apart_3)) {
-            res.push(
-                SituationUtils.startToDate([this.a, this.b])
-                    .setDescription(`${this.a} and ${this.b} are back together again.`),
-                SituationUtils.changeRelationship(
-                    [this.a, this.b],
-                    [RelationshipTag.eternal_couple_apart_3],
-                    [RelationshipTag.eternal_couple_together_1],
-                )
-            )
-        } else if (relationships.includes(RelationshipTag.eternal_couple_together_3)) {
-            res.push(
-                SituationUtils.breakUp([this.a, this.b])
-                    .setDescription(`${this.a} and ${this.b} broke up again.`),
-                SituationUtils.changeRelationship(
-                    [this.a, this.b],
-                    [RelationshipTag.eternal_couple_together_3],
-                    [RelationshipTag.eternal_couple_apart_1],
-                )
-            )
+        if (!relationships.includes(RelationshipTag.ex) && !relationships.includes(RelationshipTag.lover)) {
+            // Not triggered yet
+            return []
         }
 
-        return res
+        const togetherNow = relationships.includes(RelationshipTag.lover)
+
+        if (tripCount > 0 && this.together != togetherNow) {
+            // Something has changed externally
+            this.lastChange = tripCount
+            this.together = togetherNow
+            return []
+        }
+
+        this.together = togetherNow
+
+        if (this.lastChange + EternalCouple.CHANGE_AFTER <= tripCount) {
+            this.lastChange = tripCount
+
+            let effect: SituationEffect
+            let description: string
+            let wrapperIndex: number
+
+            if (!this.together) {
+                effect = SituationUtils.startToDate([this.a, this.b])
+                description = `${this.a} and ${this.b} started dating`
+                wrapperIndex = this.nMakeups
+                this.nMakeups++
+            } else {
+                effect = SituationUtils.breakUp([this.a, this.b])
+                description = `${this.a} and ${this.b} broke up`
+                wrapperIndex = this.nBreakups
+                this.nBreakups++
+            }
+            const wrappedDescriptions = [
+                `${description}.`,
+                `${description} again.`,
+                `You won't believe this: ${description} again.`,
+                `${description}, yet again.`,
+                `${description}, to nobody's surprise.`,
+            ]
+
+            wrapperIndex = Math.min(wrapperIndex, wrappedDescriptions.length - 1)
+
+            effect.setDescription(wrappedDescriptions[wrapperIndex])
+
+
+            return [effect]
+        } else {
+            return []
+        }
     }
 }
 
@@ -201,7 +233,7 @@ export class Complex implements Situation {
             relTagsReq?: Array<[Couple, RelationshipTag]>, relTagsBan?: Array<[Couple, RelationshipTag]>,
             effect?: Array<SituationEffect>,
         }) {
-        if (fields) Object.assign(this, fields);
+        if (fields) Object.assign(this, fields)
     }
 
     public GetApplicableEffects(trip: TripSummary, currentState: PeopleGraph): Array<SituationEffect> {
@@ -227,19 +259,9 @@ export class Complex implements Situation {
     }
 }
 
+// Currently useless!
 export class TimerSituation implements Situation {
-    static relationshipChains = [
-        [
-            RelationshipTag.eternal_couple_apart_1,
-            RelationshipTag.eternal_couple_apart_2,
-            RelationshipTag.eternal_couple_apart_3,
-        ],
-        [
-            RelationshipTag.eternal_couple_together_1,
-            RelationshipTag.eternal_couple_together_2,
-            RelationshipTag.eternal_couple_together_3,
-        ],
-    ]
+    static relationshipChains = [[]]
 
     static getRelationshipSteps(): Map<RelationshipTag, RelationshipTag> {
         let res = new Map()

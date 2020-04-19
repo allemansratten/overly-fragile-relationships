@@ -80,5 +80,6 @@ export class SituationEffect {
         this.removedRelTags = this.removedRelTags.concat(effect.removedRelTags)
         this.changedFondness = this.changedFondness.concat(effect.changedFondness)
         this.newFutureSituations = this.newFutureSituations.concat(effect.newFutureSituations)
+        return this
     }
 }
