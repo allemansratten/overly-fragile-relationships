@@ -43,7 +43,7 @@ export class HumanStage {
 
             let image = scene.add.image(0, 0, 'portrait_small', i)
                 .setOrigin(0.5, -0.2)
-                .setInteractive({useHandCursor: true})
+                .setInteractive({ useHandCursor: true })
                 .on('pointerover', () => {
                     this.display(human, Number(i))
                 })
@@ -51,7 +51,7 @@ export class HumanStage {
             let circle = scene.add.ellipse(0, 0, 80, 80, 0xcccccc)
                 .setOrigin(0.5, 0.5)
                 .setAlpha((Number(i) == 0 ? this.CIRCLE_ALPHA_OK : this.CIRCLE_ALPHA_BD))
-                .setInteractive({useHandCursor: true})
+                .setInteractive({ useHandCursor: true })
                 .on('pointerover', () => {
                     this.display(human, Number(i))
                 })
@@ -62,7 +62,7 @@ export class HumanStage {
                 fontSize: '18px',
             })
                 .setOrigin(0.5, 0.5)
-                .setInteractive({useHandCursor: true})
+                .setInteractive({ useHandCursor: true })
                 .setAlpha(Number(i) == 0 ? this.TEXT_ALPHA_OK : this.TEXT_ALPHA_BD)
                 .on('pointerover', () => {
                     this.display(human, Number(i))
@@ -79,23 +79,23 @@ export class HumanStage {
                     if (scene.tripSummary.flipGoPeople(human)) {
                         scene.tweens.add({
                             targets: text,
-                            alpha: {from: this.TEXT_ALPHA_BD, to: this.TEXT_ALPHA_OK},
+                            alpha: { from: this.TEXT_ALPHA_BD, to: this.TEXT_ALPHA_OK },
                             duration: 500,
                         })
                         scene.tweens.add({
                             targets: circle,
-                            alpha: {from: this.CIRCLE_ALPHA_BD, to: this.CIRCLE_ALPHA_OK},
+                            alpha: { from: this.CIRCLE_ALPHA_BD, to: this.CIRCLE_ALPHA_OK },
                             duration: 500,
                         })
                     } else {
                         scene.tweens.add({
                             targets: text,
-                            alpha: {from: this.TEXT_ALPHA_OK, to: this.TEXT_ALPHA_BD},
+                            alpha: { from: this.TEXT_ALPHA_OK, to: this.TEXT_ALPHA_BD },
                             duration: 500,
                         })
                         scene.tweens.add({
                             targets: circle,
-                            alpha: {from: this.CIRCLE_ALPHA_OK, to: this.CIRCLE_ALPHA_BD},
+                            alpha: { from: this.CIRCLE_ALPHA_OK, to: this.CIRCLE_ALPHA_BD },
                             duration: 500,
                         })
                     }
@@ -123,6 +123,7 @@ export class HumanStage {
     }
 
     public display(human: Human, index: number) {
+        console.log(human)
         for (let i in this.allPeopleLines) {
             // I very much admit that this is super slow and unoptimized
             // BUT WTF IS NOT GROUP ALPHA EXPOSED PUBLICLY
@@ -130,7 +131,7 @@ export class HumanStage {
                 for (let child of this.allPeopleLines[i].children.getArray()) {
                     this.scene.tweens.add({
                         targets: child,
-                        alpha: {from: (child as Phaser.GameObjects.Line).alpha, to: 1},
+                        alpha: { from: (child as Phaser.GameObjects.Line).alpha, to: 1 },
                         duration: 300,
                     })
                 }
@@ -138,7 +139,7 @@ export class HumanStage {
                 for (let child of this.allPeopleLines[i].children.getArray()) {
                     this.scene.tweens.add({
                         targets: child,
-                        alpha: {from: (child as Phaser.GameObjects.Line).alpha, to: 0},
+                        alpha: { from: (child as Phaser.GameObjects.Line).alpha, to: 0 },
                         duration: 300,
                     })
                 }
@@ -154,11 +155,11 @@ export class HumanStage {
         // level is 0 to 10
         if (level <= 2) {
             return 0xde0000
-        } else if(level <= 4) {
+        } else if (level <= 4) {
             return 0xd46c6c
-        } else if(level <= 6) {
+        } else if (level <= 6) {
             return 0xa3a3a3
-        } else if(level <= 8) {
+        } else if (level <= 8) {
             return 0x70cc78
         } else {
             return 0x00de13
@@ -166,7 +167,7 @@ export class HumanStage {
     }
 
     public redrawLines(level: Level) {
-        for(let g of this.allPeopleLines) {
+        for (let g of this.allPeopleLines) {
             g.destroy(true)
         }
         this.allPeopleLines = []
@@ -180,12 +181,21 @@ export class HumanStage {
                 let human2 = level.humans[hi2]
                 if (hi1 == hi2)
                     continue
+
+                // change fw
+                let youChange = human1.name == 'You'
+                if (youChange) {
+                    let tmp = human2
+                    human2 = human1
+                    human1 = tmp
+                }
+
                 let tags = Array
                     .from(peopleGraph.getRelTags([human1.name, human2.name]))
                     .filter((x) => relationshipTagMap.has(x))
                 let fondness = peopleGraph.getFondness([human1.name, human2.name])
 
-                if(fondness != DEFAULT_FONDNESS || tags.length != 0) {
+                if (fondness != DEFAULT_FONDNESS || tags.length != 0) {
                     let line = this.scene.add.line(0, 0,
                         this.positionsInner[hi1].x - 5, this.positionsInner[hi1].y + 60,
                         this.positionsInner[hi2].x - 5, this.positionsInner[hi2].y + 60,
@@ -203,6 +213,13 @@ export class HumanStage {
                         .setFrame(tag)
                         .setDisplaySize(25, 25)
                     group.add(symbol)
+                }
+
+                // change back 
+                if (youChange) {
+                    let tmp = human2
+                    human2 = human1
+                    human1 = tmp
                 }
             }
             group.setAlpha(0)
