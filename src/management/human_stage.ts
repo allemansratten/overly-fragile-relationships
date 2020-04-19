@@ -184,16 +184,16 @@ export class HumanStage {
                     .filter((x) => relationshipTagMap.has(x))
                 let fondness = peopleGraph.getFondness([human1.name, human2.name])
 
+                let line = this.scene.add.line(0, 0,
+                    this.positionsInner[hi1].x - 5, this.positionsInner[hi1].y + 60,
+                    this.positionsInner[hi2].x - 5, this.positionsInner[hi2].y + 60,
+                    this.linearScaleBlack(fondness/10), 0.1)
+                line.setOrigin(0, 0)
+                    .setLineWidth(2)
+                group.add(line)
+
                 for (let i in tags) {
                     let tag = tags[i]
-                    let line = this.scene.add.line(0, 0,
-                        this.positionsInner[hi1].x - 5, this.positionsInner[hi1].y + 60,
-                        this.positionsInner[hi2].x - 5, this.positionsInner[hi2].y + 60,
-                        this.linearScaleBlack(fondness/10), 0.1)
-                    line.setOrigin(0, 0)
-                        .setLineWidth(2)
-                    group.add(line)
-
                     let avgX = (this.positionsInner[hi1].x + this.positionsInner[hi2].x) / 2
                     let avgY = (this.positionsInner[hi1].y + this.positionsInner[hi2].y) / 2 + 60
                     let symbol = this.scene.add.image(avgX + (Number(i) - tags.length / 2 + 0.4) * 27, avgY, 'rel_tags')
