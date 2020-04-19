@@ -4,6 +4,7 @@ import { HateGraph } from "../model/hateGraph"
 import { PeopleGraph } from "../model/peopleGraph"
 import { Human } from "../model/human"
 import { HumanName } from "../content/humans"
+import { relationshipTagMap } from "../content/entityTags"
 
 export class HumanStage {
     private allPeopleTexts: Array<Phaser.GameObjects.Text> = []
@@ -159,15 +160,18 @@ export class HumanStage {
                 let human2 = level.humans[hi2]
                 if (hi1 == hi2)
                     continue
-                let tags = peopleGraph.getRelTags([human1.name, human2.name])
-                if (tags.size != 0) {
+                let tags = Array
+                    .from(peopleGraph.getRelTags([human1.name, human2.name]))
+                    .filter((x) => relationshipTagMap.has(x))
+                    
+                if (tags.length != 0) {
                     let line = this.scene.add.line(0, 0,
                         this.positionsInner[hi1].x - 5, this.positionsInner[hi1].y + 60,
                         this.positionsInner[hi2].x - 5, this.positionsInner[hi2].y + 60,
                         0xffffff, 0.1)
                     line.setOrigin(0, 0)
                     group.add(line)
-
+                    
                     let avgX = (this.positionsInner[hi1].x + this.positionsInner[hi2].x) / 2
                     let avgY = (this.positionsInner[hi1].y + this.positionsInner[hi2].y) / 2 + 60
                     let symbol = this.scene.add.image(avgX, avgY, 'rel_tags')

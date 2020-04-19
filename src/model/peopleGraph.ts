@@ -136,6 +136,7 @@ export class Relationship {
         this.tags = tags ?? new Set<RelationshipTag>()
     }
 
+    // @deprecated
     public toString(): string {
         return `${HumanName[this.people[1]]}: ${Array.from(this.tags).map((x) => relationshipTagMap.get(x) ?? "?").join(', ')}`
     }

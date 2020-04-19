@@ -1,5 +1,5 @@
 import { Human } from '../model/human'
-import { humanTagMap } from '../content/entityTags'
+import { humanTagMap, relationshipTagMap, RelationshipTag } from '../content/entityTags'
 import { HumanName } from '../content/humans'
 
 export class PhoneStage {
@@ -19,11 +19,24 @@ export class PhoneStage {
 
     public display(human: Human, index: number) {
         this.portrait.setFrame(index)
-        let tagString = Array.from(human.tags)
+        let humString = Array.from(human.tags)
+            .filter(x => humanTagMap.has(x))
             .map((x) => humanTagMap.get(x))
-            .filter(x => x !== undefined)
             .join(', ')
-        let relString = human.relationships.filter(x => x.tags.size != 0).join('\n\n')
-        this.text.setText(`${HumanName[human.name]}\n${tagString}\n\n${relString}`)
+
+        // This could be perhaps done in a functional way, but this seems more readable
+        let relString = []
+        for(let relationship of human.relationships) {
+            let relStringIndividual : Array<string> = []
+            relationship.tags.forEach((x) => {
+                if(relationshipTagMap.has(x)) {
+                    relStringIndividual.push(relationshipTagMap.get(x) as string)
+                }
+            })
+            if(relStringIndividual.length != 0) {
+                relString.push(`${relationship.people[1]}: ${relStringIndividual.join(', ')}`)
+            }
+        }
+        this.text.setText(`${HumanName[human.name]}\n${humString}\n\n${relString.join('\n\n')}`)
     }
 }
