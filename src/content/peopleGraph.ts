@@ -90,10 +90,10 @@ export class PeopleGraph {
     }
 
     public getRelationshipsBetween(a: HumanName, b: HumanName): Array<RelationshipTag> {
-        return Array.from(this.relationshipTags.get(this.toEdgeKey([a, b]))!)
+        return Array.from(this.relationshipTags.get(this.toEdgeKey([a, b])) ?? [])
     }
 
-    public getMutualRelationshipsBetween(a: HumanName, b: HumanName) {
+    public getMutualRelationshipsBetween(a: HumanName, b: HumanName): Array<RelationshipTag> {
         let ab = this.getRelationshipsBetween(a, b)
         let ba = this.getRelationshipsBetween(a, b)
 

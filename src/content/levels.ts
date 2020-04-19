@@ -68,26 +68,6 @@ levels.push(
         ]
         ,
         new HateGraph([
-            new Complex(
-                ['Alex', 'Beatrice'],
-                ['Cecil'],
-                locations,
-                [],
-                [],
-                [],
-                [[['Alex', 'Cecil'], RelationshipTag.lover]],
-                [SituationUtils.startToDate(["Alex", "Beatrice"])],
-            ),
-            new Complex(
-                ['Alex', 'Cecil'],
-                ['Beatrice'],
-                locations,
-                [],
-                [],
-                [],
-                [[['Alex', 'Beatrice'], RelationshipTag.lover]],
-                [SituationUtils.startToDate(["Alex", "Cecil"])],
-            ),
             new NobodyLikesAngryDrunk(),
             new MutualCrush(),
         ]),

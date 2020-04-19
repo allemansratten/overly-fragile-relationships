@@ -8,7 +8,7 @@ import { HumanTag, RelationshipTag } from "./entityTags"
 export class SituationUtils {
     public static startToDate(couple: CoupleKey) {
         const [a, b] = couple
-    
+
         return new SituationEffect(
             `${a} and ${b} started dating!`,
             [
@@ -34,7 +34,7 @@ export class SimpleSituation implements Situation {
         haveToBePresent: Array<HumanName>,
         cannotBePresent: Array<HumanName>,
         allowedLocations: Array<Location>,
-        effect: Array<SituationEffect>
+        effect: Array<SituationEffect>,
     ) {
 
         this.haveToBePresent = haveToBePresent
@@ -70,15 +70,15 @@ export class NobodyLikesAngryDrunk implements Situation {
                     effects.push(new SituationEffect(
                         "Nobody likes drunk people",
                         [
-                            [[otherPerson.name, person.name], RelationshipTag.dislike]
-                        ]
+                            [[otherPerson.name, person.name], RelationshipTag.dislike],
+                        ],
                     ))
-                });
+                })
 
             }
-        });
+        })
         return effects
-    }   
+    }
 }
 
 export class MutualCrush implements Situation {
@@ -86,18 +86,27 @@ export class MutualCrush implements Situation {
         // I know this is _terribly_ inefficient :(
         let effects = new Array()
 
-        trip.goPeople.forEach(person => {
-            let personsRelationshipsOut = currentState.getOutRelationships(person.name)
-            let personalRelationshipsIn = currentState.getInRelationships(person.name)
-            personsRelationshipsOut.filter(outRel => outRel.tags.has(RelationshipTag.crush)).forEach(outRelCrush => {
-                if (personalRelationshipsIn.filter(inRel => inRel.people[0] == outRelCrush.people[1] && inRel.tags.has(RelationshipTag.crush))) {
+        let crushesMap: Map<HumanName, HumanName[]> = new Map()
+
+        for (const person of trip.goPeople) {
+            let crushesPresent = trip.goPeople.filter(
+                b => currentState.getMutualRelationshipsBetween(person.name, b.name).includes(RelationshipTag.crush),
+            ).map(h => h.name)
+            crushesMap.set(person.name, crushesPresent)
+        }
+
+        for (const person of trip.goPeople) {
+            const crushes = crushesMap.get(person.name)!
+            if (crushes.length === 1) {
+                const crush = crushes[0]
+                // Break symmetry by comparing names
+                if (crushesMap.get(crush)!.length === 1 && crush <= person.name) {
                     effects.push(
-                        SituationUtils.startToDate([person.name, outRelCrush.people[1]])
+                        SituationUtils.startToDate([person.name, crush]),
                     )
                 }
-                
-            });
-        })
+            }
+        }
 
         return effects
     }
@@ -121,7 +130,7 @@ export class Complex implements Situation {
         allowedLocations: Array<Location>,
         humTagsReq: Array<[HumanName, HumanTag]>, humTagsBan: Array<[HumanName, HumanTag]>,
         relTagsReq: Array<[CoupleKey, RelationshipTag]>, relTagsBan: Array<[CoupleKey, RelationshipTag]>,
-        effect: Array<SituationEffect>
+        effect: Array<SituationEffect>,
     ) {
 
         this.humReq = haveToBePresent
