@@ -51,7 +51,7 @@ export class BoardScene extends Phaser.Scene {
             .setDepth(1001)
             .setAlpha(0)
             .setAlign('center')
-            .setWordWrapWidth(400)
+            .setWordWrapWidth(550)
             .setOrigin(0.5, 0.5)
 
         this.locationStage = new LocationStage(this, this.level)
