@@ -1,9 +1,9 @@
 import { Human } from './human'
-import { Location } from './location'
+import { LocationName } from '../content/locations'
 
 export class TripSummary {
     public goPeople: Array<Human> = new Array<Human>()
-    public goLocation?: Location
+    public goLocation?: LocationName
 
     constructor(specialGuest: Human) {
         this.goPeople.push(specialGuest)
@@ -26,12 +26,7 @@ export class TripSummary {
         }
     }
 
-    public prepare(location: Location): boolean {
+    public prepare(location: LocationName) {
         this.goLocation = location
-        if (this.goPeople.length +1 < this.goLocation.limit.min)
-            return false
-        if (this.goPeople.length +1 > this.goLocation.limit.max)
-            return false
-        return true
     }
 }

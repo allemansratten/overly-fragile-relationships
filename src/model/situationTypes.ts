@@ -1,7 +1,6 @@
 import { Situation, SituationEffect } from "./hateGraph"
 import { TripSummary } from "./tripSummary"
 import { CoupleKey, PeopleGraph } from "./peopleGraph"
-import { Location } from "./location"
 import { HumanTag, RelationshipTag } from "../content/entityTags"
 import { HumanName } from "../content/humans"
 import { LocationName } from "../content/locations"
@@ -55,14 +54,14 @@ export class SituationUtils {
 export class SimpleSituation implements Situation {
     private haveToBePresent: Array<HumanName>
     private cannotBePresent: Array<HumanName>
-    private allowedLocations: Array<Location>
+    private allowedLocations: Array<LocationName>
 
     public effect: Array<SituationEffect>
 
     constructor(
         haveToBePresent: Array<HumanName>,
         cannotBePresent: Array<HumanName>,
-        allowedLocations: Array<Location>,
+        allowedLocations: Array<LocationName>,
         effect: Array<SituationEffect>,
     ) {
 
@@ -81,13 +80,13 @@ export class SimpleSituation implements Situation {
 
         return this.haveToBePresent.every(hp => namesPresent.includes(hp)) &&
             this.cannotBePresent.every(cp => !namesPresent.includes(cp)) &&
-            this.allowedLocations.some(loc => loc.name == trip.goLocation?.name)
+            this.allowedLocations.some(loc => loc == trip.goLocation)
     }
 }
 
 export class NobodyLikesAngryDrunk implements Situation {
     public GetApplicableEffects(trip: TripSummary, currentState: PeopleGraph): Array<SituationEffect> {
-        if (trip.goLocation!.name != LocationName.Drink) {
+        if (trip.goLocation != LocationName.Drink) {
             return new Array()
         }
 
@@ -184,7 +183,7 @@ export class EternalCouple implements Situation {
 export class Complex implements Situation {
     public humReq: Array<HumanName> = Array()
     public humBan: Array<HumanName> = Array()
-    public allowedLocations: Array<Location> = Array()
+    public allowedLocations: Array<LocationName> = Array()
 
     public humTagsReq: Array<[HumanName, HumanTag]> = Array()
     public humTagsBan: Array<[HumanName, HumanTag]> = Array()
@@ -197,7 +196,7 @@ export class Complex implements Situation {
     constructor(
         fields?: {
             haveToBePresent?: Array<HumanName>, cannotBePresent?: Array<HumanName>,
-            allowedLocations?: Array<Location>,
+            allowedLocations?: Array<LocationName>,
             humTagsReq?: Array<[HumanName, HumanTag]>, humTagsBan?: Array<[HumanName, HumanTag]>,
             relTagsReq?: Array<[CoupleKey, RelationshipTag]>, relTagsBan?: Array<[CoupleKey, RelationshipTag]>,
             effect?: Array<SituationEffect>,
@@ -214,7 +213,7 @@ export class Complex implements Situation {
 
         // If no locations are set, this means all locations are allowed
         let locationOk = (this.allowedLocations.length === 0)
-            || this.allowedLocations.some(loc => loc.name == trip.goLocation?.name)
+            || this.allowedLocations.some(loc => loc == trip.goLocation)
 
         return locationOk &&
             this.humReq.every(hp => namesPresent.includes(hp)) &&

@@ -6,15 +6,14 @@ import { HumanTag, RelationshipTag } from "./entityTags"
 import { EternalCouple, MutualCrush, NobodyLikesAngryDrunk, TimerSituation } from "../model/situationTypes"
 import { HumanName } from "./humans"
 import { LocationName } from "./locations"
-import { Location } from "../model/location"
 
 export let levels: Array<Level> = []
 
-let locations: Location[] = [
-    {name: LocationName.Bowling, limit: {min: 2, max: 5}},
-    {name: LocationName.Drink, limit: {min: 2, max: 4}},
-    {name: LocationName.Park, limit: {min: 2, max: 6}},
-    {name: LocationName.Movie, limit: {min: 2, max: 6}},
+let locations: LocationName[] = [
+    LocationName.Bowling,
+    LocationName.Drink,
+    LocationName.Park,
+    LocationName.Movie,
 ]
 
 // You is always on the zeroth position

@@ -1,5 +1,5 @@
 import { Human } from "./human"
-import { Location } from "./location"
+import { LocationName } from "../content/locations"
 import { TripSummary } from "./tripSummary"
 import { PeopleGraph, Relationship } from "./peopleGraph"
 import { HateGraph, SituationEffect } from "./hateGraph"
@@ -9,13 +9,13 @@ import { HumanName } from "../content/humans"
 
 export class Level {
     public humans: Array<Human>
-    public locations: Array<Location>
+    public locations: Array<LocationName>
 
     public friendshipManager: FriendshipManager
 
     constructor(
         humans: Array<Human>,
-        locations: Array<Location>,
+        locations: Array<LocationName>,
         relationships: Array<Relationship>,
         initialTags: Array<[HumanName, HumanTag]>,
         hateGraph: HateGraph,
@@ -64,7 +64,7 @@ export class Level {
 
         // Construct final msg
         let friendList: string = tripSummary.goPeople.map((human: Human) => human.name).join(', ')
-        let statusMessage = `You went out to ${tripSummary.goLocation!.name} with ${friendList}.\n${effectMsg}`
+        let statusMessage = `You went out to ${tripSummary.goLocation} with ${friendList}.\n${effectMsg}`
 
         return statusMessage
     }

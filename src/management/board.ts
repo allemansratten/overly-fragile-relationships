@@ -3,7 +3,7 @@ import { TripSummary } from '../model/tripSummary'
 import { PhoneStage } from './phone_stage'
 import { HumanStage } from './human_stage'
 import { LocationStage } from './location_stage'
-import { Location } from '../model/location'
+import { LocationName } from '../content/locations'
 import {Level} from "../model/level"
 
 export class BoardScene extends Phaser.Scene {
@@ -65,9 +65,8 @@ export class BoardScene extends Phaser.Scene {
         })
     }
 
-    public goOut(location: Location) {
-        if (!this.tripSummary.prepare(location))
-            return
+    public goOut(location: LocationName) {
+        this.tripSummary.prepare(location)
         let message = this.level.goOut(this.tripSummary)
         this.tripFader!.input.enabled = false
         this.locationStage!.enable(false)

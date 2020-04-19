@@ -22,7 +22,7 @@ export class LocationStage {
                     scene.tripSummary.goLocation = location
                 })
             this.allLocationImage.push(img)
-            let text = scene.add.text(685, 50 + Number(i) * 110, `${location.name}`, { fill: 'black', fontFamily: 'Roboto' })
+            let text = scene.add.text(685, 50 + Number(i) * 110, `${location}`, { fill: 'black', fontFamily: 'Roboto' })
         }
     }
 
