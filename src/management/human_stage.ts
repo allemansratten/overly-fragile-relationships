@@ -189,7 +189,7 @@ export class HumanStage {
                     let line = this.scene.add.line(0, 0,
                         this.positionsInner[hi1].x - 5, this.positionsInner[hi1].y + 60,
                         this.positionsInner[hi2].x - 5, this.positionsInner[hi2].y + 60,
-                        this.linearScaleBlack(fondness/10), 0.1)
+                        this.linearScaleBlack(fondness), 0.3)
                     line.setOrigin(0, 0)
                         .setLineWidth(2)
                     group.add(line)
