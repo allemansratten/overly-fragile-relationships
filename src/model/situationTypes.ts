@@ -1,6 +1,6 @@
 import { Situation, SituationEffect } from "./situation"
 import { TripSummary } from "./tripSummary"
-import { CoupleKey, PeopleGraph } from "./peopleGraph"
+import { Couple, PeopleGraph } from "./peopleGraph"
 import { HumanTag, RelationshipTag } from "../content/entityTags"
 import { HumanName } from "../content/humans"
 import { LocationName } from "../content/locations"
@@ -8,7 +8,7 @@ import { LocationName } from "../content/locations"
 
 export class SituationUtils {
 
-    public static startToDate(couple: CoupleKey): SituationEffect {
+    public static startToDate(couple: Couple): SituationEffect {
         const [a, b] = couple
         return this.changeRelationship(
             couple,
@@ -18,7 +18,7 @@ export class SituationUtils {
         )
     }
 
-    public static breakUp(couple: CoupleKey): SituationEffect {
+    public static breakUp(couple: Couple): SituationEffect {
         const [a, b] = couple
         return this.changeRelationship(
             couple,
@@ -29,14 +29,14 @@ export class SituationUtils {
     }
 
     public static changeRelationship(
-        couple: CoupleKey,
+        couple: Couple,
         addedRelTags: RelationshipTag[],
         removedRelTags: RelationshipTag[],
         description?: string,
     ): SituationEffect {
         const [a, b] = couple
 
-        function broadcast(tags: RelationshipTag[]): Array<[CoupleKey, RelationshipTag]> {
+        function broadcast(tags: RelationshipTag[]): Array<[Couple, RelationshipTag]> {
             let res = new Array
             for (const tag of tags) {
                 res.push([[a, b], tag])
@@ -230,17 +230,17 @@ export class Complex implements Situation {
     public humTagsReq: Array<[HumanName, HumanTag]> = Array()
     public humTagsBan: Array<[HumanName, HumanTag]> = Array()
 
-    public relTagsReq: Array<[CoupleKey, RelationshipTag]> = Array()
-    public relTagsBan: Array<[CoupleKey, RelationshipTag]> = Array()
+    public relTagsReq: Array<[Couple, RelationshipTag]> = Array()
+    public relTagsBan: Array<[Couple, RelationshipTag]> = Array()
 
     public effect: Array<SituationEffect> = Array()
 
     constructor(
         fields?: {
-            haveToBePresent?: Array<HumanName>, cannotBePresent?: Array<HumanName>,
+            humReq?: Array<HumanName>, humBan?: Array<HumanName>,
             allowedLocations?: Array<LocationName>,
             humTagsReq?: Array<[HumanName, HumanTag]>, humTagsBan?: Array<[HumanName, HumanTag]>,
-            relTagsReq?: Array<[CoupleKey, RelationshipTag]>, relTagsBan?: Array<[CoupleKey, RelationshipTag]>,
+            relTagsReq?: Array<[Couple, RelationshipTag]>, relTagsBan?: Array<[Couple, RelationshipTag]>,
             effect?: Array<SituationEffect>,
         }) {
         if (fields) Object.assign(this, fields)
@@ -299,8 +299,8 @@ export class TimerSituation implements Situation {
         const relationships = currentState.getAllRelationships()
         const steps = TimerSituation.getRelationshipSteps()
 
-        let addedRelTags: Array<[CoupleKey, RelationshipTag]> = []
-        let removedRelTags: Array<[CoupleKey, RelationshipTag]> = []
+        let addedRelTags: Array<[Couple, RelationshipTag]> = []
+        let removedRelTags: Array<[Couple, RelationshipTag]> = []
 
         for (const r of relationships) {
             for (const tag of Array.from(r.tags)) {

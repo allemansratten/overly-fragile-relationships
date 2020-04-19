@@ -2,8 +2,8 @@ import { Human } from "./human"
 import { HumanTag, RelationshipTag, relationshipTagMap } from "../content/entityTags"
 import { HumanName } from "../content/humans"
 
-type EdgeKey = string
-export type CoupleKey = [HumanName, HumanName]
+export type EdgeKey = string
+export type Couple = [HumanName, HumanName]
 
 export const MIN_FONDNESS = 0
 export const DEFAULT_FONDNESS = 5
@@ -14,19 +14,17 @@ export class PeopleGraph {
     private fondness: Map<EdgeKey, number> = new Map()
     private humansTags: Map<HumanName, Set<HumanTag>> = new Map()
 
-    private oriented: Boolean = true
-
     constructor(
         people: Human[] = [],
         initialRelationships: Array<Relationship> = [],
         initialTags: Array<[HumanName, HumanTag]>,
-        initialFondness: Array<[CoupleKey, number]>,
+        initialFondness: Array<[Couple, number]>,
     ) {
         people.forEach(h => {
             people.forEach(hh => {
                 if (h.name != hh.name) {
                     this.setRelTags([h.name, hh.name], new Set<RelationshipTag>())
-                    this.fondness.set(this.toEdgeKey([h.name, hh.name]), DEFAULT_FONDNESS)
+                    this.fondness.set(CoupleUtils.toEdgeKey([h.name, hh.name]), DEFAULT_FONDNESS)
                 }
             })
         })
@@ -42,7 +40,7 @@ export class PeopleGraph {
 
         initialFondness.forEach(([couple, fondness]) => {
             console.assert(MIN_FONDNESS <= fondness && fondness <= MAX_FONDNESS)
-            this.fondness.set(this.toEdgeKey(couple), fondness)
+            this.fondness.set(CoupleUtils.toEdgeKey(couple), fondness)
         })
     }
 
@@ -60,33 +58,38 @@ export class PeopleGraph {
         return this.humansTags.get(person) ?? new Set()
     }
 
-    public setRelTags(people: CoupleKey, tags: Set<RelationshipTag>) {
-        let graphKey = this.toEdgeKey(people)
+    public setRelTags(people: Couple, tags: Set<RelationshipTag>) {
+        let graphKey = CoupleUtils.toEdgeKey(people)
         this.relationshipTags.set(graphKey, tags)
     }
 
-    public getRelTags(people: CoupleKey): Set<RelationshipTag> {
-        let graphKey = this.toEdgeKey(people)
+    public getRelTags(people: Couple): Set<RelationshipTag> {
+        let graphKey = CoupleUtils.toEdgeKey(people)
         return this.relationshipTags.get(graphKey)!
     }
 
-    public addRelTag(people: CoupleKey, tag: RelationshipTag) {
+    public addRelTag(people: Couple, tag: RelationshipTag) {
         this.getRelTags(people)?.add(tag)
     }
 
-    public removeRelTag(people: CoupleKey, tag: RelationshipTag): boolean {
+    public removeRelTag(people: Couple, tag: RelationshipTag): boolean {
         return this.getRelTags(people)?.delete(tag) ?? false
     }
 
-    public changeFondness(people: CoupleKey, change: number) {
-        let to = this.fondness.get(this.toEdgeKey(people))! + change
+    public changeFondness(people: Couple, change: number) {
+        let to = this.fondness.get(CoupleUtils.toEdgeKey(people))! + change
         to = Math.min(to, MAX_FONDNESS)
         to = Math.max(to, MIN_FONDNESS)
         this.setFondness(people, to)
     }
 
-    public setFondness(people: CoupleKey, to: number) {
-        this.fondness.set(this.toEdgeKey(people), to)
+    public setFondness(people: Couple, to: number) {
+        this.fondness.set(CoupleUtils.toEdgeKey(people), to)
+    }
+
+    public getFondness(people: Couple): number {
+        let edgeKey = CoupleUtils.toEdgeKey(people)
+        return this.fondness.get(edgeKey) ?? 0
     }
 
     public getOutRelationships(person: HumanName): Array<Relationship> {
@@ -94,7 +97,7 @@ export class PeopleGraph {
 
         this.relationshipTags.forEach((val, key) => {
             if (key.startsWith(HumanName[person])) {
-                result.push(new Relationship(this.fromEdgeKey(key), val))
+                result.push(new Relationship(CoupleUtils.fromEdgeKey(key), val))
             }
         })
 
@@ -106,7 +109,7 @@ export class PeopleGraph {
 
         this.relationshipTags.forEach((val, key) => {
             if (key.endsWith(HumanName[person])) {
-                result.push(new Relationship(this.fromEdgeKey(key), val))
+                result.push(new Relationship(CoupleUtils.fromEdgeKey(key), val))
             }
         })
 
@@ -114,7 +117,7 @@ export class PeopleGraph {
     }
 
     public getRelationshipsBetween(a: HumanName, b: HumanName): Array<RelationshipTag> {
-        return Array.from(this.relationshipTags.get(this.toEdgeKey([a, b])) ?? [])
+        return Array.from(this.relationshipTags.get(CoupleUtils.toEdgeKey([a, b])) ?? [])
     }
 
     public getMutualRelationshipsBetween(a: HumanName, b: HumanName): Array<RelationshipTag> {
@@ -128,21 +131,26 @@ export class PeopleGraph {
         let res = new Array
 
         this.relationshipTags.forEach((tags, edgeKey) => {
-            const couple = this.fromEdgeKey(edgeKey)
+            const couple = CoupleUtils.fromEdgeKey(edgeKey)
             res.push(new Relationship(couple, tags))
         })
 
         return res
     }
 
-    private toEdgeKey(unorderedPair: CoupleKey): EdgeKey {
+}
+
+export class CoupleUtils {
+    static oriented: boolean = true
+
+    public static toEdgeKey(unorderedPair: Couple): EdgeKey {
         let [a, b] = unorderedPair
         let orderedPair = a <= b || this.oriented ? [a, b] : [b, a]
 
         return orderedPair.map(v => v).join('|')
     }
 
-    private fromEdgeKey(key: EdgeKey): CoupleKey {
+    public static fromEdgeKey(key: EdgeKey): Couple {
         let names = key.split('|')
         console.assert(names.length == 2)
 
@@ -150,11 +158,12 @@ export class PeopleGraph {
     }
 }
 
+
 export class Relationship {
-    people: CoupleKey
+    people: Couple
     tags: Set<RelationshipTag>
 
-    constructor(people: CoupleKey, tags?: Set<RelationshipTag>) {
+    constructor(people: Couple, tags?: Set<RelationshipTag>) {
         this.people = people
         this.tags = tags ?? new Set<RelationshipTag>()
     }
