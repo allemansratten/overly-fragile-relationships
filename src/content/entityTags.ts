@@ -1,8 +1,5 @@
 export enum RelationshipTag {
     crush,
-    dislike,
-    friend_like,
-    friend,
     lover,
     ex,
     political_dis,
@@ -13,9 +10,6 @@ export enum RelationshipTag {
 
 export const relationshipTagMap: Map<RelationshipTag, string> = new Map([
     [RelationshipTag.crush, 'crush'],
-    [RelationshipTag.dislike, 'dislike'],
-    [RelationshipTag.friend_like, 'like as a friend'],
-    [RelationshipTag.friend, 'friend'],
     [RelationshipTag.lover, 'lover'],
     [RelationshipTag.ex, 'ex'],
     [RelationshipTag.political_dis, 'political disagreement'],

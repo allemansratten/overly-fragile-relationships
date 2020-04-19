@@ -5,21 +5,28 @@ import { HumanName } from "../content/humans"
 type EdgeKey = string
 export type CoupleKey = [HumanName, HumanName]
 
+export const MIN_FONDNESS = 0
+export const DEFAULT_FONDNESS = 5
+export const MAX_FONDNESS = 10
+
 export class PeopleGraph {
-    private relationshipTags: Map<EdgeKey, Set<RelationshipTag>>
-    private humansTags: Map<HumanName, Set<HumanTag>>
+    private relationshipTags: Map<EdgeKey, Set<RelationshipTag>> = new Map()
+    private fondness: Map<EdgeKey, number> = new Map()
+    private humansTags: Map<HumanName, Set<HumanTag>> = new Map()
 
-    private oriented: Boolean
+    private oriented: Boolean = true
 
-    constructor(people: Human[] = [], initialRelationships: Array<Relationship> = [], initialTags: Array<[HumanName, HumanTag]>) {
-        this.relationshipTags = new Map()
-        this.humansTags = new Map()
-        this.oriented = true
-
+    constructor(
+        people: Human[] = [],
+        initialRelationships: Array<Relationship> = [],
+        initialTags: Array<[HumanName, HumanTag]>,
+        initialFondness: Array<[CoupleKey, number]>,
+    ) {
         people.forEach(h => {
             people.forEach(hh => {
                 if (h.name != hh.name) {
                     this.setRelTags([h.name, hh.name], new Set<RelationshipTag>())
+                    this.fondness.set(this.toEdgeKey([h.name, hh.name]), DEFAULT_FONDNESS)
                 }
             })
         })
@@ -31,6 +38,11 @@ export class PeopleGraph {
 
         initialRelationships.forEach(rel => {
             this.setRelTags(rel.people, rel.tags)
+        })
+
+        initialFondness.forEach(([couple, fondness]) => {
+            console.assert(MIN_FONDNESS <= fondness && fondness <= MAX_FONDNESS)
+            this.fondness.set(this.toEdgeKey(couple), fondness)
         })
     }
 
@@ -66,6 +78,17 @@ export class PeopleGraph {
         return this.getRelTags(people)?.delete(tag) ?? false
     }
 
+    public changeFondness(people: CoupleKey, change: number) {
+        let to = this.fondness.get(this.toEdgeKey(people))! + change
+        to = Math.min(to, MAX_FONDNESS)
+        to = Math.max(to, MIN_FONDNESS)
+        this.setFondness(people, to)
+    }
+
+    public setFondness(people: CoupleKey, to: number) {
+        this.fondness.set(this.toEdgeKey(people), to)
+    }
+
     public getOutRelationships(person: HumanName): Array<Relationship> {
         let result = new Array
 
@@ -96,7 +119,7 @@ export class PeopleGraph {
 
     public getMutualRelationshipsBetween(a: HumanName, b: HumanName): Array<RelationshipTag> {
         let ab = this.getRelationshipsBetween(a, b)
-        let ba = this.getRelationshipsBetween(a, b)
+        let ba = this.getRelationshipsBetween(b, a)
 
         return intersection(ab, ba)
     }

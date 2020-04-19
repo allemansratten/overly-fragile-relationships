@@ -14,7 +14,7 @@ export class SituationUtils {
         return this.changeRelationship(
             couple,
             [RelationshipTag.lover],
-            [RelationshipTag.crush, RelationshipTag.ex, RelationshipTag.dislike],
+            [RelationshipTag.crush, RelationshipTag.ex],
             `${a} and ${b} started dating!`
         )
     }
@@ -96,12 +96,12 @@ export class NobodyLikesAngryDrunk implements Situation {
             let personTags = currentState.getHumTags(person.name)
             if (personTags.has(HumanTag.angry_drunk)) {
                 trip.goPeople.filter(p => p != person).forEach(otherPerson => {
-                    effects.push(new SituationEffect(
-                        "Nobody likes drunk people",
-                        [
-                            [[otherPerson.name, person.name], RelationshipTag.dislike],
-                        ],
-                    ))
+                    // TODO: make this be one effect (so that we have one description and can say "the others weren't happy"
+                    effects.push(
+                        new SituationEffect(
+                            `${person.name} got drunk and angry; ${otherPerson.name} wasn't happy about that.`
+                        ).changeFondness([[[otherPerson.name, person.name], -1]])
+                    )
                 })
 
             }

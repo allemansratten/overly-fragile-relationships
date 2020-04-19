@@ -25,18 +25,22 @@ export class SituationEffect {
     addedHumTags: Array<[HumanName, HumanTag]>
     removedHumTags: Array<[HumanName, HumanTag]>
 
+    changedFondness: Array<[CoupleKey, number]>
+
     constructor(
         description?: string,
         addedRelTags?: Array<[CoupleKey, RelationshipTag]>,
         removedRelTags?: Array<[CoupleKey, RelationshipTag]>,
         addedHumTags?: Array<[HumanName, HumanTag]>,
         removedHumTags?: Array<[HumanName, HumanTag]>,
+        changedFondness?: Array<[CoupleKey, number]>,
     ) {
         this.description = description ?? ""
         this.addedRelTags = addedRelTags ?? new Array()
         this.removedRelTags = removedRelTags ?? new Array()
         this.addedHumTags = addedHumTags ?? new Array()
         this.removedHumTags = removedHumTags ?? new Array()
+        this.changedFondness = changedFondness ?? new Array()
     }
 
     addRelTags(tags: Array<[CoupleKey, RelationshipTag]>): SituationEffect {
@@ -59,8 +63,13 @@ export class SituationEffect {
         return this
     }
 
-    setDescription(description: string) {
+    setDescription(description: string): SituationEffect {
         this.description = description
+        return this
+    }
+
+    changeFondness(changes: Array<[CoupleKey, number]>): SituationEffect {
+        this.changedFondness.push(...changes)
         return this
     }
 

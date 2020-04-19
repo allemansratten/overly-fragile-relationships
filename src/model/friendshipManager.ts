@@ -1,6 +1,6 @@
-import { HateGraph, Situation, SituationEffect } from "./hateGraph";
-import { PeopleGraph } from "./peopleGraph";
-import { TripSummary } from "./tripSummary";
+import { HateGraph, Situation, SituationEffect } from "./hateGraph"
+import { PeopleGraph } from "./peopleGraph"
+import { TripSummary } from "./tripSummary"
 
 export class FriendshipManager {
     public hateGraph: HateGraph
@@ -15,15 +15,14 @@ export class FriendshipManager {
         let appliedEffects = new Array<SituationEffect>()
 
         this.hateGraph.constraints.forEach(con => {
-            const appEffForCurrCon = this.tryApplyConstraint(con, trip);  // We know it's gonna be assigned
-            appliedEffects = appliedEffects.concat(appEffForCurrCon);
-
-        });
+            const appEffForCurrCon = this.tryApplyConstraint(con, trip)  // We know it's gonna be assigned
+            appliedEffects = appliedEffects.concat(appEffForCurrCon)
+        })
         return appliedEffects
     }
 
     private tryApplyConstraint(con: Situation, trip: TripSummary): Array<SituationEffect> {
-        let applicableEffects = con.GetApplicableEffects(trip, this.peopleGraph);
+        let applicableEffects = con.GetApplicableEffects(trip, this.peopleGraph)
 
         applicableEffects.forEach(eff => {
             eff.addedRelTags.forEach(at => this.peopleGraph.addRelTag(at[0], at[1]))
@@ -31,9 +30,14 @@ export class FriendshipManager {
 
             eff.addedHumTags.forEach(ah => this.peopleGraph.addHumTag(ah[0], ah[1]))
             eff.removedHumTags.forEach(rh => this.peopleGraph.removeHumTag(rh[0], rh[1]))
-        });
+
+            eff.changedFondness.forEach(
+                ([couple, change]) =>
+                    this.peopleGraph.changeFondness(couple, change),
+            )
+        })
 
         return applicableEffects
-        
+
     }
 }

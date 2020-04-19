@@ -1,7 +1,7 @@
 import { Human } from "./human"
 import { Location } from "./location"
 import { TripSummary } from "./tripSummary"
-import { PeopleGraph, Relationship } from "./peopleGraph"
+import { CoupleKey, PeopleGraph, Relationship } from "./peopleGraph"
 import { HateGraph, SituationEffect } from "./hateGraph"
 import { FriendshipManager } from "./friendshipManager"
 import { HumanTag, humanTagMap, RelationshipTag, relationshipTagMap } from "../content/entityTags"
@@ -18,11 +18,12 @@ export class Level {
         locations: Array<Location>,
         relationships: Array<Relationship>,
         initialTags: Array<[HumanName, HumanTag]>,
+        initialFondness: Array<[CoupleKey, number]>,
         hateGraph: HateGraph,
     ) {
         this.humans = humans
         this.locations = locations
-        let peopleGraph = new PeopleGraph(this.humans, relationships, initialTags)
+        let peopleGraph = new PeopleGraph(this.humans, relationships, initialTags, initialFondness)
 
         this.friendshipManager = new FriendshipManager(hateGraph, peopleGraph)
 

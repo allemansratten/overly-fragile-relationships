@@ -72,6 +72,13 @@ levels.push(
             [HumanName.Dan, HumanTag.angry_drunk],
         ]
         ,
+        [
+            // initial fondness
+            [[HumanName.Alex, HumanName.Beatrice], 7],
+            [[HumanName.Beatrice, HumanName.Alex], 7],
+            [[HumanName.Alex, HumanName.Cecil], 7],
+            [[HumanName.Cecil, HumanName.Alex], 7],
+        ],
         new HateGraph([
             new TimerSituation(),
             new NobodyLikesAngryDrunk(),
