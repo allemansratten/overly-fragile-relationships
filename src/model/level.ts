@@ -1,10 +1,11 @@
-import { Human, HumanName } from "./human"
+import { Human } from "./human"
 import { Location } from "./location"
 import { TripSummary } from "./tripSummary"
 import { PeopleGraph, Relationship } from "./peopleGraph"
 import { HateGraph, SituationEffect } from "./hateGraph"
 import { FriendshipManager } from "./friendshipManager"
 import { HumanTag, humanTagMap, RelationshipTag, relationshipTagMap } from "../content/entityTags"
+import { HumanName } from "../content/humans"
 
 export class Level {
     public humans: Array<Human>
@@ -61,29 +62,29 @@ export class Level {
         console.log("Relationships", this.friendshipManager.peopleGraph)
 
         // Construct final msg
-        let friendList: string = tripSummary.goPeople.map((human: Human) => human.name).join(', ')
+        let friendList: string = tripSummary.goPeople.map((human: Human) => HumanName[human.name]).join(', ')
         let statusMessage = `You went out to ${tripSummary.goLocation?.name} with ${friendList}.\n${effectMsg}`
 
         return statusMessage
     }
 
     private createEffectsMsgs(
-        perPersonRelMsg: Map<[string, string], [RelationshipTag[], RelationshipTag[]]>,
-        perPersonHumMsg: Map<string, [HumanTag[], HumanTag[]]>) {
+        perPersonRelMsg: Map<[HumanName, HumanName], [RelationshipTag[], RelationshipTag[]]>,
+        perPersonHumMsg: Map<HumanName, [HumanTag[], HumanTag[]]>) {
 
         let relMsgs = Array<string>()
         perPersonRelMsg.forEach((changes, couple) => {
             // TODO: empty tag names will not look nice, as well as empty newRelTags or oldRelTags
             let newRelTags = changes[0].map(t => relationshipTagMap.get(t) ?? "").join(", ")
             let oldRelTags = changes[1].map(t => relationshipTagMap.get(t) ?? "").join(", ")
-            relMsgs.push(`${couple[0]} now ${newRelTags} and no longer ${oldRelTags}  ${couple[1]}.`)
+            relMsgs.push(`${HumanName[couple[0]]} now ${newRelTags} and no longer ${oldRelTags}  ${HumanName[couple[1]]}.`)
         })
 
         let humMsgs = Array<string>()
         perPersonHumMsg.forEach((changes, person) => {
             let newHumTags = changes[0].map(t => humanTagMap.get(t) ?? "").join(", ")
             let oldHumTags = changes[1].map(t => humanTagMap.get(t) ?? "").join(", ")
-            relMsgs.push(`${person[0]} is now ${newHumTags} and no longer ${oldHumTags}.`)
+            relMsgs.push(`${HumanName[person]} is now ${newHumTags} and no longer ${oldHumTags}.`)
         })
         let effectsMsgs = relMsgs.concat(humMsgs)
 
