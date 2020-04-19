@@ -198,9 +198,13 @@ export class Complex implements Situation {
     public isApplicable(trip: TripSummary, currentState: PeopleGraph): boolean {
         let namesPresent = trip.goPeople.map(p => p.name)
 
-        return this.humReq.every(hp => namesPresent.includes(hp)) &&
+        // If no locations are set, this means all locations are allowed
+        let locationOk = (this.allowedLocations.length === 0)
+            || this.allowedLocations.some(loc => loc.name == trip.goLocation?.name)
+
+        return locationOk &&
+            this.humReq.every(hp => namesPresent.includes(hp)) &&
             this.humBan.every(cp => !namesPresent.includes(cp)) &&
-            this.allowedLocations.some(loc => loc.name == trip.goLocation?.name) &&
 
             this.humTagsReq.every(hr => currentState.getHumTags(hr[0]).has(hr[1])) &&
             this.humTagsBan.every(br => !currentState.getHumTags(br[0]).has(br[1])) &&
