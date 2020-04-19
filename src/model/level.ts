@@ -1,7 +1,7 @@
 import { Human } from "./human"
 import { LocationName } from "../content/locations"
 import { TripSummary } from "./tripSummary"
-import { CoupleKey, PeopleGraph, Relationship } from "./peopleGraph"
+import { Couple, PeopleGraph, Relationship, EdgeKey, CoupleUtils } from "./peopleGraph"
 import { Situation, SituationEffect } from "./situation"
 import { FriendshipManager } from "./friendshipManager"
 import { HumanTag, humanTagMap, RelationshipTag, relationshipTagMap } from "../content/entityTags"
@@ -18,7 +18,7 @@ export class Level {
         locations: Array<LocationName>,
         relationships: Array<Relationship>,
         initialTags: Array<[HumanName, HumanTag]>,
-        initialFondness: Array<[CoupleKey, number]>,
+        initialFondness: Array<[Couple, number]>,
         situations: Array<Situation>,
     ) {
         this.humans = humans
@@ -71,7 +71,7 @@ export class Level {
     }
 
     private createEffectsMsgs(
-        perPersonRelMsg: Map<[HumanName, HumanName], [RelationshipTag[], RelationshipTag[]]>,
+        perPersonRelMsg: Map<EdgeKey, [RelationshipTag[], RelationshipTag[]]>,
         perPersonHumMsg: Map<HumanName, [HumanTag[], HumanTag[]]>) {
 
         let relMsgs = Array<string>()
@@ -79,7 +79,8 @@ export class Level {
             // TODO: empty tag names will not look nice, as well as empty newRelTags or oldRelTags
             let newRelTags = changes[0].map(t => relationshipTagMap.get(t) ?? "").join(", ")
             let oldRelTags = changes[1].map(t => relationshipTagMap.get(t) ?? "").join(", ")
-            relMsgs.push(`${couple[0]} now ${newRelTags} and no longer ${oldRelTags}  ${couple[1]}.`)
+            let [p1, p2] = CoupleUtils.fromEdgeKey(couple)
+            relMsgs.push(`${p1} now ${newRelTags} and no longer ${oldRelTags}  ${p2}.`)
         })
 
         let humMsgs = Array<string>()
@@ -95,7 +96,7 @@ export class Level {
 
     private reduceEffectsPerPerson(effects: SituationEffect[]) {
         // first array in keys is always added tags, second removed
-        let perPersonRelMsg = new Map<[HumanName, HumanName], [Array<RelationshipTag>, Array<RelationshipTag>]>()
+        let perPersonRelMsg = new Map<EdgeKey, [Array<RelationshipTag>, Array<RelationshipTag>]>()
         let perPersonHumMsg = new Map<HumanName, [Array<HumanTag>, Array<HumanTag>]>()
 
         let addToMap = function<K, V>(key: K, value: V, valueStore: Map<K, [Array<V>, Array<V>]>, addedRemovedStoreSwitch: 0|1) {
@@ -107,8 +108,8 @@ export class Level {
         effects.forEach(effect => {
             effect.addedHumTags.forEach(ah => addToMap(ah[0], ah[1], perPersonHumMsg, 0))
             effect.removedHumTags.forEach(rh => addToMap(rh[0], rh[1], perPersonHumMsg, 1))
-            effect.addedRelTags.forEach(ah => addToMap(ah[0], ah[1], perPersonRelMsg, 0))
-            effect.removedRelTags.forEach(ah => addToMap(ah[0], ah[1], perPersonRelMsg, 1))
+            effect.addedRelTags.forEach(ah => addToMap(CoupleUtils.toEdgeKey(ah[0]), ah[1], perPersonRelMsg, 0))
+            effect.removedRelTags.forEach(ah => addToMap(CoupleUtils.toEdgeKey(ah[0]), ah[1], perPersonRelMsg, 1))
         })
 
         return { perPersonRelMsg, perPersonHumMsg }
