@@ -12,17 +12,17 @@ export class LocationStage {
 
         for (let i in level.locations) {
             let location = level.locations[i]
-            let img = scene.add.image(695, 40 + Number(i) * 110, 'location_thumb')
+            let img = scene.add.image(709, 53 + Number(i) * 120, 'location_thumb')
                 .setFrame(i)
                 .setInteractive({ useHandCursor: true })
                 .setOrigin(0, 0)
-                .setDisplaySize(90, 90)
+                .setDisplaySize(80, 80)
                 .on('pointerdown', () => {
                     scene.goOut(location)
                     scene.tripSummary.goLocation = location
                 })
             this.allLocationImage.push(img)
-            let text = scene.add.text(700, 40 + Number(i) * 110, `${location.name}`, { fill: 'black', fontFamily: 'Roboto' })
+            let text = scene.add.text(700, 40 + Number(i) * 120, `${location.name}`, { fill: 'black', fontFamily: 'Roboto' })
         }
     }
 
