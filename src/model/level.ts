@@ -1,10 +1,10 @@
 import { Human, HumanName } from "./human"
 import { Location } from "./location"
-import { TripSummary } from "../management/tripsummary"
+import { TripSummary } from "./tripSummary"
 import { PeopleGraph, Relationship } from "./peopleGraph"
 import { HateGraph, SituationEffect } from "./hateGraph"
 import { FriendshipManager } from "./friendshipManager"
-import { HumanTag, humanTagMap, RelationshipTag, relationshipTagMap } from "./entityTags"
+import { HumanTag, humanTagMap, RelationshipTag, relationshipTagMap } from "../content/entityTags"
 
 export class Level {
     public humans: Array<Human>

@@ -1,6 +1,6 @@
 import { HateGraph, Situation, SituationEffect } from "./hateGraph";
 import { PeopleGraph } from "./peopleGraph";
-import { TripSummary } from "../management/tripsummary";
+import { TripSummary } from "./tripSummary";
 
 export class FriendshipManager {
     public hateGraph: HateGraph

@@ -1,5 +1,5 @@
 import { Human, HumanName } from "./human"
-import { HumanTag, RelationshipTag, relationshipTagMap } from "./entityTags"
+import { HumanTag, RelationshipTag, relationshipTagMap } from "../content/entityTags"
 
 type EdgeKey = string
 export type CoupleKey = [HumanName, HumanName]
