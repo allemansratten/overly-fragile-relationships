@@ -6,6 +6,8 @@
 	- D:
 	- E:
 	- F:
+- disagreeable
+- supportive friend
 - 
 
 # Beatrice
@@ -17,6 +19,7 @@
 	- E:
 	- F:
 - promiscuous
+- depressed
 
 # Cecil
 - relationships:
@@ -27,6 +30,8 @@
 	- E:
 	- F:
 - introvert
+- good bowler
+
 
 # Dan
 - relationships:
@@ -35,12 +40,13 @@
 	- C: 
 	- D:
 	- E:
-	- F:
+	- F: crush
 - angry when drunk
 - extrovert
 - agreeable
+- competetive
 
-# E
+# Eric
 - relationships:
 	- A:
 	- B: 
@@ -49,12 +55,12 @@
 	- E:
 	- F:
 
-# F
+# Flavie
 - relationships:
 	- A:
 	- B: 
 	- C: 
-	- D:
+	- D: crush
 	- E:
 	- F:
 
@@ -122,6 +128,25 @@ Events - Specific
 
  	- Někdo je depressed, je víc nespoko se všema over time, je potřeba s nim někam jít jen ve 2? maybe s supportive friend?
 
- 	- Potom, co jsou nějakou dobu spolu, holka otěhotní, chce potrat, někdo je proti - kluk? někdo jinej?
+ 	- Potom, co jsou nějakou dobu spolu, holka otěhotní, chce potrat, někdo je proti - kluk? někdo jinej? - Cecil + Alex
+
+ 	- Don Juan type postava, chodí s dvěma lidma zároveň, můžeš ho exposenout - Dan
+
+ 	- Couple co se dáva dohromady a rozchází periodicky - Dan + Flavie
 
  	- 
+
+
+ # Lidi
+ 	- Alex
+ 		- Initially disagreeable, dělá si z lidí srandu, ale když ji poznáš, tak zjistíš že je v pohodě, že ji na těch lidech actually záleží
+ 	- Beatrice
+ 		- Jokingly se všema flirtuje, ale má commitment issues, relationships jí nevydrží, a je z toho depressed
+ 	- Cecil
+ 		- introvert, athletic, dobrej v bowlingu lol, anger management issue - jednou za čas se nasere, jinak docela felí
+ 	- Dan
+ 		- Extrovert, initially likable chlápek, fuccboi, macho, bruh type, reálně docela debílek, attention seeker
+ 	- Eric
+ 		- religious, docela v pohodě, vychází s lidma, ale má issues s věcma proti jeho religion - lgbtq+ stuff, abortion? (Možná trochu moc edgy, idk)
+ 	- Flavie
+ 		- attention seeker, 
