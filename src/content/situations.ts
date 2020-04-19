@@ -4,6 +4,7 @@ import { Couple, PeopleGraph } from "../model/peopleGraph"
 import { HumanTag, RelationshipTag } from "./entityTags"
 import { HumanName } from "./humans"
 import { LocationName } from "./locations"
+import { Human } from "../model/human"
 
 
 export class SituationUtils {
@@ -49,6 +50,13 @@ export class SituationUtils {
             .addRelTags(broadcast(addedRelTags))
             .removeRelTags(broadcast(removedRelTags))
     }
+
+    public static getSomeoneOnTripWithTag(trip: TripSummary, person: Human, currentState: PeopleGraph, tag: RelationshipTag) {
+        return trip.goPeople
+                    .filter(oPerson => oPerson.name != person.name)
+                    .find(oPerson => currentState.getRelationshipsBetween(person.name, oPerson.name).some(t => t == tag))
+    }
+
 }
 
 export class SimpleSituation implements Situation {
@@ -115,6 +123,11 @@ export class MutualCrush implements Situation {
         let crushesMap: Map<HumanName, HumanName[]> = new Map()
 
         for (const person of trip.goPeople) {
+            let loverOnTrip = SituationUtils.getSomeoneOnTripWithTag(trip, person, currentState, RelationshipTag.lover)
+            if (loverOnTrip) {
+                continue
+            }
+
             let crushesPresent = trip.goPeople.filter(
                 b => currentState.getMutualRelationshipsBetween(person.name, b.name).includes(RelationshipTag.crush),
             ).map(h => h.name)
