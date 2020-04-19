@@ -170,10 +170,8 @@ export class HumanStage {
 
                     let avgX = (this.positionsInner[hi1].x + this.positionsInner[hi2].x) / 2
                     let avgY = (this.positionsInner[hi1].y + this.positionsInner[hi2].y) / 2 + 60
-                    console.log(avgX, avgY)
                     let symbol = this.scene.add.image(avgX, avgY, 'rel_tags')
                        .setFrame(Array.from(tags)[0])
-                    // .setOrigin(0, 0)
                     symbol.setPosition(avgX, avgY)
                     group.add(symbol)
                 }
