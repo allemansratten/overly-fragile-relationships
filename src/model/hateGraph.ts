@@ -12,7 +12,7 @@ export class HateGraph {
 }
 
 export interface Situation {
-    GetApplicableEffects(trip: TripSummary, currentState: PeopleGraph): Array<SituationEffect>
+    GetApplicableEffects(trip: TripSummary, currentState: PeopleGraph, tripCount: number): Array<SituationEffect>
 }
 
 
@@ -26,6 +26,7 @@ export class SituationEffect {
     removedHumTags: Array<[HumanName, HumanTag]>
 
     changedFondness: Array<[CoupleKey, number]>
+    newFutureSituations: Array<[number, Situation]>
 
     constructor(
         description?: string,
@@ -34,6 +35,7 @@ export class SituationEffect {
         addedHumTags?: Array<[HumanName, HumanTag]>,
         removedHumTags?: Array<[HumanName, HumanTag]>,
         changedFondness?: Array<[CoupleKey, number]>,
+        newFutureSituations?: Array<[number, Situation]>
     ) {
         this.description = description ?? ""
         this.addedRelTags = addedRelTags ?? new Array()
@@ -41,6 +43,7 @@ export class SituationEffect {
         this.addedHumTags = addedHumTags ?? new Array()
         this.removedHumTags = removedHumTags ?? new Array()
         this.changedFondness = changedFondness ?? new Array()
+        this.newFutureSituations = newFutureSituations ?? new Array()
     }
 
     addRelTags(tags: Array<[CoupleKey, RelationshipTag]>): SituationEffect {
@@ -73,10 +76,17 @@ export class SituationEffect {
         return this
     }
 
-    apply(effect: SituationEffect) {
+    addNewFutureSituations(newFutureSituations: Array<[number, Situation]>): SituationEffect {
+        this.newFutureSituations.push(...newFutureSituations)
+        return this
+    }
+
+    appendToThis(effect: SituationEffect) {
         this.addedHumTags = this.addedHumTags.concat(effect.addedHumTags)
         this.removedHumTags = this.removedHumTags.concat(effect.removedHumTags)
         this.addedRelTags = this.addedRelTags.concat(effect.addedRelTags)
         this.removedRelTags = this.removedRelTags.concat(effect.removedRelTags)
+        this.changedFondness = this.changedFondness.concat(effect.changedFondness)
+        this.newFutureSituations = this.newFutureSituations.concat(effect.newFutureSituations)
     }
 }
