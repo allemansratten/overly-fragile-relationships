@@ -3,7 +3,7 @@ import { BoardScene } from './management/board'
 import { LoadingScene } from './utils/loading'
 
 const gameConfig: Phaser.Types.Core.GameConfig = {
-  title: 'Sustainable Friendship',
+  title: 'Sustainable Friendships',
  
   type: Phaser.AUTO,
  
