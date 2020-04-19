@@ -31,6 +31,8 @@ levels.push(
             new Relationship(['Beatrice', 'Alex'], new Set([RelationshipTag.crush])),
             new Relationship(['Alex', 'Cecil'], new Set([RelationshipTag.crush])),
             new Relationship(['Cecil', 'Alex'], new Set([RelationshipTag.crush])),
+            new Relationship(['Dan', 'Beatrice'], new Set([RelationshipTag.ex])),
+            new Relationship(['Dan', 'You'], new Set([RelationshipTag.ex])),
         ],
         [
             ['Beatrice', HumanTag.promiscuous],
