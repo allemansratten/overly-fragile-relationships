@@ -145,7 +145,7 @@ export class EternalCouple implements Situation {
     b: HumanName
 
     lastChange: number = 0
-    static CHANGE_AFTER = 1
+    static CHANGE_AFTER = 3
     together: boolean = false
     nBreakups = 0
     nMakeups = 0
@@ -182,22 +182,12 @@ export class EternalCouple implements Situation {
             let wrapperIndex: number
 
             if (!this.together) {
-                effect = SituationUtils.startToDate([this.a, this.b]).appendToThis(
-                    SituationUtils.changeRelationship(
-                        [this.a, this.b],
-                        [RelationshipTag.eternal_couple_apart_3],
-                        [RelationshipTag.eternal_couple_together_1],
-                    ))
+                effect = SituationUtils.startToDate([this.a, this.b])
                 description = `${this.a} and ${this.b} started dating`
                 wrapperIndex = this.nMakeups
                 this.nMakeups++
             } else {
-                effect = SituationUtils.breakUp([this.a, this.b]).appendToThis(
-                    SituationUtils.changeRelationship(
-                        [this.a, this.b],
-                        [RelationshipTag.eternal_couple_together_3],
-                        [RelationshipTag.eternal_couple_apart_1],
-                    ))
+                effect = SituationUtils.breakUp([this.a, this.b])
                 description = `${this.a} and ${this.b} broke up`
                 wrapperIndex = this.nBreakups
                 this.nBreakups++
@@ -269,19 +259,9 @@ export class Complex implements Situation {
     }
 }
 
+// Currently useless!
 export class TimerSituation implements Situation {
-    static relationshipChains = [
-        [
-            RelationshipTag.eternal_couple_apart_1,
-            RelationshipTag.eternal_couple_apart_2,
-            RelationshipTag.eternal_couple_apart_3,
-        ],
-        [
-            RelationshipTag.eternal_couple_together_1,
-            RelationshipTag.eternal_couple_together_2,
-            RelationshipTag.eternal_couple_together_3,
-        ],
-    ]
+    static relationshipChains = [[]]
 
     static getRelationshipSteps(): Map<RelationshipTag, RelationshipTag> {
         let res = new Map()

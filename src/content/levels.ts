@@ -65,11 +65,10 @@ levels.push(
         flattenRelationshipList([
             mutualRelationship([HumanName.Alex, HumanName.Beatrice], [RelationshipTag.crush]),
             mutualRelationship([HumanName.Alex, HumanName.Cecil], [RelationshipTag.crush]),
-            new Relationship([HumanName.Dan, HumanName.Beatrice], new Set([RelationshipTag.ex, RelationshipTag.crush])),
-            new Relationship([HumanName.Dan, HumanName.You], new Set([RelationshipTag.ex])),
             mutualRelationship([HumanName.Eric, HumanName.Alex], [RelationshipTag.crush]),
             mutualRelationship([HumanName.Eric, HumanName.Beatrice], [RelationshipTag.crush]),
-            mutualRelationship([HumanName.Dan, HumanName.Flavie], [RelationshipTag.eternal_couple_apart_1]),
+            mutualRelationship([HumanName.Dan, HumanName.Beatrice], [RelationshipTag.crush]),
+            mutualRelationship([HumanName.Dan, HumanName.Flavie], [RelationshipTag.crush]),
         ]),
         [
             [HumanName.Beatrice, HumanTag.promiscuous],
