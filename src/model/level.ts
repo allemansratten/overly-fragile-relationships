@@ -39,13 +39,17 @@ export class Level {
         })
     }
 
+    private fixAgreement(val: string) : string {
+        return val.replace(/You was/g, 'You were')
+    }
+    
     public goOut(tripSummary: TripSummary): string {
         // Update friendships based on trip
         let effects = this.friendshipManager.applyMeeting(tripSummary)
 
         // Construct msgs for effects
         let { perPersonRelMsg, perPersonHumMsg } = this.reduceEffectsPerPerson(effects)
-        let effectsMsgs = Array.from(new Set(effects.map(effect => effect.description)))
+        let effectsMsgs = Array.from(new Set(effects.map(effect => this.fixAgreement(effect.description))))
         effectsMsgs.push("") // separator dummy
         effectsMsgs = effectsMsgs.concat(this.createEffectsMsgs(perPersonRelMsg, perPersonHumMsg))
 
