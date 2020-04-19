@@ -1,6 +1,6 @@
 import { TripSummary } from "./tripSummary"
 import { HumanTag, RelationshipTag } from "../content/entityTags"
-import { CoupleKey, PeopleGraph } from "./peopleGraph"
+import { Couple, PeopleGraph } from "./peopleGraph"
 import { HumanName } from "../content/humans"
 
 export interface Situation {
@@ -11,22 +11,22 @@ export interface Situation {
 export class SituationEffect {
     description: string
 
-    addedRelTags: Array<[CoupleKey, RelationshipTag]>
-    removedRelTags: Array<[CoupleKey, RelationshipTag]>
+    addedRelTags: Array<[Couple, RelationshipTag]>
+    removedRelTags: Array<[Couple, RelationshipTag]>
 
     addedHumTags: Array<[HumanName, HumanTag]>
     removedHumTags: Array<[HumanName, HumanTag]>
 
-    changedFondness: Array<[CoupleKey, number]>
+    changedFondness: Array<[Couple, number]>
     newFutureSituations: Array<[number, Situation]>
 
     constructor(
         description?: string,
-        addedRelTags?: Array<[CoupleKey, RelationshipTag]>,
-        removedRelTags?: Array<[CoupleKey, RelationshipTag]>,
+        addedRelTags?: Array<[Couple, RelationshipTag]>,
+        removedRelTags?: Array<[Couple, RelationshipTag]>,
         addedHumTags?: Array<[HumanName, HumanTag]>,
         removedHumTags?: Array<[HumanName, HumanTag]>,
-        changedFondness?: Array<[CoupleKey, number]>,
+        changedFondness?: Array<[Couple, number]>,
         newFutureSituations?: Array<[number, Situation]>
     ) {
         this.description = description ?? ""
@@ -38,12 +38,12 @@ export class SituationEffect {
         this.newFutureSituations = newFutureSituations ?? new Array()
     }
 
-    addRelTags(tags: Array<[CoupleKey, RelationshipTag]>): SituationEffect {
+    addRelTags(tags: Array<[Couple, RelationshipTag]>): SituationEffect {
         this.addedRelTags.push(...tags)
         return this
     }
 
-    removeRelTags(tags: Array<[CoupleKey, RelationshipTag]>): SituationEffect {
+    removeRelTags(tags: Array<[Couple, RelationshipTag]>): SituationEffect {
         this.removedRelTags.push(...tags)
         return this
     }
@@ -63,7 +63,7 @@ export class SituationEffect {
         return this
     }
 
-    changeFondness(changes: Array<[CoupleKey, number]>): SituationEffect {
+    changeFondness(changes: Array<[Couple, number]>): SituationEffect {
         this.changedFondness.push(...changes)
         return this
     }
