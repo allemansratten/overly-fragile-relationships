@@ -1,9 +1,10 @@
-import { HumanName } from "./human"
 import { Situation, SituationEffect } from "./hateGraph"
 import { TripSummary } from "./tripSummary"
 import { CoupleKey, PeopleGraph } from "./peopleGraph"
 import { Location } from "./location"
 import { HumanTag, RelationshipTag } from "../content/entityTags"
+import { HumanName } from "../content/humans"
+import { LocationName } from "../content/locations"
 
 
 export class SituationUtils {
@@ -76,7 +77,7 @@ export class SimpleSituation implements Situation {
 
 export class NobodyLikesAngryDrunk implements Situation {
     public GetApplicableEffects(trip: TripSummary, currentState: PeopleGraph): Array<SituationEffect> {
-        if (trip.goLocation!.name != "Drink") {
+        if (trip.goLocation!.name != LocationName.Drink) {
             return new Array()
         }
 

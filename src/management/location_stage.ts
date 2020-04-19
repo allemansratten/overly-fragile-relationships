@@ -1,5 +1,6 @@
 import { Level } from "../model/level"
 import { BoardScene } from "./board"
+import { LocationName } from "../content/locations"
 
 export class LocationStage {
     private allLocationImage: Array<Phaser.GameObjects.Image> = []
@@ -22,7 +23,7 @@ export class LocationStage {
                     scene.tripSummary.goLocation = location
                 })
             this.allLocationImage.push(img)
-            let text = scene.add.text(700, 40 + Number(i) * 120, `${location.name}`, { fill: 'black', fontFamily: 'Roboto' })
+            let text = scene.add.text(700, 40 + Number(i) * 120, `${LocationName[location.name]}`, { fill: 'black', fontFamily: 'Roboto' })
         }
     }
 

@@ -1,7 +1,7 @@
 import { TripSummary } from "./tripSummary"
 import { HumanTag, RelationshipTag } from "../content/entityTags"
 import { CoupleKey, PeopleGraph } from "./peopleGraph"
-import { HumanName } from "./human"
+import { HumanName } from "../content/humans"
 
 export class HateGraph {
     public constraints: Array<Situation>
