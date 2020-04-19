@@ -3,8 +3,9 @@ import { humanTagMap, relationshipTagMap } from '../content/entityTags'
 import { HumanName } from '../content/humans'
 
 export class PhoneStage {
-    private portrait : Phaser.GameObjects.Image
-    private text: Phaser.GameObjects.Text
+    private portrait: Phaser.GameObjects.Image
+    private infoText: Phaser.GameObjects.Text
+    private nameText: Phaser.GameObjects.Text
 
     constructor(private scene: Phaser.Scene) {
         // scene.add.rectangle(0, 0, 240, 500, 0xaaaaaa)
@@ -13,7 +14,11 @@ export class PhoneStage {
         this.portrait = scene.add.image(20, 20, 'portrait_big')
             .setOrigin(0, 0)
 
-        this.text = scene.add.text(25, 245, '', { fill: 'black', fontFamily: 'Roboto' })
+        this.nameText = scene.add.text(115, 255, '', { fill: 'black', fontFamily: 'Roboto', fontSize: '20px' })
+            .setWordWrapWidth(190)
+            .setAlign('center')
+            .setOrigin(0.5, 0.5)
+        this.infoText = scene.add.text(25, 270, '', { fill: 'black', fontFamily: 'Roboto' })
             .setWordWrapWidth(190)
     }
 
@@ -26,17 +31,18 @@ export class PhoneStage {
 
         // This could be perhaps done in a functional way, but this seems more readable
         let relString = []
-        for(let relationship of human.relationships) {
-            let relStringIndividual : Array<string> = []
+        for (let relationship of human.relationships) {
+            let relStringIndividual: Array<string> = []
             relationship.tags.forEach((x) => {
-                if(relationshipTagMap.has(x)) {
+                if (relationshipTagMap.has(x)) {
                     relStringIndividual.push(relationshipTagMap.get(x) as string)
                 }
             })
-            if(relStringIndividual.length != 0) {
+            if (relStringIndividual.length != 0) {
                 relString.push(`${relationship.people[1]}: ${relStringIndividual.join(', ')}`)
             }
         }
-        this.text.setText(`${HumanName[human.name]}\n${humString}\n\n${relString.join('\n\n')}`)
+        this.nameText.setText(HumanName[human.name])
+        this.infoText.setText(`${humString}\n\n${relString.join('\n\n')}`)
     }
 }
