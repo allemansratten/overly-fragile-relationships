@@ -64,6 +64,43 @@ export class NobodyLikesAngryDrunk implements Situation {
     }   
 }
 
+export class MutualCrush implements Situation {
+    public GetApplicableEffects(trip: TripSummary, currentState: PeopleGraph): Array<SituationEffect> {
+        // I know this is _terribly_ inefficient :(
+        let effects = new Array()
+
+        trip.goPeople.forEach(person => {
+            let personsRelationshipsOut = currentState.getOutRelationships(person.name)
+            let personalRelationshipsIn = currentState.getInRelationships(person.name)
+            personsRelationshipsOut.filter(outRel => outRel.tags.has(RelationshipTag.crush)).forEach(outRelCrush => {
+                if (personalRelationshipsIn.filter(inRel => inRel.people[0] == outRelCrush.people[1] && inRel.tags.has(RelationshipTag.crush))) {
+                    effects.push(
+                        new SituationEffect(
+                            "Nobody likes drunk people",
+                            [
+                                // Could add utils for these repetitive things e.g. reflexivity
+                                [[person.name, outRelCrush.people[1]], RelationshipTag.lover],
+                                [[outRelCrush.people[1], person.name], RelationshipTag.lover]
+                            ],
+                            [
+                                [[person.name, outRelCrush.people[1]], RelationshipTag.crush],
+                                [[outRelCrush.people[1], person.name], RelationshipTag.crush]
+                            ],
+                            [
+                                [person.name, HumanTag.jealous],
+                                [outRelCrush.people[1], HumanTag.jealous]
+                            ],
+                        )
+                    )
+                }
+                
+            });
+        })
+
+        return effects
+    }
+}
+
 export class Complex implements Situation {
     private humReq: Array<HumanName>
     private humBan: Array<HumanName>
