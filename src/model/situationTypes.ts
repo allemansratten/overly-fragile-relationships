@@ -168,36 +168,27 @@ export class EternalCouple implements Situation {
 }
 
 export class Complex implements Situation {
-    private humReq: Array<HumanName>
-    private humBan: Array<HumanName>
-    private allowedLocations: Array<Location>
+    public humReq: Array<HumanName> = Array()
+    public humBan: Array<HumanName> = Array()
+    public allowedLocations: Array<Location> = Array()
 
-    private humTagsReq: Array<[HumanName, HumanTag]>
-    private humTagsBan: Array<[HumanName, HumanTag]>
+    public humTagsReq: Array<[HumanName, HumanTag]> = Array()
+    public humTagsBan: Array<[HumanName, HumanTag]> = Array()
 
-    private relTagsReq: Array<[CoupleKey, RelationshipTag]>
-    private relTagsBan: Array<[CoupleKey, RelationshipTag]>
+    public relTagsReq: Array<[CoupleKey, RelationshipTag]> = Array()
+    public relTagsBan: Array<[CoupleKey, RelationshipTag]> = Array()
 
-    public effect: Array<SituationEffect>
+    public effect: Array<SituationEffect> = Array()
 
     constructor(
-        haveToBePresent: Array<HumanName>, cannotBePresent: Array<HumanName>,
-        allowedLocations: Array<Location>,
-        humTagsReq: Array<[HumanName, HumanTag]>, humTagsBan: Array<[HumanName, HumanTag]>,
-        relTagsReq: Array<[CoupleKey, RelationshipTag]>, relTagsBan: Array<[CoupleKey, RelationshipTag]>,
-        effect: Array<SituationEffect>,
-    ) {
-
-        this.humReq = haveToBePresent
-        this.humBan = cannotBePresent
-        this.allowedLocations = allowedLocations
-
-        this.humTagsReq = humTagsReq
-        this.humTagsBan = humTagsBan
-        this.relTagsReq = relTagsReq
-        this.relTagsBan = relTagsBan
-
-        this.effect = effect
+        fields?: {
+            haveToBePresent?: Array<HumanName>, cannotBePresent?: Array<HumanName>,
+            allowedLocations?: Array<Location>,
+            humTagsReq?: Array<[HumanName, HumanTag]>, humTagsBan?: Array<[HumanName, HumanTag]>,
+            relTagsReq?: Array<[CoupleKey, RelationshipTag]>, relTagsBan?: Array<[CoupleKey, RelationshipTag]>,
+            effect?: Array<SituationEffect>,
+        }) {
+        if (fields) Object.assign(this, fields);
     }
 
     public GetApplicableEffects(trip: TripSummary, currentState: PeopleGraph): Array<SituationEffect> {
