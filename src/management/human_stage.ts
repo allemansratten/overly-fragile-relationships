@@ -33,7 +33,7 @@ export class HumanStage {
             const angle = 2 * Math.PI * (i + 0.5) / level.humans.length
             return {
                 x: centerX + Math.cos(angle) * radiusInner,
-                y: centerY + Math.sin(angle) * radiusInner*0.9,
+                y: centerY + Math.sin(angle) * radiusInner * 0.9,
             }
         })
 
@@ -124,11 +124,11 @@ export class HumanStage {
     }
 
     public display(human: Human, index: number) {
-        for(let i in this.allPeopleLines) {
+        for (let i in this.allPeopleLines) {
             // I very much admit that this is super slow and unoptimized
             // BUT WTF IS NOT GROUP ALPHA EXPOSED PUBLICLY
-            if(Number(i) == index) {
-                for(let child of this.allPeopleLines[i].children.getArray()) {
+            if (Number(i) == index) {
+                for (let child of this.allPeopleLines[i].children.getArray()) {
                     this.scene.tweens.add({
                         targets: child,
                         alpha: { from: (child as Phaser.GameObjects.Line).alpha, to: 1 },
@@ -136,7 +136,7 @@ export class HumanStage {
                     })
                 }
             } else {
-                for(let child of this.allPeopleLines[i].children.getArray()) {
+                for (let child of this.allPeopleLines[i].children.getArray()) {
                     this.scene.tweens.add({
                         targets: child,
                         alpha: { from: (child as Phaser.GameObjects.Line).alpha, to: 0 },
@@ -153,6 +153,8 @@ export class HumanStage {
         for (let hi1 in level.humans) {
             let human1 = level.humans[hi1]
             let group = this.scene.add.group()
+                .setXY(0, 50)
+                .setAlpha(0)
             for (let hi2 in level.humans) {
                 let human2 = level.humans[hi2]
                 if (hi1 == hi2)
@@ -165,10 +167,17 @@ export class HumanStage {
                         0xffffff, 0.1)
                     line.setOrigin(0, 0)
                     group.add(line)
+
+                    let avgX = (this.positionsInner[hi1].x + this.positionsInner[hi2].x) / 2
+                    let avgY = (this.positionsInner[hi1].y + this.positionsInner[hi2].y) / 2
+                    console.log(avgX, avgY)
+                    let symbol = this.scene.add.image(avgX, avgY, 'rel_tags')
+                       .setFrame(Array.from(tags)[0])
+                    // .setOrigin(0, 0)
+                    symbol.setPosition(avgX, avgY)
+                    group.add(symbol)
                 }
             }
-            group.setXY(0, 50)
-                .setAlpha(0)
             this.allPeopleLines.push(group)
         }
     }

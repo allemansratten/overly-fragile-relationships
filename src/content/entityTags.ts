@@ -1,5 +1,5 @@
 export enum RelationshipTag { crush, dislike, friend_like, friend, lover, ex, political_dis }
-let RelationshipTagMap : {[key in RelationshipTag]: string} = {
+let RelationshipTagMap: { [key in RelationshipTag]: string } = {
     [RelationshipTag.crush]: 'crush',
     [RelationshipTag.dislike]: 'dislike',
     [RelationshipTag.friend_like]: 'like as a friend',
