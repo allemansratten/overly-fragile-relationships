@@ -4,7 +4,7 @@ import { TripSummary } from "../management/tripsummary"
 import { PeopleGraph, Relationship } from "./peopleGraph"
 import { HateGraph, SituationEffect } from "./hateGraph"
 import { FriendshipManager } from "./friendshipManager"
-import { HumanTag, HumanTagMap, RelationshipTag, RelationshipTagMap } from "./entityTags"
+import { HumanTag, humanTagMap, RelationshipTag, relationshipTagMap } from "./entityTags"
 
 export class Level {
     public humans: Array<Human>
@@ -73,15 +73,16 @@ export class Level {
 
         let relMsgs = Array<string>()
         perPersonRelMsg.forEach((changes, couple) => {
-            let newRelTags = changes[0].map(t => RelationshipTagMap[t]).join(", ")
-            let oldRelTags = changes[1].map(t => RelationshipTagMap[t]).join(", ")
+            // TODO: empty tag names will not look nice, as well as empty newRelTags or oldRelTags
+            let newRelTags = changes[0].map(t => relationshipTagMap.get(t) ?? "").join(", ")
+            let oldRelTags = changes[1].map(t => relationshipTagMap.get(t) ?? "").join(", ")
             relMsgs.push(`${couple[0]} now ${newRelTags} and no longer ${oldRelTags}  ${couple[1]}.`)
         })
 
         let humMsgs = Array<string>()
         perPersonHumMsg.forEach((changes, person) => {
-            let newHumTags = changes[0].map(t => HumanTagMap[t]).join(", ")
-            let oldHumTags = changes[1].map(t => HumanTagMap[t]).join(", ")
+            let newHumTags = changes[0].map(t => humanTagMap.get(t) ?? "").join(", ")
+            let oldHumTags = changes[1].map(t => humanTagMap.get(t) ?? "").join(", ")
             relMsgs.push(`${person[0]} is now ${newHumTags} and no longer ${oldHumTags}.`)
         })
         let effectsMsgs = relMsgs.concat(humMsgs)
