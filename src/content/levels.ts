@@ -50,6 +50,49 @@ function flattenRelationshipList(relationships: Array<Relationship | [Relationsh
     return res
 }
 
+const danTwoGirlfriendsBusted = new Complex({
+    humReq: [HumanName.Dan, HumanName.Beatrice, HumanName.Flavie],
+    relTagsReq: [
+        [[HumanName.Dan, HumanName.Beatrice], RelationshipTag.lover], // should be symmetric anyways
+        [[HumanName.Dan, HumanName.Flavie], RelationshipTag.lover],
+    ],
+    effect: [
+        SituationUtils.breakUp([HumanName.Dan, HumanName.Beatrice]),
+        SituationUtils.breakUp([HumanName.Dan, HumanName.Flavie]),
+        new SituationEffect()
+            .changeFondness([
+                [[HumanName.Dan, HumanName.You], -5],
+                [[HumanName.Beatrice, HumanName.Dan], -7],
+                [[HumanName.Dan, HumanName.Beatrice], -2],
+                [[HumanName.Flavie, HumanName.Dan], -7],
+                [[HumanName.Dan, HumanName.Flavie], -2],
+                [[HumanName.Flavie, HumanName.Beatrice], +4],
+                [[HumanName.Beatrice, HumanName.Flavie], +4],
+            ])
+            .setDescription("Uh oh... Dan was dating Beatrice and Flavie at the same time," +
+                " and now they found out! No more Dan Juan."),
+    ],
+})
+
+const flavieFomo1 = new Complex({    //Flavie FOMO event 1
+    humReq: [HumanName.Alex, HumanName.Beatrice, HumanName.Cecil, HumanName.Dan, HumanName.Eric],
+    humTagsBan: [[HumanName.Flavie, HumanTag.flavie_angry]],
+    effect: [new SituationEffect().changeFondness([
+        [[HumanName.Flavie, HumanName.Alex], -1],
+        [[HumanName.Flavie, HumanName.Beatrice], -1],
+        [[HumanName.Flavie, HumanName.Cecil], -1],
+        [[HumanName.Flavie, HumanName.Dan], -1],
+        [[HumanName.Flavie, HumanName.Eric], -1],
+        [[HumanName.Flavie, HumanName.You], -3],
+    ]).addHumTags([[HumanName.Flavie, HumanTag.flavie_angry]])],
+})
+
+const flavieFomo2 = new Complex({    //Flavie FOMO event 2
+        humReq: [HumanName.Alex, HumanName.Beatrice, HumanName.Cecil, HumanName.Dan, HumanName.Eric],
+        humTagsReq: [[HumanName.Flavie, HumanTag.flavie_angry]],
+        effect: [new SituationEffect().changeFondness([[[HumanName.Flavie, HumanName.You], -10]])],
+    })
+
 levels.push(
     new Level(
         [
@@ -89,26 +132,9 @@ levels.push(
             new NobodyLikesAngryDrunk(),
             new MutualCrush(),
             new EternalCouple(HumanName.Dan, HumanName.Flavie),
-            new Complex({    //Flavie FOMO event 2
-                humReq: [HumanName.Alex, HumanName.Beatrice, HumanName.Cecil, HumanName.Dan, HumanName.Eric],
-                allowedLocations: [],
-                humTagsReq: [[HumanName.Flavie, HumanTag.flavie_angry]],
-                effect: [new SituationEffect().changeFondness([[[HumanName.Flavie, HumanName.You], -10]])]
-            }),
-            new Complex({    //Flavie FOMO event 1
-                humReq: [HumanName.Alex, HumanName.Beatrice, HumanName.Cecil, HumanName.Dan, HumanName.Eric],
-                allowedLocations: [],
-                humTagsBan: [[HumanName.Flavie, HumanTag.flavie_angry]],
-                effect: [new SituationEffect().changeFondness([
-                    [[HumanName.Flavie, HumanName.Alex], -1],
-                    [[HumanName.Flavie, HumanName.Beatrice], -1],
-                    [[HumanName.Flavie, HumanName.Cecil], -1],
-                    [[HumanName.Flavie, HumanName.Dan], -1],
-                    [[HumanName.Flavie, HumanName.Eric], -1],
-                    [[HumanName.Flavie, HumanName.You], -3]
-                ]).addHumTags([[HumanName.Flavie, HumanTag.flavie_angry]])]
-            }),
-
+            flavieFomo2, // 2 must be before 1 (else both happen simultaneously)
+            flavieFomo1,
+            danTwoGirlfriendsBusted,
         ],
     ),
 )        
