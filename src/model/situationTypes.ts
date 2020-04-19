@@ -1,9 +1,9 @@
 import { HumanName } from "./human"
 import { Situation, SituationEffect } from "./hateGraph"
-import { TripSummary } from "../management/tripsummary"
+import { TripSummary } from "./tripsummary"
 import { CoupleKey, PeopleGraph } from "./peopleGraph"
 import { Location } from "./location"
-import { HumanTag, RelationshipTag } from "./entityTags"
+import { HumanTag, RelationshipTag } from "../content/entityTags"
 
 export class SituationUtils {
     public static startToDate(couple: CoupleKey) {

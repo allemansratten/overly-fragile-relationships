@@ -1,5 +1,5 @@
 import { Relationship } from "./peopleGraph";
-import { HumanTag } from "./entityTags";
+import { HumanTag } from "../content/entityTags";
 
 export type HumanName = string
 

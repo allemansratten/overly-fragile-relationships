@@ -1,8 +1,8 @@
-import { Level } from "../content/level"
+import { Level } from "../model/level"
 import { BoardScene } from "./board"
-import { HateGraph } from "../content/hateGraph"
-import { PeopleGraph } from "../content/peopleGraph"
-import { Human } from "../content/human"
+import { HateGraph } from "../model/hateGraph"
+import { PeopleGraph } from "../model/peopleGraph"
+import { Human } from "../model/human"
 
 export class HumanStage {
     private allPeopleTexts: Array<Phaser.GameObjects.Text> = []

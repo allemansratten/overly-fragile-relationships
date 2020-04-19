@@ -1,4 +1,4 @@
-import { Human } from '../content/human'
+import { Human } from '../model/human'
 import { humanTagMap } from '../content/entityTags'
 
 export class PhoneStage {
