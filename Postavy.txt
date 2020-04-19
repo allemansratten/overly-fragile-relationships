@@ -48,13 +48,13 @@
 
 # Eric
 - relationships:
-	- A:
+	- A: 
 	- B: 
 	- C: 
-	- D:
-	- E:
-	- F:
-
+	- D: 
+	- E: 
+	- F: 
+ 
 # Flavie
 - relationships:
 	- A:
@@ -134,7 +134,7 @@ Events - Specific
 
  	- Couple co se dáva dohromady a rozchází periodicky - Dan + Flavie
 
- 	- 
+ 	- D je competitive v bowlingu, C je dobrej, když s nima jdes na bowling, tak se na sebe naserou, protoze Dan prohraje, a zacne se do 
 
 
  # Lidi
