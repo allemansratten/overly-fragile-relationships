@@ -1,17 +1,18 @@
-import {levels } from '../content/levels'
+import { levels } from '../content/levels'
 import { TripSummary } from '../model/tripSummary'
 import { PhoneStage } from './phone_stage'
 import { HumanStage } from './human_stage'
 import { LocationStage } from './location_stage'
 import { LocationName } from '../content/locations'
-import {Level} from "../model/level"
+import { Level } from "../model/level"
+import { ModalDialog } from '../utils/modal'
 
 export class BoardScene extends Phaser.Scene {
     private tripFader?: Phaser.GameObjects.Rectangle
     private transitionFader?: Phaser.GameObjects.Rectangle
     private infoText?: Phaser.GameObjects.Text
     private level: Level
-    
+
     public tripSummary: TripSummary
     public phone?: PhoneStage
     private humanStage?: HumanStage
@@ -66,6 +67,17 @@ export class BoardScene extends Phaser.Scene {
     }
 
     public goOut(location: LocationName) {
+        if (this.tripSummary.goPeople.length <= 1) {
+            if (location == 'Park') {
+                new ModalDialog(this, `You can't go to the park alone.`)
+            } else if (location == 'Bowling') {
+                new ModalDialog(this, `You can't go bowling alone.`)
+            } else if (location == 'Drink') {
+                new ModalDialog(this, `You can't go drinking alone.`)
+            }
+            return
+        }
+
         this.tripSummary.prepare(location)
         let message = this.level.goOut(this.tripSummary)
         this.tripFader!.input.enabled = false
