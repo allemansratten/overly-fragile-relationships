@@ -46,6 +46,7 @@ export enum HumanTag {
     agreeable, supportive, attention,
     flavie_angry,
     dan_busted,
+    gone
 }
 
 export const humanTagMap: Map<HumanTag, string> = new Map([
