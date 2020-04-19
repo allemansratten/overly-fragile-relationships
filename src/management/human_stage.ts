@@ -19,7 +19,7 @@ export class HumanStage {
         const centerX = 450
         const centerY = 200
         const radius = 150
-        const radiusInner = 100
+        const radiusInner = 140
 
         this.positions = level.humans.map((_, i: number) => {
             const angle = 2 * Math.PI * (i + 0.5) / level.humans.length
@@ -33,7 +33,7 @@ export class HumanStage {
             const angle = 2 * Math.PI * (i + 0.5) / level.humans.length
             return {
                 x: centerX + Math.cos(angle) * radiusInner,
-                y: centerY + Math.sin(angle) * radiusInner * 0.9,
+                y: centerY + Math.sin(angle) * radiusInner,
             }
         })
 
@@ -42,7 +42,7 @@ export class HumanStage {
             const position = this.positions[i]
 
             let image = scene.add.image(0, 0, 'portrait_small', i)
-                .setOrigin(0.5, -0.2)
+                .setOrigin(0.5, 0.5)
                 .setInteractive({ useHandCursor: true })
                 .on('pointerover', () => {
                     this.display(human, Number(i))
@@ -69,6 +69,7 @@ export class HumanStage {
                 })
 
             scene.add.group([image, text, circle]).setXY(position.x, position.y)
+            image.setPosition(position.x, position.y + 45)
 
             // TBH I have no idea why this is not relative to the group, but whatevs
             text.setPosition(position.x, position.y + 100)
@@ -199,12 +200,12 @@ export class HumanStage {
                 if (fondness != DEFAULT_FONDNESS || tags.length != 0) {
                     let diffX = (this.positionsInner[hi1].x - this.positionsInner[hi2].x)
                     let diffY = (this.positionsInner[hi1].y - this.positionsInner[hi2].y)
-                    let diffXN = diffX/Math.sqrt(diffX*diffX + diffY*diffY)
-                    let diffYN = diffY/Math.sqrt(diffX*diffX + diffY*diffY)
+                    let diffXN = diffX / Math.sqrt(diffX * diffX + diffY * diffY)
+                    let diffYN = diffY / Math.sqrt(diffX * diffX + diffY * diffY)
 
                     let line = this.scene.add.line(0, 0,
-                        this.positionsInner[hi1].x - 5-10*diffXN, this.positionsInner[hi1].y + 60-10*diffYN,
-                        this.positionsInner[hi2].x - 5+10*diffXN, this.positionsInner[hi2].y + 60+10*diffYN,
+                        this.positionsInner[hi1].x - 40 * diffXN, this.positionsInner[hi1].y + 60 - 40 * diffYN,
+                        this.positionsInner[hi2].x + 40 * diffXN, this.positionsInner[hi2].y + 60 + 40 * diffYN,
                         this.linearScaleBlack(fondness), 0.3)
                     line.setOrigin(0, 0)
                         .setLineWidth(2)
