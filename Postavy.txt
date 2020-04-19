@@ -3,7 +3,7 @@
 	- A:
 	- B: crush
 	- C: crush
-	- D:
+	- D: 
 	- E:
 	- F:
 - disagreeable
@@ -15,7 +15,7 @@
 	- A: crush
 	- B: 
 	- C: 
-	- D:
+	- D: crush
 	- E:
 	- F:
 - promiscuous
@@ -36,7 +36,7 @@
 # Dan
 - relationships:
 	- A:
-	- B: 
+	- B: crush
 	- C: 
 	- D:
 	- E:
