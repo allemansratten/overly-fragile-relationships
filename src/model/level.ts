@@ -1,6 +1,6 @@
 import { Human, HumanName } from "./human"
 import { Location } from "./location"
-import { TripSummary } from "./tripsummary"
+import { TripSummary } from "./tripSummary"
 import { PeopleGraph, Relationship } from "./peopleGraph"
 import { HateGraph, SituationEffect } from "./hateGraph"
 import { FriendshipManager } from "./friendshipManager"

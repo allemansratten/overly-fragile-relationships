@@ -1,6 +1,6 @@
 import { HumanName } from "./human"
 import { Situation, SituationEffect } from "./hateGraph"
-import { TripSummary } from "./tripsummary"
+import { TripSummary } from "./tripSummary"
 import { CoupleKey, PeopleGraph } from "./peopleGraph"
 import { Location } from "./location"
 import { HumanTag, RelationshipTag } from "../content/entityTags"

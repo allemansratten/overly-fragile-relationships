@@ -1,5 +1,5 @@
 import {levels } from '../content/levels'
-import { TripSummary } from '../model/tripsummary'
+import { TripSummary } from '../model/tripSummary'
 import { PhoneStage } from './phone_stage'
 import { HumanStage } from './human_stage'
 import { LocationStage } from './location_stage'
