@@ -14,8 +14,9 @@ export class SituationUtils {
         return this.changeRelationship(
             couple,
             [RelationshipTag.lover],
-            [RelationshipTag.crush, RelationshipTag.ex, RelationshipTag.dislike]
-        ).setDescription(`${a} and ${b} started dating!`)
+            [RelationshipTag.crush, RelationshipTag.ex, RelationshipTag.dislike],
+            `${a} and ${b} started dating!`
+        )
     }
 
     public static breakUp(couple: CoupleKey): SituationEffect {
@@ -23,14 +24,16 @@ export class SituationUtils {
         return this.changeRelationship(
             couple,
             [RelationshipTag.ex],
-            [RelationshipTag.lover]
-        ).setDescription(`Did you hear? ${a} and ${b} broke up!`)
+            [RelationshipTag.lover],
+            `Did you hear? ${a} and ${b} broke up!`
+        )
     }
 
     public static changeRelationship(
         couple: CoupleKey,
         addedRelTags: RelationshipTag[],
         removedRelTags: RelationshipTag[],
+        description?: string
     ): SituationEffect {
         const [a, b] = couple
 
@@ -43,7 +46,7 @@ export class SituationUtils {
             return res
         }
 
-        return new SituationEffect()
+        return new SituationEffect(description)
             .addRelTags(broadcast(addedRelTags))
             .removeRelTags(broadcast(removedRelTags))
     }
@@ -156,17 +159,21 @@ export class EternalCouple implements Situation {
             res.push(
                 SituationUtils.startToDate([this.a, this.b])
                     .setDescription(`${this.a} and ${this.b} are back together again.`),
-                new SituationEffect()
-                    .removeRelTags([[[this.a, this.b], RelationshipTag.eternal_couple_apart_3]])
-                    .addRelTags([[[this.a, this.b], RelationshipTag.eternal_couple_together_1]])
+                SituationUtils.changeRelationship(
+                    [this.a, this.b],
+                    [RelationshipTag.eternal_couple_apart_3],
+                    [RelationshipTag.eternal_couple_together_1],
+                )
             )
         } else if (relationships.includes(RelationshipTag.eternal_couple_together_3)) {
             res.push(
                 SituationUtils.breakUp([this.a, this.b])
                     .setDescription(`${this.a} and ${this.b} broke up again.`),
-                new SituationEffect()
-                    .removeRelTags([[[this.a, this.b], RelationshipTag.eternal_couple_together_3]])
-                    .addRelTags([[[this.a, this.b], RelationshipTag.eternal_couple_apart_1]])
+                SituationUtils.changeRelationship(
+                    [this.a, this.b],
+                    [RelationshipTag.eternal_couple_together_3],
+                    [RelationshipTag.eternal_couple_apart_1],
+                )
             )
         }
 
