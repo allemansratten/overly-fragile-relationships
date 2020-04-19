@@ -13,6 +13,7 @@ export class PeopleGraph {
     private relationshipTags: Map<EdgeKey, Set<RelationshipTag>> = new Map()
     private fondness: Map<EdgeKey, number> = new Map()
     private humansTags: Map<HumanName, Set<HumanTag>> = new Map()
+    private humanNames: Array<HumanName>
 
     constructor(
         people: Human[] = [],
@@ -42,6 +43,12 @@ export class PeopleGraph {
             console.assert(MIN_FONDNESS <= fondness && fondness <= MAX_FONDNESS)
             this.fondness.set(CoupleUtils.toEdgeKey(couple), fondness)
         })
+
+        this.humanNames = people.map(p => p.name)
+    }
+
+    public getHumanNames(): Array<HumanName> {
+        return this.humanNames
     }
 
     public addHumTag(person: HumanName, tag: HumanTag) {
