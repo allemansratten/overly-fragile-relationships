@@ -135,11 +135,11 @@ export class MutualCrush implements Situation {
         }
 
         for (const person of trip.goPeople) {
-            const crushes = crushesMap.get(person.name)!
-            if (crushes.length === 1) {
+            const crushes = crushesMap.get(person.name)
+            if (crushes?.length === 1) {
                 const crush = crushes[0]
                 // Break symmetry by comparing names
-                if (crushesMap.get(crush)!.length === 1 && crush <= person.name) {
+                if (crushesMap.get(crush)?.length === 1 && crush <= person.name) {
                     effects.push(
                         SituationUtils.startToDate([person.name, crush]),
                     )
