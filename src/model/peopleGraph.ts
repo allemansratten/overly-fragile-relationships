@@ -100,6 +100,17 @@ export class PeopleGraph {
         return intersection(ab, ba)
     }
 
+    public getAllRelationships(): Relationship[] {
+        let res = new Array
+
+        this.relationshipTags.forEach((tags, edgeKey) => {
+            const couple = this.fromEdgeKey(edgeKey)
+            res.push(new Relationship(couple, tags))
+        })
+
+        return res
+    }
+
     private toEdgeKey(unorderedPair: CoupleKey): EdgeKey {
         let [a, b] = unorderedPair
         let orderedPair = a <= b || this.oriented ? [a, b] : [b, a]
@@ -128,7 +139,6 @@ export class Relationship {
         return `${this.people[1]}: ${Array.from(this.tags).map((x) => relationshipTagMap.get(x) ?? "?").join(', ')}`
     }
 }
-
 
 export function intersection<T>(as: T[], bs: T[]): T[] {
     let res = new Array

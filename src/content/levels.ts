@@ -3,7 +3,7 @@ import { Level } from "../model/level"
 import { Relationship } from "../model/peopleGraph"
 import { Human, HumanName } from "../model/human"
 import { HumanTag, RelationshipTag } from "./entityTags"
-import { Complex, MutualCrush, NobodyLikesAngryDrunk, SituationUtils } from "../model/situationTypes"
+import { MutualCrush, NobodyLikesAngryDrunk, TimerSituation } from "../model/situationTypes"
 
 export let levels: Array<Level> = []
 
@@ -50,6 +50,7 @@ levels.push(
             new Human('Cecil'),
             new Human('Dan'),
             new Human('Eric'),
+            new Human('Flavie'),
         ],
         locations,
         flattenRelationshipList([
@@ -68,6 +69,7 @@ levels.push(
         ]
         ,
         new HateGraph([
+            new TimerSituation(),
             new NobodyLikesAngryDrunk(),
             new MutualCrush(),
         ]),
