@@ -1,14 +1,25 @@
-export enum RelationshipTag { crush, dislike, friend_like, friend, lover, ex, political_dis }
-let RelationshipTagMap : {[key in RelationshipTag]: string} = {
-    [RelationshipTag.crush]: 'crush',
-    [RelationshipTag.dislike]: 'dislike',
-    [RelationshipTag.friend_like]: 'like as a friend',
-    [RelationshipTag.friend]: 'friend',
-    [RelationshipTag.lover]: 'lover',
-    [RelationshipTag.ex]: 'ex',
-    [RelationshipTag.political_dis]: 'political disagreement',
+export enum RelationshipTag {
+    crush,
+    dislike,
+    friend_like,
+    friend,
+    lover,
+    ex,
+    political_dis,
+    // eternal couple
+    eternal_couple_together_1, eternal_couple_together_2, eternal_couple_together_3,
+    eternal_couple_apart_1, eternal_couple_apart_2, eternal_couple_apart_3,
 }
-export { RelationshipTagMap }
+
+export const relationshipTagMap : Map<RelationshipTag, string> = new Map([
+    [RelationshipTag.crush, 'crush'],
+    [RelationshipTag.dislike, 'dislike'],
+    [RelationshipTag.friend_like, 'like as a friend'],
+    [RelationshipTag.friend, 'friend'],
+    [RelationshipTag.lover, 'lover'],
+    [RelationshipTag.ex, 'ex'],
+    [RelationshipTag.political_dis, 'political disagreement'],
+])
 
 export enum HumanTag {
     introvert, extrovert, angry_drunk, sad_drunk,

@@ -1,5 +1,5 @@
 import { Human, HumanName } from "./human"
-import { HumanTag, RelationshipTag, RelationshipTagMap } from "./entityTags"
+import { HumanTag, RelationshipTag, relationshipTagMap } from "./entityTags"
 
 type EdgeKey = string
 export type CoupleKey = [HumanName, HumanName]
@@ -125,7 +125,7 @@ export class Relationship {
     }
 
     public toString(): string {
-        return `${this.people[1]}: ${Array.from(this.tags).map((x) => RelationshipTagMap[x]).join(', ')}`
+        return `${this.people[1]}: ${Array.from(this.tags).map((x) => relationshipTagMap.get(x) ?? "?").join(', ')}`
     }
 }
 
