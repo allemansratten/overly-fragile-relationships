@@ -33,6 +33,10 @@ export class PeopleGraph {
             })
         })
 
+        people.forEach(p =>{
+            this.humansTags.set(p.name, new Set())
+        })
+
         initialTags.forEach(hTagTuple => {
             let [hName, hTag] = hTagTuple
             this.addHumTag(hName, hTag)
@@ -54,10 +58,12 @@ export class PeopleGraph {
         return this.humanNames
     }
 
-    public addHumTag(person: HumanName, tag: HumanTag) {
-        let hTags = this.humansTags.get(person) ?? new Set<HumanTag>()
-        hTags.add(tag)
-        this.humansTags.set(person, hTags)
+    public addHumTag(person: HumanName, tag: HumanTag): boolean {
+        let hTags = this.humansTags.get(person)
+        let newlyAdded = !hTags?.has(tag)
+        hTags?.add(tag)
+
+        return newlyAdded
     }
 
     public removeHumTag(person: HumanName, tag: HumanTag): boolean {
@@ -79,7 +85,11 @@ export class PeopleGraph {
     }
 
     public addRelTag(people: Couple, tag: RelationshipTag) {
-        this.getRelTags(people)?.add(tag)
+        const relTags = this.getRelTags(people)
+        let newlyAdded = !relTags?.has(tag)
+        relTags?.add(tag)
+
+        return newlyAdded
     }
 
     public removeRelTag(people: Couple, tag: RelationshipTag): boolean {

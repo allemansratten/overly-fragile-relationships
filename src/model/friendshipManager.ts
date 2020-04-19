@@ -37,11 +37,11 @@ export class FriendshipManager {
         let applicableEffects = con.GetApplicableEffects(trip, this.peopleGraph, this.tripCount)
 
         applicableEffects.forEach(eff => {
-            eff.addedRelTags.forEach(at => this.peopleGraph.addRelTag(at[0], at[1]))
-            eff.removedRelTags.forEach(at => this.peopleGraph.removeRelTag(at[0], at[1]))
+            eff.addedRelTags = eff.addedRelTags.filter(at => this.peopleGraph.addRelTag(at[0], at[1]))
+            eff.removedRelTags = eff.removedRelTags.filter(at => this.peopleGraph.removeRelTag(at[0], at[1]))
 
-            eff.addedHumTags.forEach(ah => this.peopleGraph.addHumTag(ah[0], ah[1]))
-            eff.removedHumTags.forEach(rh => this.peopleGraph.removeHumTag(rh[0], rh[1]))
+            eff.addedHumTags = eff.addedHumTags.filter(ah => this.peopleGraph.addHumTag(ah[0], ah[1]))
+            eff.removedHumTags = eff.removedHumTags.filter(rh => this.peopleGraph.removeHumTag(rh[0], rh[1]))
 
             eff.changedFondness.forEach(
                 ([couple, change]) =>
