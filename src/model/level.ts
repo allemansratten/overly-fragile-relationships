@@ -4,7 +4,7 @@ import { TripSummary } from "./tripSummary"
 import { Couple, PeopleGraph, Relationship, EdgeKey, CoupleUtils } from "./peopleGraph"
 import { Situation, SituationEffect } from "./situation"
 import { FriendshipManager } from "./friendshipManager"
-import { HumanTag, humanTagMap, RelationshipTag, relationshipTagMap, relationshipTagMapStory, relationshipTagBidirectional } from "../content/entityTags"
+import { HumanTag, humanTagMap, RelationshipTag, relationshipTagMap, relationshipTagMapStory, relationshipTagBidirectional, relationshipTagShadowingNewRem, relationshipTagShadowingRemNew } from "../content/entityTags"
 import { HumanName } from "../content/humans"
 
 export class Level {
@@ -49,6 +49,8 @@ export class Level {
 
         // Construct msgs for effects
         let { perPersonRelMsg, perPersonHumMsg } = this.reduceEffectsPerPerson(effects)
+        this.reduceTagsShadowing(perPersonRelMsg)
+
         let effectsMsgs = Array.from(new Set(effects.map(effect => this.fixAgreement(effect.description))))
         effectsMsgs.push("") // separator dummy
         effectsMsgs = effectsMsgs.concat(this.createEffectsMsgs(perPersonRelMsg, perPersonHumMsg))
@@ -69,6 +71,35 @@ export class Level {
         let statusMessage = `You went out to ${tripSummary.goLocation} with ${friendList}.\n${effectMsg}`
 
         return statusMessage
+    }
+
+    private reduceTagsShadowing(
+        perPersonRelMsg: Map<EdgeKey, [RelationshipTag[], RelationshipTag[]]>
+    ) {
+        perPersonRelMsg.forEach((changes, couple) => {
+            let newTags = changes[0]
+            let remTags = changes[1]
+            let toRemNew : Array<RelationshipTag> = []
+            let toRemRem : Array<RelationshipTag> = []
+            for(let tag of newTags) {
+                for(let tagK of relationshipTagShadowingNewRem) {
+                    if(tagK[0] == tag) {
+                        toRemRem.push(tagK[1])
+                    }
+                }
+            }
+            for(let tag of remTags) {
+                for(let tagK of relationshipTagShadowingRemNew) {
+                    if(tagK[0] == tag) {
+                        toRemNew.push(tagK[1])
+                    }
+                }
+            }
+            newTags = newTags.filter(x => !toRemNew.includes(x))
+            remTags = remTags.filter(x => !toRemRem.includes(x))
+            perPersonRelMsg.set(couple, [newTags, remTags])
+        })
+        return perPersonRelMsg
     }
 
     private createEffectsMsgs(
