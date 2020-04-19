@@ -1,6 +1,6 @@
 export enum LocationName {
-    'Bowling',
-    'Drink',
-    'Forest',
-    'Movie',
+    Bowling = 'Bowling',
+    Drink = 'Drink',
+    Forest = 'Forest',
+    Movie = 'Movie',
 }

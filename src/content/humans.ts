@@ -1,9 +1,9 @@
 export enum HumanName {
-    'You',
-    'Alex',
-    'Beatrice',
-    'Cecil',
-    'Dan',
-    'Eric',
-    'Flavie',
+    You = 'You',
+    Alex = 'Alex',
+    Beatrice = 'Beatrice',
+    Cecil = 'Cecil',
+    Dan = 'Dan',
+    Eric = 'Eric',
+    Flavie = 'Flavie',
 }

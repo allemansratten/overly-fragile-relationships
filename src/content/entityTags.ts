@@ -23,7 +23,9 @@ export const relationshipTagMap: Map<RelationshipTag, string> = new Map([
 
 export enum HumanTag {
     introvert, extrovert, angry_drunk, sad_drunk,
-    good_bowler, bad_bowler, promiscuous, jealous, disagreeable
+    good_bowler, bad_bowler, promiscuous, jealous, disagreeable,
+    agreeable, supportive, attention
+
 }
 
 export const humanTagMap: Map<HumanTag, string> = new Map([
@@ -36,5 +38,7 @@ export const humanTagMap: Map<HumanTag, string> = new Map([
     [HumanTag.promiscuous, 'promiscuous'],
     [HumanTag.jealous, 'jealous'],
     [HumanTag.disagreeable, 'disagreeable]'],
+    [HumanTag.agreeable, 'agreeable]'],
+    [HumanTag.supportive, 'supportive friend]'],
+    [HumanTag.attention, 'attention seeker]'],
 ])
-

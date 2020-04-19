@@ -3,13 +3,14 @@ import { Level } from "../model/level"
 import { Relationship } from "../model/peopleGraph"
 import { Human } from "../model/human"
 import { HumanTag, RelationshipTag } from "./entityTags"
-import { MutualCrush, NobodyLikesAngryDrunk, TimerSituation } from "../model/situationTypes"
-import { HumanName } from "./humans" 
+import { EternalCouple, MutualCrush, NobodyLikesAngryDrunk, TimerSituation } from "../model/situationTypes"
+import { HumanName } from "./humans"
 import { LocationName } from "./locations"
+import { Location } from "../model/location"
 
 export let levels: Array<Level> = []
 
-let locations = [
+let locations: Location[] = [
     {name: LocationName.Bowling, limit: {min: 2, max: 5}},
     {name: LocationName.Drink, limit: {min: 2, max: 4}},
     {name: LocationName.Forest, limit: {min: 2, max: 6}},
@@ -62,6 +63,7 @@ levels.push(
             new Relationship([HumanName.Dan, HumanName.You], new Set([RelationshipTag.ex])),
             mutualRelationship([HumanName.Eric, HumanName.Alex], [RelationshipTag.crush]),
             mutualRelationship([HumanName.Eric, HumanName.Beatrice], [RelationshipTag.crush]),
+            mutualRelationship([HumanName.Dan, HumanName.Flavie], [RelationshipTag.eternal_couple_apart_1]),
         ]),
         [
             [HumanName.Beatrice, HumanTag.promiscuous],
@@ -74,6 +76,7 @@ levels.push(
             new TimerSituation(),
             new NobodyLikesAngryDrunk(),
             new MutualCrush(),
+            new EternalCouple(HumanName.Dan, HumanName.Flavie),
         ]),
     ),
 )
