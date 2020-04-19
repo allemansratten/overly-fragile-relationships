@@ -87,6 +87,11 @@ export class PeopleGraph {
         this.fondness.set(CoupleUtils.toEdgeKey(people), to)
     }
 
+    public getFondness(people: Couple): number {
+        let edgeKey = CoupleUtils.toEdgeKey(people)
+        return this.fondness.get(edgeKey) ?? 0
+    }
+
     public getOutRelationships(person: HumanName): Array<Relationship> {
         let result = new Array
 

@@ -146,6 +146,24 @@ export class HumanStage {
         this.scene.phone!.display(human, Number(index))
     }
 
+    private linearScaleBlack(level: number): number {
+        // level is 0 to 1
+        // return Math.round(level*255*255*255) + Math.round(level*255) + Math.round(level*255)
+
+        // level is 0 to 10
+        if (level <= 2) {
+            return 0xde0000
+        } else if(level <= 4) {
+            return 0xd46c6c
+        } else if(level <= 6) {
+            return 0xa3a3a3
+        } else if(level <= 8) {
+            return 0x70cc78
+        } else {
+            return 0x00de13
+        }
+    }
+
     public redrawLines(level: Level) {
         for(let g of this.allPeopleLines) {
             g.destroy(true)
@@ -164,14 +182,16 @@ export class HumanStage {
                 let tags = Array
                     .from(peopleGraph.getRelTags([human1.name, human2.name]))
                     .filter((x) => relationshipTagMap.has(x))
+                let fondness = peopleGraph.getFondness([human1.name, human2.name])
 
                 for (let i in tags) {
                     let tag = tags[i]
                     let line = this.scene.add.line(0, 0,
                         this.positionsInner[hi1].x - 5, this.positionsInner[hi1].y + 60,
                         this.positionsInner[hi2].x - 5, this.positionsInner[hi2].y + 60,
-                        0xffffff, 0.1)
+                        this.linearScaleBlack(fondness/10), 0.1)
                     line.setOrigin(0, 0)
+                        .setLineWidth(2)
                     group.add(line)
 
                     let avgX = (this.positionsInner[hi1].x + this.positionsInner[hi2].x) / 2
