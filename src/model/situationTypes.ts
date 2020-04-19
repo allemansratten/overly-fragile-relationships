@@ -142,26 +142,28 @@ export class EternalCouple implements Situation {
 
     public GetApplicableEffects(trip: TripSummary, currentState: PeopleGraph): Array<SituationEffect> {
         let relationships = currentState.getMutualRelationshipsBetween(this.a, this.b)
+        // TODO: this could break if they get together/break up in another way
+        let res = []
 
         if (relationships.includes(RelationshipTag.eternal_couple_apart_3)) {
-            return [
+            res.push(
                 SituationUtils.startToDate([this.a, this.b])
                     .setDescription(`${this.a} and ${this.b} are back together again.`),
                 new SituationEffect()
                     .removeRelTags([[[this.a, this.b], RelationshipTag.eternal_couple_apart_3]])
                     .addRelTags([[[this.a, this.b], RelationshipTag.eternal_couple_together_1]])
-            ]
+            )
         } else if (relationships.includes(RelationshipTag.eternal_couple_together_3)) {
-            return [
+            res.push(
                 SituationUtils.breakUp([this.a, this.b])
                     .setDescription(`${this.a} and ${this.b} broke up again.`),
                 new SituationEffect()
                     .removeRelTags([[[this.a, this.b], RelationshipTag.eternal_couple_together_3]])
                     .addRelTags([[[this.a, this.b], RelationshipTag.eternal_couple_apart_1]])
-            ]
-        } else {
-            return []
+            )
         }
+
+        return res
     }
 }
 
@@ -196,9 +198,13 @@ export class Complex implements Situation {
     public isApplicable(trip: TripSummary, currentState: PeopleGraph): boolean {
         let namesPresent = trip.goPeople.map(p => p.name)
 
-        return this.humReq.every(hp => namesPresent.includes(hp)) &&
+        // If no locations are set, this means all locations are allowed
+        let locationOk = (this.allowedLocations.length === 0)
+            || this.allowedLocations.some(loc => loc.name == trip.goLocation?.name)
+
+        return locationOk &&
+            this.humReq.every(hp => namesPresent.includes(hp)) &&
             this.humBan.every(cp => !namesPresent.includes(cp)) &&
-            this.allowedLocations.some(loc => loc.name == trip.goLocation?.name) &&
 
             this.humTagsReq.every(hr => currentState.getHumTags(hr[0]).has(hr[1])) &&
             this.humTagsBan.every(br => !currentState.getHumTags(br[0]).has(br[1])) &&
