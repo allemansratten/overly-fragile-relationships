@@ -14,6 +14,8 @@ export class LoadingScene extends Phaser.Scene {
         this.load.spritesheet('rel_tags', 'rel_tags.png', { frameWidth: 30, frameHeight: 30 })
         this.load.spritesheet('portrait_big', 'portrait_big.png', { frameWidth: 200, frameHeight: 200 })
         this.load.spritesheet('location_thumb', 'location_thumb.png', { frameWidth: 200, frameHeight: 200 })
+        this.load.audio('main_music', 'montuno.mp3')
+
         this.fader = this.add.rectangle(0, 0, 800, 500, 0x0)
             .setOrigin(0, 0)
             .setDepth(1001)
