@@ -2,7 +2,15 @@ import { Level } from "../model/level"
 import { Relationship } from "../model/peopleGraph"
 import { Human } from "../model/human"
 import { HumanTag, RelationshipTag } from "./entityTags"
-import { Complex, EternalCouple, MutualCrush, NobodyLikesAngryDrunk, SituationUtils, Sympathies } from "./situations"
+import {
+    Complex,
+    EternalCouple,
+    MutualCrush,
+    NobodyLikesAngryDrunk,
+    SituationUtils,
+    Sympathies,
+    UpdateFondnessBasedTags,
+} from "./situations"
 import { HumanName } from "./humans"
 import { LocationName } from "./locations"
 import { SituationEffect } from "../model/situation"
@@ -157,10 +165,11 @@ levels.push(
             [[HumanName.Cecil, HumanName.Alex], 7],
         ],
         [
+            new Sympathies(),
+            new UpdateFondnessBasedTags(),
             new NobodyLikesAngryDrunk(),
             new MutualCrush(),
             new EternalCouple(HumanName.Dan, HumanName.Flavie),
-            new Sympathies(),
 
             bowlingbrawl,
             flavieFomo2, // 2 must be before 1 (else both happen simultaneously)

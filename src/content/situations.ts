@@ -15,6 +15,7 @@ export class SituationUtils {
             couple,
             [RelationshipTag.lover],
             [RelationshipTag.crush, RelationshipTag.ex],
+            +10,
             `${a} and ${b} started dating!`,
         )
     }
@@ -25,6 +26,7 @@ export class SituationUtils {
             couple,
             [RelationshipTag.ex],
             [RelationshipTag.lover],
+            -5,
             `Did you hear? ${a} and ${b} broke up!`,
         )
     }
@@ -33,6 +35,7 @@ export class SituationUtils {
         couple: Couple,
         addedRelTags: RelationshipTag[],
         removedRelTags: RelationshipTag[],
+        fondnessChange: number,
         description?: string,
     ): SituationEffect {
         const [a, b] = couple
@@ -49,6 +52,10 @@ export class SituationUtils {
         return new SituationEffect(description)
             .addRelTags(broadcast(addedRelTags))
             .removeRelTags(broadcast(removedRelTags))
+            .changeFondness([
+                [[a, b], fondnessChange],
+                [[b, a], fondnessChange],
+            ])
     }
 
     public static getSomeoneOnTripWithTag(trip: TripSummary, person: Human, currentState: PeopleGraph, tag: RelationshipTag) {
@@ -216,7 +223,7 @@ export class EternalCouple implements Situation {
                 this.danBustedMessageFired = true
                 effect.setDescription(
                     "What? Even after Dan's shenanigans," +
-                    " it seems that Flavie forgave him and they got back together...!?"
+                    " it seems that Flavie forgave him and they got back together...!?",
                 )
             } else {
                 wrapperIndex = Math.min(wrapperIndex, wrappedDescriptions.length - 1)
@@ -257,8 +264,8 @@ export class Complex implements Situation {
     }
 
     public GetApplicableEffects(trip: TripSummary, currentState: PeopleGraph): Array<SituationEffect> {
-        return this.isApplicable(trip, currentState) 
-            ? this.processEffects ? this.processEffects(trip, currentState, this.effects) : this.effects 
+        return this.isApplicable(trip, currentState)
+            ? this.processEffects ? this.processEffects(trip, currentState, this.effects) : this.effects
             : new Array()
     }
 
@@ -287,6 +294,7 @@ export class Sympathies implements Situation {
 
     GetApplicableEffects(trip: TripSummary, currentState: PeopleGraph, tripCount: number): Array<SituationEffect> {
         let effect = new SituationEffect()
+
         for (const r of currentState.getAllRelationships()) {
             // Both parties must be present
             if (r.people.every(p => trip.goPeople.map(q => q.name).includes(p))) {
@@ -299,5 +307,37 @@ export class Sympathies implements Situation {
             }
         }
         return [effect]
+    }
+}
+
+export class UpdateFondnessBasedTags implements Situation {
+    GetApplicableEffects(trip: TripSummary, currentState: PeopleGraph, tripCount: number): Array<SituationEffect> {
+        let effect = new SituationEffect()
+        let otherEffects = []
+
+        for (const a of currentState.getHumanNames()) {
+            for (const b of currentState.getHumanNames()) {
+                if (a == b) continue
+                const fondness = currentState.getFondness([a, b])
+                if (fondness < 5) {
+                    effect.removeRelTags([
+                        [[a, b], RelationshipTag.crush],
+                    ])
+                    if (a < b && currentState.getMutualRelationshipsBetween(a, b).includes(RelationshipTag.lover)) {
+                        otherEffects.push(SituationUtils.breakUp([a, b]))
+                    }
+                } else {
+                    if (currentState.getRelationshipsBetween(a, b).includes(RelationshipTag.crushable)) {
+                        effect.addRelTags([
+                            [[a, b], RelationshipTag.crush],
+                        ])
+                    }
+                }
+            }
+
+        }
+
+        otherEffects.push(effect)
+        return otherEffects
     }
 }
