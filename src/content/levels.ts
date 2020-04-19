@@ -3,7 +3,7 @@ import { Level } from "../model/level"
 import { Relationship } from "../model/peopleGraph"
 import { Human, HumanName } from "../model/human"
 import { HumanTag, RelationshipTag } from "./entityTags"
-import { MutualCrush, NobodyLikesAngryDrunk, TimerSituation } from "../model/situationTypes"
+import { Complex, EternalCouple, MutualCrush, NobodyLikesAngryDrunk, TimerSituation } from "../model/situationTypes"
 
 export let levels: Array<Level> = []
 
@@ -60,6 +60,7 @@ levels.push(
             new Relationship(['Dan', 'You'], new Set([RelationshipTag.ex])),
             mutualRelationship(['Eric', 'Alex'], [RelationshipTag.crush]),
             mutualRelationship(['Eric', 'Beatrice'], [RelationshipTag.crush]),
+            mutualRelationship(['Dan', 'Flavie'], [RelationshipTag.eternal_couple_apart_1]),
         ]),
         [
             ['Beatrice', HumanTag.promiscuous],
@@ -72,6 +73,7 @@ levels.push(
             new TimerSituation(),
             new NobodyLikesAngryDrunk(),
             new MutualCrush(),
+            new EternalCouple("Dan", "Flavie"),
         ]),
     ),
 )

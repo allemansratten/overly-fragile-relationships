@@ -37,4 +37,3 @@ export const humanTagMap: Map<HumanTag, string> = new Map([
     [HumanTag.jealous, 'jealous'],
     [HumanTag.disagreeable, 'disagreeable]'],
 ])
-
