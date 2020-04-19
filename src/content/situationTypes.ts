@@ -5,6 +5,23 @@ import { CoupleKey, PeopleGraph } from "./peopleGraph"
 import { Location } from "./location"
 import { HumanTag, RelationshipTag } from "./entityTags"
 
+export class SituationUtils {
+    public static startToDate(couple: CoupleKey) {
+        const [a, b] = couple
+    
+        return new SituationEffect(
+            `${a} and ${b} started dating!`,
+            [
+                [[a, b], RelationshipTag.lover],
+                [[b, a], RelationshipTag.lover],
+            ],
+            [
+                [[a, b], RelationshipTag.crush],
+                [[b, a], RelationshipTag.crush],
+            ],
+        )
+    }
+}
 
 export class SimpleSituation implements Situation {
     private haveToBePresent: Array<HumanName>
@@ -75,22 +92,7 @@ export class MutualCrush implements Situation {
             personsRelationshipsOut.filter(outRel => outRel.tags.has(RelationshipTag.crush)).forEach(outRelCrush => {
                 if (personalRelationshipsIn.filter(inRel => inRel.people[0] == outRelCrush.people[1] && inRel.tags.has(RelationshipTag.crush))) {
                     effects.push(
-                        new SituationEffect(
-                            "Nobody likes drunk people",
-                            [
-                                // Could add utils for these repetitive things e.g. reflexivity
-                                [[person.name, outRelCrush.people[1]], RelationshipTag.lover],
-                                [[outRelCrush.people[1], person.name], RelationshipTag.lover]
-                            ],
-                            [
-                                [[person.name, outRelCrush.people[1]], RelationshipTag.crush],
-                                [[outRelCrush.people[1], person.name], RelationshipTag.crush]
-                            ],
-                            [
-                                [person.name, HumanTag.jealous],
-                                [outRelCrush.people[1], HumanTag.jealous]
-                            ],
-                        )
+                        SituationUtils.startToDate([person.name, outRelCrush.people[1]])
                     )
                 }
                 

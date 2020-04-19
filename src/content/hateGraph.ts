@@ -40,18 +40,3 @@ export class SituationEffect {
     }
 }
 
-export function startToDate(couple: CoupleKey) {
-    const [a, b] = couple
-
-    return new SituationEffect(
-        `${a} and ${b} started dating!`,
-        [
-            [[a, b], RelationshipTag.lover],
-            [[b, a], RelationshipTag.lover],
-        ],
-        [
-            [[a, b], RelationshipTag.crush],
-            [[b, a], RelationshipTag.crush],
-        ],
-    )
-}

@@ -1,9 +1,9 @@
-import { HateGraph, SituationEffect, startToDate } from "./hateGraph"
+import { HateGraph } from "./hateGraph"
 import { Level } from "./level"
-import { Relationship, CoupleKey } from "./peopleGraph"
+import { Relationship } from "./peopleGraph"
 import { Human } from "./human"
 import { HumanTag, RelationshipTag } from "./entityTags"
-import { Complex, SimpleSituation, NobodyLikesAngryDrunk, MutualCrush } from "./situationTypes"
+import { Complex, NobodyLikesAngryDrunk, MutualCrush, SituationUtils } from "./situationTypes"
 
 export let levels: Array<Level> = []
 
@@ -54,7 +54,7 @@ levels.push(
                 [],
                 [],
                 [[['Alex', 'Cecil'], RelationshipTag.lover]],
-                [startToDate(["Alex", "Beatrice"])]
+                [SituationUtils.startToDate(["Alex", "Beatrice"])]
             ),
             new Complex(
                 ['Alex', 'Cecil'],
@@ -64,7 +64,7 @@ levels.push(
                 [],
                 [],
                 [[['Alex', 'Beatrice'], RelationshipTag.lover]],
-                [startToDate(["Alex", "Cecil"])]
+                [SituationUtils.startToDate(["Alex", "Cecil"])]
             ),
             new NobodyLikesAngryDrunk(),
             new MutualCrush(),
