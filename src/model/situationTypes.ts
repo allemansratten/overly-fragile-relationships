@@ -11,34 +11,41 @@ export class SituationUtils {
 
     public static startToDate(couple: CoupleKey): SituationEffect {
         const [a, b] = couple
-
-        return new SituationEffect(
-            `${a} and ${b} started dating!`,
-            [
-                [[a, b], RelationshipTag.lover],
-                [[b, a], RelationshipTag.lover],
-            ],
-            [
-                [[a, b], RelationshipTag.crush],
-                [[b, a], RelationshipTag.crush],
-            ],
-        )
+        return this.changeRelationship(
+            couple,
+            [RelationshipTag.lover],
+            [RelationshipTag.crush, RelationshipTag.ex, RelationshipTag.dislike]
+        ).setDescription(`${a} and ${b} started dating!`)
     }
 
     public static breakUp(couple: CoupleKey): SituationEffect {
         const [a, b] = couple
+        return this.changeRelationship(
+            couple,
+            [RelationshipTag.ex],
+            [RelationshipTag.lover]
+        ).setDescription(`Did you hear? ${a} and ${b} broke up!`)
+    }
 
-        return new SituationEffect(
-            `Did you hear? {a} and ${b} broke up!`,
-            [
-                [[a, b], RelationshipTag.ex],
-                [[b, a], RelationshipTag.ex],
-            ],
-            [
-                [[a, b], RelationshipTag.lover],
-                [[b, a], RelationshipTag.lover],
-            ],
-        )
+    public static changeRelationship(
+        couple: CoupleKey,
+        addedRelTags: RelationshipTag[],
+        removedRelTags: RelationshipTag[],
+    ): SituationEffect {
+        const [a, b] = couple
+
+        function broadcast(tags: RelationshipTag[]): Array<[CoupleKey, RelationshipTag]> {
+            let res = new Array
+            for (const tag of tags) {
+                res.push([[a, b], tag])
+                res.push([[b, a], tag])
+            }
+            return res
+        }
+
+        return new SituationEffect()
+            .addRelTags(broadcast(addedRelTags))
+            .removeRelTags(broadcast(removedRelTags))
     }
 }
 
