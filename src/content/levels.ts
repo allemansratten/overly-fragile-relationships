@@ -60,6 +60,7 @@ const danTwoGirlfriendsBusted = new Complex({
         SituationUtils.breakUp([HumanName.Dan, HumanName.Beatrice]),
         SituationUtils.breakUp([HumanName.Dan, HumanName.Flavie]),
         new SituationEffect()
+            .addHumTags([[HumanName.Dan, HumanTag.dan_busted]])
             .changeFondness([
                 [[HumanName.Dan, HumanName.You], -5],
                 [[HumanName.Beatrice, HumanName.Dan], -7],
@@ -93,6 +94,19 @@ const flavieFomo2 = new Complex({    //Flavie FOMO event 2
     humTagsReq: [[HumanName.Flavie, HumanTag.flavie_angry]],
     effect: [new SituationEffect().changeFondness([[[HumanName.Flavie, HumanName.You], -10]])
         .setDescription('Flavie came uninvited, chewed you out, and left. Forever.')],
+})
+const bowlingbrawl = new Complex({    // Bowling Brawl     TODO: efekt na ostatní co tam jdou
+    humReq: [HumanName.Cecil, HumanName.Dan],
+    allowedLocations: [LocationName.Bowling],
+    relTagsBan: [[[HumanName.Cecil, HumanName.Dan], RelationshipTag.bowling_brawl]],
+    effect: [new SituationEffect().changeFondness([
+        [[HumanName.Cecil, HumanName.Dan], -2],
+        [[HumanName.Dan, HumanName.Cecil,], -2]])
+        .addRelTags([[[HumanName.Cecil, HumanName.Dan], RelationshipTag.bowling_brawl]])
+        .setDescription('Cecil and Dan bet who could score the most in bowling.' +
+            ' Dan thought he would win easily, but Cecil did.' +
+            ' So Dan accused him of cheating, and they got into a fight!')]
+
 })
 
 levels.push(
@@ -135,21 +149,9 @@ levels.push(
             new MutualCrush(),
             new EternalCouple(HumanName.Dan, HumanName.Flavie),
 
-            new Complex({    // Bowling Brawl     TODO: efekt na ostatní co tam jdou
-                humReq: [HumanName.Cecil, HumanName.Dan],
-                allowedLocations: [LocationName.Bowling],
-                relTagsBan: [[[HumanName.Cecil, HumanName.Dan], RelationshipTag.bowling_brawl]],
-                effect: [new SituationEffect().changeFondness([
-                    [[HumanName.Cecil, HumanName.Dan], -2],
-                    [[HumanName.Dan, HumanName.Cecil,], -2]])
-                    .addRelTags([[[HumanName.Cecil, HumanName.Dan], RelationshipTag.bowling_brawl]])
-                    .setDescription('Cecil and Dan bet who could score the most in bowling.' +
-                        ' Dan thought he would win easily, but Cecil did.' +
-                        ' So Dan accused him of cheating, and they got into a fight!')]
-
-            }),
 
 
+            bowlingbrawl,
             flavieFomo2, // 2 must be before 1 (else both happen simultaneously)
             flavieFomo1,
             danTwoGirlfriendsBusted,
