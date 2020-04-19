@@ -1,10 +1,10 @@
 import { Human, HumanName } from "./human"
 import { Location } from "./location"
-import { TripSummary } from "../management/tripsummary"
+import { TripSummary } from "./tripSummary"
 import { PeopleGraph, Relationship } from "./peopleGraph"
 import { HateGraph, SituationEffect } from "./hateGraph"
 import { FriendshipManager } from "./friendshipManager"
-import { HumanTag, humanTagMap, RelationshipTag, relationshipTagMap } from "./entityTags"
+import { HumanTag, humanTagMap, RelationshipTag, relationshipTagMap } from "../content/entityTags"
 
 export class Level {
     public humans: Array<Human>
@@ -44,10 +44,11 @@ export class Level {
         // Construct msgs for effects
 
         let {perPersonRelMsg, perPersonHumMsg} = this.reduceEffectsPerPerson(effects)
-        let effectsMsgs = this.createEffectsMsgs(perPersonRelMsg, perPersonHumMsg)
-        effectsMsgs.concat(effects.map(effect => {
+        let effectsMsgs = effects.map(effect => {
             return effect.description
-        }))
+        })
+        effectsMsgs.push("") // separator dummy
+        effectsMsgs = effectsMsgs.concat(this.createEffectsMsgs(perPersonRelMsg, perPersonHumMsg))
 
         let effectMsg = effectsMsgs.length > 0
             ? effectsMsgs.join('\n')

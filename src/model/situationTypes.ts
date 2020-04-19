@@ -1,9 +1,9 @@
 import { HumanName } from "./human"
 import { Situation, SituationEffect } from "./hateGraph"
-import { TripSummary } from "../management/tripsummary"
+import { TripSummary } from "./tripSummary"
 import { CoupleKey, PeopleGraph } from "./peopleGraph"
 import { Location } from "./location"
-import { HumanTag, RelationshipTag } from "./entityTags"
+import { HumanTag, RelationshipTag } from "../content/entityTags"
 
 export class SituationUtils {
     public static startToDate(couple: CoupleKey) {
@@ -161,5 +161,55 @@ export class Complex implements Situation {
 
             this.relTagsReq.every(rr => currentState.getRelTags(rr[0]).has(rr[1])) &&
             this.relTagsBan.every(br => !currentState.getRelTags(br[0]).has(br[1]))
+    }
+}
+
+export class TimerSituation implements Situation {
+    static relationshipChains = [
+        [
+            RelationshipTag.eternal_couple_apart_1,
+            RelationshipTag.eternal_couple_apart_2,
+            RelationshipTag.eternal_couple_apart_3,
+        ],
+        [
+            RelationshipTag.eternal_couple_together_1,
+            RelationshipTag.eternal_couple_together_2,
+            RelationshipTag.eternal_couple_together_3
+        ],
+        [
+            RelationshipTag.lover,
+            RelationshipTag.ex,
+        ]
+    ]
+
+    static getRelationshipSteps(): Map<RelationshipTag, RelationshipTag> {
+        let res = new Map()
+
+        for (const chain of this.relationshipChains) {
+            for (let i = 0; i < chain.length - 1; i++) {
+                res.set(chain[i], chain[i+1])
+            }
+        }
+
+        return res
+    }
+
+    GetApplicableEffects(trip: TripSummary, currentState: PeopleGraph): Array<SituationEffect> {
+        const relationships = currentState.getAllRelationships()
+        const steps = TimerSituation.getRelationshipSteps()
+
+        let addedRelTags: Array<[CoupleKey, RelationshipTag]> = []
+        let removedRelTags: Array<[CoupleKey, RelationshipTag]> = []
+
+        for (const r of relationships) {
+            for (const tag of Array.from(r.tags)) {
+                if (steps.has(tag)) {
+                    removedRelTags.push([r.people, tag])
+                    addedRelTags.push([r.people, steps.get(tag)!])
+                }
+            }
+        }
+
+        return [new SituationEffect("", addedRelTags, removedRelTags)]
     }
 }

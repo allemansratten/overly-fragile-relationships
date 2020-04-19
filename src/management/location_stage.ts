@@ -1,4 +1,4 @@
-import { Level } from "../content/level"
+import { Level } from "../model/level"
 import { BoardScene } from "./board"
 
 export class LocationStage {

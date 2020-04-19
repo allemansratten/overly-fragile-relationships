@@ -1,5 +1,5 @@
-import { TripSummary } from "../management/tripsummary"
-import { HumanTag, RelationshipTag } from "./entityTags"
+import { TripSummary } from "./tripSummary"
+import { HumanTag, RelationshipTag } from "../content/entityTags"
 import { CoupleKey, PeopleGraph } from "./peopleGraph"
 import { HumanName } from "./human"
 

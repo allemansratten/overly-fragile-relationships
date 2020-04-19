@@ -1,5 +1,5 @@
-import { Human } from '../content/human'
-import { Location } from '../content/location'
+import { Human } from './human'
+import { Location } from './location'
 
 export class TripSummary {
     public goPeople: Array<Human> = new Array<Human>()
