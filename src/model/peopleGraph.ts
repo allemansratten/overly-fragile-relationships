@@ -116,14 +116,14 @@ export class PeopleGraph {
         let [a, b] = unorderedPair
         let orderedPair = a <= b || this.oriented ? [a, b] : [b, a]
 
-        return orderedPair.map(v => HumanName[v]).join('|')
+        return orderedPair.map(v => v).join('|')
     }
 
     private fromEdgeKey(key: EdgeKey): CoupleKey {
         let names = key.split('|')
         console.assert(names.length == 2)
 
-        return [HumanName[names[0] as keyof typeof HumanName], HumanName[names[1] as keyof typeof HumanName]]
+        return [names[0] as HumanName, names[1] as HumanName]
     }
 }
 
@@ -137,7 +137,7 @@ export class Relationship {
     }
 
     public toString(): string {
-        return `${HumanName[this.people[1]]}: ${Array.from(this.tags).map((x) => relationshipTagMap.get(x) ?? "?").join(', ')}`
+        return `${this.people[1]}: ${Array.from(this.tags).map((x) => relationshipTagMap.get(x) ?? "?").join(', ')}`
     }
 }
 
