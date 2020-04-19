@@ -1,21 +1,21 @@
-import { HateGraph, Situation, SituationEffect } from "./hateGraph"
+import { Situation, SituationEffect } from "./situation"
 import { PeopleGraph } from "./peopleGraph"
 import { TripSummary } from "./tripSummary"
 
 export class FriendshipManager {
-    public hateGraph: HateGraph
+    public situations: Situation[]
     public peopleGraph: PeopleGraph
 
-    constructor(hateGraph: HateGraph, peopleGraph: PeopleGraph) {
-        this.hateGraph = hateGraph
+    constructor(situations: Situation[], peopleGraph: PeopleGraph) {
+        this.situations = situations
         this.peopleGraph = peopleGraph
     }
 
     public applyMeeting(trip: TripSummary): Array<SituationEffect> {
         let appliedEffects = new Array<SituationEffect>()
 
-        this.hateGraph.constraints.forEach(con => {
-            const appEffForCurrCon = this.tryApplyConstraint(con, trip)  // We know it's gonna be assigned
+        this.situations.forEach(situation => {
+            const appEffForCurrCon = this.tryApplyConstraint(situation, trip)  // We know it's gonna be assigned
             appliedEffects = appliedEffects.concat(appEffForCurrCon)
         })
         return appliedEffects

@@ -1,4 +1,4 @@
-import { Situation, SituationEffect } from "./hateGraph"
+import { Situation, SituationEffect } from "./situation"
 import { TripSummary } from "./tripSummary"
 import { CoupleKey, PeopleGraph } from "./peopleGraph"
 import { HumanTag, RelationshipTag } from "../content/entityTags"

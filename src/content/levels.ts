@@ -1,9 +1,15 @@
-import { HateGraph } from "../model/hateGraph"
 import { Level } from "../model/level"
 import { Relationship } from "../model/peopleGraph"
 import { Human } from "../model/human"
 import { HumanTag, RelationshipTag } from "./entityTags"
-import { EternalCouple, MutualCrush, NobodyLikesAngryDrunk, TimerSituation } from "../model/situationTypes"
+import {
+    Complex,
+    EternalCouple,
+    MutualCrush,
+    NobodyLikesAngryDrunk,
+    SituationUtils,
+    TimerSituation,
+} from "../model/situationTypes"
 import { HumanName } from "./humans"
 import { LocationName } from "./locations"
 
@@ -78,11 +84,11 @@ levels.push(
             [[HumanName.Alex, HumanName.Cecil], 7],
             [[HumanName.Cecil, HumanName.Alex], 7],
         ],
-        new HateGraph([
+        [
             new TimerSituation(),
             new NobodyLikesAngryDrunk(),
             new MutualCrush(),
             new EternalCouple(HumanName.Dan, HumanName.Flavie),
-        ]),
+        ],
     ),
 )
