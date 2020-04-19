@@ -1,5 +1,7 @@
+import { LocationName } from "../content/locations";
+
 export interface Location {
-    name: string,
+    name: LocationName,
     limit: {
         min: number,
         max: number

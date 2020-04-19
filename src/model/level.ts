@@ -6,6 +6,7 @@ import { HateGraph, SituationEffect } from "./hateGraph"
 import { FriendshipManager } from "./friendshipManager"
 import { HumanTag, humanTagMap, RelationshipTag, relationshipTagMap } from "../content/entityTags"
 import { HumanName } from "../content/humans"
+import { LocationName } from "../content/locations"
 
 export class Level {
     public humans: Array<Human>
@@ -64,7 +65,7 @@ export class Level {
 
         // Construct final msg
         let friendList: string = tripSummary.goPeople.map((human: Human) => HumanName[human.name]).join(', ')
-        let statusMessage = `You went out to ${tripSummary.goLocation?.name} with ${friendList}.\n${effectMsg}`
+        let statusMessage = `You went out to ${LocationName[tripSummary.goLocation!.name]} with ${friendList}.\n${effectMsg}`
 
         return statusMessage
     }
