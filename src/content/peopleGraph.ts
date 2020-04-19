@@ -1,36 +1,36 @@
 import { Human, HumanName } from "./human"
-import { RelationshipTag, RelationshipTagMap, HumanTag } from "./entityTags"
+import { HumanTag, RelationshipTag, RelationshipTagMap } from "./entityTags"
 
-type NodeKey = string
+type EdgeKey = string
 export type CoupleKey = [HumanName, HumanName]
 
 export class PeopleGraph {
-    private relationshipTags: Map<NodeKey, Set<RelationshipTag>>
+    private relationshipTags: Map<EdgeKey, Set<RelationshipTag>>
     private humansTags: Map<HumanName, Set<HumanTag>>
 
     private oriented: Boolean
 
-    constructor(people: Human[] = [], initialRelationships: Array<Relationship> = [], initialTags: Array<[HumanName, HumanTag]>){
+    constructor(people: Human[] = [], initialRelationships: Array<Relationship> = [], initialTags: Array<[HumanName, HumanTag]>) {
         this.relationshipTags = new Map()
         this.humansTags = new Map()
-        this.oriented = false
+        this.oriented = true
 
         people.forEach(h => {
             people.forEach(hh => {
                 if (h.name != hh.name) {
                     this.setRelTags([h.name, hh.name], new Set<RelationshipTag>())
                 }
-            });
-        });
+            })
+        })
 
         initialTags.forEach(hTagTuple => {
-            let [hName, hTag] = hTagTuple 
+            let [hName, hTag] = hTagTuple
             this.addHumTag(hName, hTag)
-        });
+        })
 
         initialRelationships.forEach(rel => {
             this.setRelTags(rel.people, rel.tags)
-        });
+        })
     }
 
     public addHumTag(person: HumanName, tag: HumanTag) {
@@ -43,17 +43,17 @@ export class PeopleGraph {
         return this.humansTags.get(person)?.delete(tag) ?? false
     }
 
-    public getHumTags(person: HumanName): Set<HumanTag>{
+    public getHumTags(person: HumanName): Set<HumanTag> {
         return this.humansTags.get(person) ?? new Set()
     }
 
-    public setRelTags(people: CoupleKey, tags: Set<RelationshipTag>){
-        let graphKey = this.getGraphKey(people)
-        this.relationshipTags.set(graphKey, tags) 
+    public setRelTags(people: CoupleKey, tags: Set<RelationshipTag>) {
+        let graphKey = this.toEdgeKey(people)
+        this.relationshipTags.set(graphKey, tags)
     }
 
     public getRelTags(people: CoupleKey): Set<RelationshipTag> {
-        let graphKey = this.getGraphKey(people)
+        let graphKey = this.toEdgeKey(people)
         return this.relationshipTags.get(graphKey)!
     }
 
@@ -61,55 +61,65 @@ export class PeopleGraph {
         this.getRelTags(people)?.add(tag)
     }
 
-    public removeRelTag(people: CoupleKey, tag: RelationshipTag) : boolean {
+    public removeRelTag(people: CoupleKey, tag: RelationshipTag): boolean {
         return this.getRelTags(people)?.delete(tag) ?? false
     }
 
-    public getOutRelationships(person: HumanName): Array<Relationship>{
+    public getOutRelationships(person: HumanName): Array<Relationship> {
         let result = new Array
 
         this.relationshipTags.forEach((val, key) => {
             if (key.startsWith(person)) {
-                result.push(new Relationship(this.nodeKeyToTwoIdentities(key), val))
+                result.push(new Relationship(this.fromEdgeKey(key), val))
             }
         })
 
         return result
     }
 
-    public getInRelationships(person: HumanName): Array<Relationship>{
+    public getInRelationships(person: HumanName): Array<Relationship> {
         let result = new Array
 
         this.relationshipTags.forEach((val, key) => {
             if (key.endsWith(person)) {
-                result.push(new Relationship(this.nodeKeyToTwoIdentities(key), val))
+                result.push(new Relationship(this.fromEdgeKey(key), val))
             }
         })
 
         return result
     }
 
-    private getGraphKey(unorderedPair: CoupleKey): NodeKey{
+    public getRelationshipsBetween(a: HumanName, b: HumanName): Array<RelationshipTag> {
+        return Array.from(this.relationshipTags.get(this.toEdgeKey([a, b]))!)
+    }
+
+    public getMutualRelationshipsBetween(a: HumanName, b: HumanName) {
+        let ab = this.getRelationshipsBetween(a, b)
+        let ba = this.getRelationshipsBetween(a, b)
+
+        return intersection(ab, ba)
+    }
+
+    private toEdgeKey(unorderedPair: CoupleKey): EdgeKey {
         let [a, b] = unorderedPair
-        let orderedPair = a <= b || !this.oriented ? [a, b] : [b, a]
+        let orderedPair = a <= b || this.oriented ? [a, b] : [b, a]
 
         return orderedPair.join('|')
     }
 
-    private nodeKeyToTwoIdentities(key: NodeKey): CoupleKey{
+    private fromEdgeKey(key: EdgeKey): CoupleKey {
         let names = key.split('|')
         console.assert(names.length == 2)
 
         return [names[0], names[1]]
     }
-
 }
 
 export class Relationship {
     people: CoupleKey
     tags: Set<RelationshipTag>
 
-    constructor(people: CoupleKey, tags?: Set<RelationshipTag>){
+    constructor(people: CoupleKey, tags?: Set<RelationshipTag>) {
         this.people = people
         this.tags = tags ?? new Set<RelationshipTag>()
     }
@@ -117,4 +127,17 @@ export class Relationship {
     public toString(): string {
         return `${this.people[1]}: ${Array.from(this.tags).map((x) => RelationshipTagMap[x]).join(', ')}`
     }
+}
+
+
+export function intersection<T>(as: T[], bs: T[]): T[] {
+    let res = new Array
+
+    for (const a of as) {
+        if (bs.includes(a)) {
+            res.push(a)
+        }
+    }
+
+    return res
 }
