@@ -8,7 +8,6 @@ import {
     MutualCrush,
     NobodyLikesAngryDrunk,
     SituationUtils,
-    TimerSituation,
 } from "../model/situationTypes"
 import { HumanName } from "./humans"
 import { LocationName } from "./locations"
@@ -144,7 +143,6 @@ levels.push(
             [[HumanName.Cecil, HumanName.Alex], 7],
         ],
         [
-            new TimerSituation(),
             new NobodyLikesAngryDrunk(),
             new MutualCrush(),
             new EternalCouple(HumanName.Dan, HumanName.Flavie),
