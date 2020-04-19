@@ -3,7 +3,7 @@ export enum RelationshipTag {
     lover,
     ex,
     political_dis,
-
+    like, dislike, // sympathies
     // eternal couple
     eternal_couple_together_1, eternal_couple_together_2, eternal_couple_together_3,
     eternal_couple_apart_1, eternal_couple_apart_2, eternal_couple_apart_3, bowling_brawl,

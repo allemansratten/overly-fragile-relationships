@@ -265,3 +265,24 @@ export class Complex implements Situation {
             this.relTagsBan.every(br => !currentState.getRelTags(br[0]).has(br[1]))
     }
 }
+
+export class Sympathies implements Situation {
+    static LIKE_CHANGE = +1
+    static DISLIKE_CHANGE = -1
+
+    GetApplicableEffects(trip: TripSummary, currentState: PeopleGraph, tripCount: number): Array<SituationEffect> {
+        let effect = new SituationEffect()
+        for (const r of currentState.getAllRelationships()) {
+            // Both parties must be present
+            if (r.people.every(p => trip.goPeople.map(q => q.name).includes(p))) {
+                if (r.tags.has(RelationshipTag.like)) {
+                    effect.changeFondness([[r.people, Sympathies.LIKE_CHANGE]])
+                }
+                if (r.tags.has(RelationshipTag.dislike)) {
+                    effect.changeFondness([[r.people, Sympathies.DISLIKE_CHANGE]])
+                }
+            }
+        }
+        return [effect]
+    }
+}
