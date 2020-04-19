@@ -151,6 +151,6 @@ export class Complex implements Situation {
             this.humTagsBan.every(br => !currentState.getHumTags(br[0]).has(br[1])) &&
 
             this.relTagsReq.every(rr => currentState.getRelTags(rr[0]).has(rr[1])) &&
-            this.relTagsReq.every(br => !currentState.getRelTags(br[0]).has(br[1]))
+            this.relTagsBan.every(br => !currentState.getRelTags(br[0]).has(br[1]))
     }
 }
