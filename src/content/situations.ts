@@ -16,7 +16,6 @@ export class SituationUtils {
             [RelationshipTag.lover],
             [RelationshipTag.crush, RelationshipTag.ex],
             +10,
-            `${a} and ${b} started dating!`,
         )
     }
 
@@ -27,7 +26,6 @@ export class SituationUtils {
             [RelationshipTag.ex],
             [RelationshipTag.lover],
             -5,
-            `Did you hear? ${a} and ${b} broke up!`,
         )
     }
 
