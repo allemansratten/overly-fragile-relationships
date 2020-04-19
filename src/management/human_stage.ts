@@ -40,9 +40,8 @@ export class HumanStage {
             let human = level.humans[i]
             const position = this.positions[i]
 
-            let image = scene.add.image(0, 0, 'portrait_big', i)
+            let image = scene.add.image(0, 0, 'portrait_small', i)
                 .setOrigin(0.5, -0.2)
-                .setScale(0.3)
                 .setInteractive({useHandCursor: true})
                 .on('pointerover', () => {
                     this.display(human, Number(i))
