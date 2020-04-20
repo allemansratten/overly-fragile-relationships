@@ -1,5 +1,5 @@
 import { Human } from '../model/human'
-import { humanTagMap, relationshipTagMap } from '../content/entityTags'
+import { humanTagMap, relationshipTagMap, humanTagDisplay } from '../content/entityTags'
 import { HumanName, HumanBio } from '../content/humans'
 
 export class PhoneStage {
@@ -25,7 +25,7 @@ export class PhoneStage {
     public display(human: Human, index: number) {
         this.portrait.setFrame(index)
         let humString = Array.from(human.tags)
-            .filter(x => humanTagMap.has(x))
+            .filter(x => humanTagMap.has(x) && humanTagDisplay.has(x))
             .map((x) => humanTagMap.get(x))
             .join(', ')
 
@@ -46,6 +46,6 @@ export class PhoneStage {
         let bioString = HumanBio[index]
 
         this.nameText.setText(HumanName[human.name])
-        this.infoText.setText(`${humString}\n\n${bioString}\n\n${relString.join('\n')}`)
+        this.infoText.setText(`${humString}\n\n${bioString}\n\n${relString.join('\n')}`.replace(/^\n\n/, ''))
     }
 }

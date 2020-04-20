@@ -577,7 +577,7 @@ export class EricVSAAndB implements Situation {
             }
         }
         else if (this.state == "abDating" && tripCount >= 2 + this.abVisibleStartedDating) {
-            if (trip.allPresent(HumanName.Eric, HumanName.Cecil) && 
+            if (trip.allPresent(HumanName.Eric, HumanName.Cecil) &&
                 currentState.getFondness([HumanName.Eric, HumanName.Cecil]) > 3 && currentState.getFondness([HumanName.Cecil, HumanName.Eric]) > 4) {
                 this.state = "cecilCrush"
                 return [new SituationEffect()
@@ -610,6 +610,39 @@ export class EricVSAAndB implements Situation {
         return []
     }
 }
+
+export class CecilCrushConandrum implements Situation {
+    private flavieAndDanBreakupCounter = 0
+    private togetherWas = false
+    private triggered = false
+
+    GetApplicableEffects(trip: TripSummary, currentState: PeopleGraph, tripCount: number): Array<SituationEffect> {
+        let relationships = currentState.getMutualRelationshipsBetween(HumanName.Dan, HumanName.Flavie)
+        const togetherNow = relationships.includes(RelationshipTag.lover)
+
+        if (togetherNow === false && this.togetherWas === true) {
+            this.flavieAndDanBreakupCounter += 1
+        }
+
+        if (!this.triggered &&
+            this.flavieAndDanBreakupCounter >= 2 &&
+            currentState.getFondness([HumanName.Flavie, HumanName.Cecil]) > 8 &&
+            currentState.getOutRelationshipsOfType(HumanName.Flavie, RelationshipTag.lover)) {
+            this.triggered = true
+            return [new SituationEffect()
+                .setDescription("Flavie is starting to see that Cecil might be right for her after all!")
+                .addRelTags([
+                    [[HumanName.Flavie, HumanName.Cecil], RelationshipTag.crush],
+                ])
+            ]
+        }
+
+        this.togetherWas = togetherNow
+
+        return []
+    }
+}
+
 
 export class AlexAndCecil implements Situation {
     fired = false

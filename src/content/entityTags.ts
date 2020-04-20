@@ -67,3 +67,8 @@ export const humanTagMap: Map<HumanTag, string> = new Map([
     [HumanTag.attention, 'attention seeker'],
     [HumanTag.depressed, 'depressed'],
 ])
+
+
+export const humanTagDisplay: Set<HumanTag> = new Set([
+    HumanTag.depressed,
+])
