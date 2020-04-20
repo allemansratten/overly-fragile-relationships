@@ -7,6 +7,7 @@ export enum RelationshipTag {
     crushable,
     bowling_brawl,
     disable_mutual_crush_dating, // disable the default way of getting together
+    awkawardness, // after A and B slept together
 }
 
 export const relationshipTagMap: Map<RelationshipTag, string> = new Map([
@@ -47,7 +48,8 @@ export enum HumanTag {
     flavie_angry,
     dan_busted,
     gone,
-    fragile_flavie_1, fragile_flavie_2
+    fragile_flavie_1, fragile_flavie_2,
+    depressed, // Beatrice after breaking up
 }
 
 export const humanTagMap: Map<HumanTag, string> = new Map([
@@ -63,4 +65,10 @@ export const humanTagMap: Map<HumanTag, string> = new Map([
     [HumanTag.agreeable, 'agreeable'],
     [HumanTag.supportive, 'supportive friend'],
     [HumanTag.attention, 'attention seeker'],
+    [HumanTag.depressed, 'depressed'],
+])
+
+
+export const humanTagDisplay: Set<HumanTag> = new Set([
+    HumanTag.depressed,
 ])

@@ -1,6 +1,6 @@
 import { Human } from '../model/human'
-import { humanTagMap, relationshipTagMap } from '../content/entityTags'
-import { HumanName } from '../content/humans'
+import { humanTagMap, relationshipTagMap, humanTagDisplay } from '../content/entityTags'
+import { HumanName, HumanBio } from '../content/humans'
 
 export class PhoneStage {
     private portrait: Phaser.GameObjects.Image
@@ -18,14 +18,14 @@ export class PhoneStage {
             .setWordWrapWidth(190)
             .setAlign('center')
             .setOrigin(0.5, 0.5)
-        this.infoText = scene.add.text(25, 270, '', { fill: 'black', fontFamily: 'Roboto' })
+        this.infoText = scene.add.text(25, 270, '', { fill: 'black', fontFamily: 'Roboto', fontSize: '14px' })
             .setWordWrapWidth(190)
     }
 
     public display(human: Human, index: number) {
         this.portrait.setFrame(index)
         let humString = Array.from(human.tags)
-            .filter(x => humanTagMap.has(x))
+            .filter(x => humanTagMap.has(x) && humanTagDisplay.has(x))
             .map((x) => humanTagMap.get(x))
             .join(', ')
 
@@ -42,7 +42,10 @@ export class PhoneStage {
                 relString.push(`${relationship.people[1]}: ${relStringIndividual.join(', ')}`)
             }
         }
+        
+        let bioString = HumanBio[index]
+
         this.nameText.setText(HumanName[human.name])
-        this.infoText.setText(`${humString}\n\n${relString.join('\n\n')}`)
+        this.infoText.setText(`${humString}\n\n${bioString}\n\n${relString.join('\n')}`.replace(/^\n\n/, ''))
     }
 }

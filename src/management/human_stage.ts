@@ -8,14 +8,17 @@ export class HumanStage {
     private allPeopleTexts: Array<Phaser.GameObjects.Text> = []
     private allPeopleCircles: Array<Phaser.GameObjects.Ellipse> = []
     private allPeopleLines: Array<Phaser.GameObjects.Group> = []
+    private allPeopleWarning: Array<Phaser.GameObjects.Ellipse> = []
     private TEXT_ALPHA_OK = 1
     private TEXT_ALPHA_BD = 0.3
-    private CIRCLE_ALPHA_OK = 0.1
+    private CIRCLE_ALPHA_OK = 0.2
     private CIRCLE_ALPHA_BD = 0
+    private WARNING_ALPHA_OK = 0.4
+    private WARNING_ALPHA_BD = 0
     private positions: Array<{ x: number, y: number }>
     private positionsInner: Array<{ x: number, y: number }>
 
-    constructor(private scene: BoardScene, level: Level) {
+    constructor(private scene: BoardScene, private level: Level) {
         const centerX = 450
         const centerY = 180
         const radius = 150
@@ -41,6 +44,11 @@ export class HumanStage {
             let human = level.humans[i]
             const position = this.positions[i]
 
+
+            let circle = scene.add.ellipse(0, 0, 80, 80, 0x2e2e2e)
+                .setOrigin(0.5, 0.5)
+                .setAlpha((Number(i) == 0 ? this.CIRCLE_ALPHA_OK : this.CIRCLE_ALPHA_BD))
+
             let image = scene.add.image(0, 0, 'portrait_small', i)
                 .setOrigin(0.5, 0.5)
                 .setInteractive({ useHandCursor: true })
@@ -51,14 +59,6 @@ export class HumanStage {
                     this.display(level.humans[0], 0)
                 })
 
-            let circle = scene.add.ellipse(0, 0, 80, 80, 0x2e2e2e)
-                .setOrigin(0.5, 0.5)
-                .setAlpha((Number(i) == 0 ? this.CIRCLE_ALPHA_OK : this.CIRCLE_ALPHA_BD))
-                // .setInteractive({ useHandCursor: true })
-                // .on('pointerover', () => {
-                //     this.display(human, Number(i))
-                // })
-
             let text = scene.add.text(0, 0, `${human.name}`, {
                 fill: '#1c1c1c',
                 fontFamily: 'Roboto',
@@ -67,16 +67,18 @@ export class HumanStage {
                 .setOrigin(0.5, 0.5)
                 .setInteractive({ useHandCursor: true })
                 .setAlpha(Number(i) == 0 ? this.TEXT_ALPHA_OK : this.TEXT_ALPHA_BD)
-                // .on('pointerover', () => {
-                //     this.display(human, Number(i))
-                // })
 
-            scene.add.group([image, text, circle]).setXY(position.x, position.y)
+            let warning = scene.add.ellipse(0, 0, 10, 10, 0xff0000)
+                .setOrigin(0.5, 0.5)
+                .setAlpha(this.WARNING_ALPHA_OK)
+
+            scene.add.group([image, text, circle, warning]).setXY(position.x, position.y)
 
             // TBH I have no idea why this is not relative to the group, but whatevs
             text.setPosition(position.x, position.y + 100 + 10)
-            circle.setPosition(position.x, position.y + 45 + 15)
+            circle.setPosition(position.x, position.y + 50 + 10)
             image.setPosition(position.x, position.y + 45 + 10)
+            warning.setPosition(position.x + 10, position.y + 30)
 
             if (Number(i) != 0) {
                 const onClick = () => {
@@ -112,13 +114,14 @@ export class HumanStage {
 
             this.allPeopleTexts.push(text)
             this.allPeopleCircles.push(circle)
+            this.allPeopleWarning.push(warning)
         }
 
         this.redrawLines(level)
     }
 
     public bleachPeople() {
-        for (let i in this.allPeopleTexts) {
+        for (let i in this.level.humans) {
             if (Number(i) != 0) {
                 this.allPeopleTexts[i].setAlpha(this.TEXT_ALPHA_BD)
                 this.allPeopleCircles[i].setAlpha(this.CIRCLE_ALPHA_BD)
@@ -246,6 +249,13 @@ export class HumanStage {
             }
             group.setAlpha(0)
             this.allPeopleLines.push(group)
+
+
+
+            let fondnessBad : boolean = this.level.humans.map(
+                x => x.name == human1.name ? 10 : this.level.friendshipManager.peopleGraph.getFondness([human1.name, x.name])
+            ).some(x => x <= 2)
+            this.allPeopleWarning[hi1].setAlpha(fondnessBad ? this.WARNING_ALPHA_OK : this.WARNING_ALPHA_BD)
         }
     }
 }
