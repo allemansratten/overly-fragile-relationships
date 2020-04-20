@@ -750,18 +750,31 @@ export class ExtrovertsIntroverts implements Situation {
         return results
     }
 
-    private effectDoesntLike(tag: HumanTag, trip: TripSummary, currentState: PeopleGraph, msg: string) {
+    private effectDoesntLike(tag: HumanTag.introvert | HumanTag.extrovert, trip: TripSummary, currentState: PeopleGraph, msg: string) {
+
         let relevantPeople = trip.goPeople.filter(per => currentState.getHumTags(per.name).has(tag))
+        if (tag == HumanTag.extrovert) {
+            relevantPeople = relevantPeople.filter(per => {
+                !trip.goPeople.some(pPer => 
+                    (pPer.name != per.name) && 
+                    (
+                        currentState.haveMutualRelationshipTag(per.name, pPer.name, RelationshipTag.crush) || 
+                        currentState.haveMutualRelationshipTag(per.name, pPer.name, RelationshipTag.lover)
+                    )
+                    )
+            })
+        }
+
         if (relevantPeople.length <= 0) {
             return new SituationEffect()
         }
 
         let fondnessChanges = relevantPeople.map(rel => [[rel.name, HumanName.You], -3]) as Array<[Couple, number]>
-
         let sitEffect = new SituationEffect()
             .changeFondness(fondnessChanges)
-            .setDescription(`${relevantPeople.map(p => p.name).join(", ")} `
-                + `${relevantPeople.length > 1 ? "weren't" : "wasn't"} too happy to hang out with ${msg} people.`)
+            .setDescription(`${HumanUtils.peopleToString(relevantPeople.map(p => p.name))} `
+                + `${relevantPeople.length > 1 ? "weren't" : "wasn't"} too happy to hang out with `
+                + `${tag == HumanTag.extrovert ? "this many" : "this few"} people.`)
         return sitEffect
     }
 
