@@ -21,6 +21,10 @@ export class LoadingScene extends Phaser.Scene {
             .setOrigin(0, 0)
             .setDepth(1001)
             .setAlpha(1)
+            .setInteractive({useHandCursor: true})
+            .on('pointerdown', () => {
+                this.scene.start('management')
+            })
         this.mockText = this.add.text(100, 100, '', { fill: '#fff', fontFamily: 'Roboto' })
             .setDepth(1001)
             .setAlpha(0)
@@ -28,6 +32,9 @@ export class LoadingScene extends Phaser.Scene {
     }
 
     public create() {
-        this.scene.start('management')
+        let title = this.add.text(100, 100, 'Sustainable Friendships', { fill: '#fff', fontFamily: 'Roboto', fontSize: '30px' })
+            .setDepth(1002)
+        let help = this.add.text(100, 200, 'Pick people to join you on nights out.\nTry to keep your friendship network alive.', { fill: '#fff', fontFamily: 'Roboto', fontSize: '18px' })
+            .setDepth(1002)
     }
 }

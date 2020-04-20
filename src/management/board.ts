@@ -87,7 +87,7 @@ export class BoardScene extends Phaser.Scene {
         this.add.tween({
             targets: [this.infoText, this.tripFader],
             alpha: { from: 0, to: 1 },
-            duration: 1000,
+            duration: 500,
             onComplete: () => {
                 this.tripFader!.input.enabled = true
                 this.locationStage!.enable(true)
@@ -102,7 +102,7 @@ export class BoardScene extends Phaser.Scene {
         this.add.tween({
             targets: [this.infoText, this.tripFader],
             alpha: { from: 1, to: 0 },
-            duration: 1000,
+            duration: 500,
             onComplete: () => this.tripFader!.input.enabled = true
         })
     }
