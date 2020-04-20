@@ -14,7 +14,9 @@ import {
     SituationUtils,
     Sympathies,
     UpdateFondnessBasedTags,
-    EricVSAAndB, GoodCompany,
+    EricVSAAndB, 
+    GoodCompany, 
+    LeftOutWithoutCrush,
 } from "./situations"
 import { HumanName } from "./humans"
 import { LocationName } from "./locations"
@@ -217,6 +219,7 @@ levels.push(
             new NobodyLikesAngryDrunk(),
             new AlexAndCecil(), // must be before MutualCrush
             new MutualCrush(),
+            new LeftOutWithoutCrush(),
             new EternalCouple(HumanName.Dan, HumanName.Flavie),
             new AlexAndBeatriceGetDrunk(),
 
