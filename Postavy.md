@@ -28,7 +28,7 @@
 	- C: 
 	- D:
 	- E:
-	- F:
+	- F: crush
 - introvert
 - good bowler
 
@@ -112,13 +112,6 @@ friend, lover, ex, political disagreement
 crush, dislike, like (as a friend)
 
 
-# Events - tag based
-- Bad bowler + good bowler
-- angry when drunk + angry when drunk + bar
-- promiscuous + crush + bar
-- všichni kromě FOMO
-- když jdeš na bowling s samejma good bowlers tak se zlepšíš
-
 
 # Events - Specific
 - pokud se A a B vyspí, a A a C nebyli ve vztahu, A a B se dají dohromady
@@ -148,7 +141,7 @@ crush, dislike, like (as a friend)
 
 
 
- # Lidi
+# Lidi
 - Alex
     - Initially disagreeable, dělá si z lidí srandu, ale když ji poznáš, tak zjistíš že je v pohodě, že ji na těch lidech actually záleží
 - Beatrice
