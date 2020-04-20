@@ -118,22 +118,22 @@ export class SimpleSituation implements Situation {
 export class NobodyLikesAngryDrunk implements Situation {
     public GetApplicableEffects(trip: TripSummary, currentState: PeopleGraph): Array<SituationEffect> {
         if (trip.goLocation != LocationName.Drink) {
-            return new Array()
+            return []
         }
 
         let effects = new Array()
+
         trip.goPeople.forEach(person => {
             let personTags = currentState.getHumTags(person.name)
             if (personTags.has(HumanTag.angry_drunk)) {
+                let effect = new SituationEffect()
+                    .setDescription(`${person.name} got drunk and angry; the others weren't happy about that.`)
+
                 trip.goPeople.filter(p => p != person).forEach(otherPerson => {
-                    // TODO: make this be one effect (so that we have one description and can say "the others weren't happy"
-                    effects.push(
-                        new SituationEffect(
-                            `${person.name} got drunk and angry; ${otherPerson.name} wasn't happy about that.`,
-                        ).changeFondness([[[otherPerson.name, person.name], -1]]),
-                    )
+                    effect.changeFondness([[[otherPerson.name, person.name], -1]])
                 })
 
+                effects.push(effect)
             }
         })
         return effects
@@ -179,7 +179,7 @@ export class MutualCrush implements Situation {
                     continue
                 }
                 if (currentState.getFondness([person, crush]) < MutualCrush.MIN_DATING_FONDNESS
-                    || currentState.getFondness([person, crush]) < MutualCrush.MIN_DATING_FONDNESS) {
+                    || currentState.getFondness([crush, person]) < MutualCrush.MIN_DATING_FONDNESS) {
                     continue
                 }
                 if (currentState.getMutualRelationshipsBetween(person, crush)
