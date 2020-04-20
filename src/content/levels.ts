@@ -3,6 +3,7 @@ import { Couple, Relationship } from "../model/peopleGraph"
 import { Human } from "../model/human"
 import { HumanTag, RelationshipTag } from "./entityTags"
 import {
+    BeatriceBreakups,
     Complex,
     EternalCouple,
     MutualCrush,
@@ -181,6 +182,7 @@ levels.push(
             new NobodyLikesAngryDrunk(),
             new MutualCrush(),
             new EternalCouple(HumanName.Dan, HumanName.Flavie),
+            new BeatriceBreakups(),
 
             bowlingbrawl,
             flavieFomo2, // 2 must be before 1 (else both happen simultaneously)
