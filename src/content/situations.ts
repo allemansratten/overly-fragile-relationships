@@ -714,7 +714,7 @@ export class LeftOutWithoutCrush implements Situation {
     GetApplicableEffects(trip: TripSummary, currentState: PeopleGraph, tripCount: number): Array<SituationEffect> {
         for (const h of currentState.getHumanNames()) {
             if (!trip.allPresent(h) &&
-                currentState.getOutRelationshipsOfType(h, RelationshipTag.crush).every(rel => !trip.allPresent(rel.people[1]))) {
+                currentState.getOutRelationshipsOfType(h, RelationshipTag.crush).every(rel => trip.allPresent(rel.people[1]))) {
 
                 return [new SituationEffect().changeFondness([[[h, HumanName.You], -1]])]
             }
