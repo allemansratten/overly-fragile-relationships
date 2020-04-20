@@ -134,8 +134,14 @@ export class NobodyLikesAngryDrunk implements Situation {
         trip.goPeople.forEach(person => {
             let personTags = currentState.getHumTags(person.name)
             if (personTags.has(HumanTag.angry_drunk)) {
+                let desc = ""
+                if (trip.goPeople.length > 2) {
+                    desc = `${person.name} got drunk and angry; the others weren't happy about that.`
+                } else {
+                    desc = `${person.name} got drunk and angry, but you're used to it at this point.`
+                }
                 let effect = new SituationEffect()
-                    .setDescription(`${person.name} got drunk and angry; the others weren't happy about that.`)
+                    .setDescription(desc)
 
                 trip.goPeople.filter(p => p != person).forEach(otherPerson => {
                     effect.changeFondness([[[otherPerson.name, person.name], -1]])
