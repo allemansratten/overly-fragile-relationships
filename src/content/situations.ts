@@ -755,7 +755,7 @@ export class ExtrovertsIntroverts implements Situation {
         let relevantPeople = trip.goPeople.filter(per => currentState.getHumTags(per.name).has(tag))
         if (tag == HumanTag.extrovert) {
             relevantPeople = relevantPeople.filter(per => {
-                !trip.goPeople.some(pPer => 
+                return !trip.goPeople.some(pPer => 
                     (pPer.name != per.name) && 
                     (
                         currentState.haveMutualRelationshipTag(per.name, pPer.name, RelationshipTag.crush) || 
