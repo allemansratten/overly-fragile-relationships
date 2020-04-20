@@ -70,7 +70,7 @@ export class BoardScene extends Phaser.Scene {
         if (this.tripSummary.goPeople.length <= 1) {
             let tutorial = 'Select some of your friends to join you.'
             if (location == 'Hiking') {
-                new ModalDialog(this, `You can't go to the park alone.\n${tutorial}`)
+                new ModalDialog(this, `You can't go hiking alone.\n${tutorial}`)
             } else if (location == 'Bowling') {
                 new ModalDialog(this, `You can't go bowling alone.\n${tutorial}`)
             } else if (location == 'Drinking') {
