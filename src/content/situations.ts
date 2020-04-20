@@ -774,7 +774,7 @@ export class ExtrovertsIntroverts implements Situation {
             .changeFondness(fondnessChanges)
             .setDescription(`${HumanUtils.peopleToString(relevantPeople.map(p => p.name))} `
                 + `${relevantPeople.length > 1 ? "weren't" : "wasn't"} too happy to hang out with `
-                + `${tag == HumanTag.extrovert ? "this many" : "this few"} people.`)
+                + `${tag == HumanTag.introvert ? "this many" : "this few"} people.`)
         return sitEffect
     }
 
