@@ -141,6 +141,8 @@ export class NobodyLikesAngryDrunk implements Situation {
 }
 
 export class MutualCrush implements Situation {
+    static MIN_DATING_FONDNESS = 7
+
     public GetApplicableEffects(trip: TripSummary, currentState: PeopleGraph): Array<SituationEffect> {
         let effects = new Array()
         let crushesMap: Map<HumanName, HumanName[]> = new Map()
@@ -174,6 +176,10 @@ export class MutualCrush implements Situation {
             if (crushes?.length === 1) {
                 const crush = crushes[0]
                 if (!eligiblePeople.includes(crush)) {
+                    continue
+                }
+                if (currentState.getFondness([person, crush]) < MutualCrush.MIN_DATING_FONDNESS
+                    || currentState.getFondness([person, crush]) < MutualCrush.MIN_DATING_FONDNESS) {
                     continue
                 }
                 if (currentState.getMutualRelationshipsBetween(person, crush)

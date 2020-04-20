@@ -188,10 +188,6 @@ levels.push(
         [
             [[HumanName.Alex, HumanName.Beatrice], 7],
             [[HumanName.Beatrice, HumanName.Alex], 7],
-            [[HumanName.Eric, HumanName.Alex], 7],
-            [[HumanName.Alex, HumanName.Eric], 7],
-            [[HumanName.Eric, HumanName.Beatrice], 7],
-            [[HumanName.Beatrice, HumanName.Eric], 7],
             [[HumanName.Dan, HumanName.Beatrice], 7],
             [[HumanName.Beatrice, HumanName.Dan], 7],
             [[HumanName.Dan, HumanName.Flavie], 7],
