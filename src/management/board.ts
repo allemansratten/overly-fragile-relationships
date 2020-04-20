@@ -12,6 +12,8 @@ export class BoardScene extends Phaser.Scene {
     private tripFader?: Phaser.GameObjects.Rectangle
     private transitionFader?: Phaser.GameObjects.Rectangle
     private infoText?: Phaser.GameObjects.Text
+    private levelsText?: Phaser.GameObjects.Text
+    private levelCount: number = 0
     private level: Level
 
     public tripSummary: TripSummary
@@ -56,6 +58,9 @@ export class BoardScene extends Phaser.Scene {
             .setAlign('center')
             .setWordWrapWidth(550)
             .setOrigin(0.5, 0)
+
+        this.levelsText = this.add.text(270, 20, '0 turns', { fill: '#000', fontFamily: 'Roboto', fontSize: '20px' })
+            .setDepth(1001)
 
         this.locationStage = new LocationStage(this, this.level)
         this.humanStage = new HumanStage(this, this.level)
@@ -140,10 +145,17 @@ export class BoardScene extends Phaser.Scene {
         this.phone?.display(this.level.humans[0], 0)
         this.humanStage?.redrawLines(this.level)
         this.humanStage?.display(this.level.humans[0], 0)
+
+        this.levelCount += 1
+        if(this.levelCount == 1) {
+            this.levelsText?.setText('1 week')
+        } else {
+            this.levelsText?.setText(`${this.levelCount} weeks`)
+        }
     }
 
     private messageQueue?: [string, () => void] = undefined
     public fail(message: string) {
-        this.messageQueue = [message, () => { window.location.reload() }]
+        this.messageQueue = [message + `\nYou kept the friendship network alive for ${this.levelCount} weeks`, () => { window.location.reload() }]
     }
 }

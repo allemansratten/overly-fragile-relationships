@@ -69,7 +69,7 @@ export class Level {
         // construct fail msg
         let failMsgs = this.checkFondnessAndPrepareFailMsg()
         if (failMsgs.length > 0) {
-            failMsgs.push("Game over.")
+            failMsgs.push("\nGame over.")
             board.fail(failMsgs.join('\n'))
         }
 

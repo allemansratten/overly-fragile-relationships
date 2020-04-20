@@ -196,6 +196,8 @@ levels.push(
             mutualRelationship([HumanName.Dan, HumanName.Flavie], [RelationshipTag.crushable, RelationshipTag.crush, RelationshipTag.like]),
             mutualRelationship([HumanName.Cecil, HumanName.Flavie], [RelationshipTag.like]),
             new Relationship([HumanName.Cecil, HumanName.Flavie], new Set([RelationshipTag.crushable, RelationshipTag.crush])),
+            new Relationship([HumanName.Beatrice, HumanName.Flavie], new Set([RelationshipTag.dislike])),
+            new Relationship([HumanName.Dan, HumanName.Cecil], new Set([RelationshipTag.dislike])),
         ]),
         [
             [HumanName.Cecil, HumanTag.introvert],
@@ -211,6 +213,8 @@ levels.push(
             [[HumanName.Dan, HumanName.Flavie], 7],
             [[HumanName.Flavie, HumanName.Dan], 7],
             [[HumanName.Cecil, HumanName.Flavie], 7],
+            [[HumanName.Beatrice, HumanName.Flavie], 4],
+            [[HumanName.Dan, HumanName.Cecil], 4],
         ],
         [
             new Sympathies(),

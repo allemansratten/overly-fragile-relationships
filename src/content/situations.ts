@@ -376,6 +376,8 @@ export class GoodCompany implements Situation {
         let effects = new Array
 
         for (const a of trip.getNames()) {
+            if (a == HumanName.You) continue
+
             let effect = new SituationEffect()
 
             let totalChange = 0
@@ -384,22 +386,24 @@ export class GoodCompany implements Situation {
 
             for (const b of trip.getNames()) {
                 if (a == b) continue
+                if (b == HumanName.You) continue
+
                 let curChange = 0
-                if (currentState.getFondness([a, b]) > GoodCompany.GOOD_FONDNESS) {
-                    curChange++
-                }
-                if (currentState.getFondness([a, b]) < GoodCompany.BAD_FONDNESS) {
+                // if (currentState.getFondness([a, b]) > GoodCompany.GOOD_FONDNESS) {
+                //     curChange++
+                // }
+                if (currentState.getFondness([a, b]) <= GoodCompany.BAD_FONDNESS) {
                     curChange--
                 }
-                if (currentState.getRelationshipsBetween(a, b).includes(RelationshipTag.like)) {
-                    curChange++
-                }
+                // if (currentState.getRelationshipsBetween(a, b).includes(RelationshipTag.like)) {
+                //     curChange++
+                // }
                 if (currentState.getRelationshipsBetween(a, b).includes(RelationshipTag.dislike)) {
                     curChange--
                 }
 
                 // Maybe clamp curChange between -1 and 1?
-                totalChange += curChange
+                totalChange += curChange * 2
                 if (curChange > 0) {
                     goodNames.push(b)
                 }
@@ -409,8 +413,11 @@ export class GoodCompany implements Situation {
             }
             if (totalChange === 0) continue
 
+            totalChange = Math.max(totalChange, -4)
+
             effect.changeFondness([[[a, HumanName.You], totalChange]])
 
+            // TODO: good are currently unused (on purpose, so that the game is harder)
             let goodDescriptions = [
                 `${a} had fun with the other people you invited.`
             ]
