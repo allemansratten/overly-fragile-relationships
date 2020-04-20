@@ -57,27 +57,19 @@ export class Level {
         console.log("Relationships", this.friendshipManager.peopleGraph)
 
         // Construct msgs for effects
-        let { perPersonRelChanges, perPersonHumChanges } = this.reduceEffectsPerPerson(effects)
-        this.reduceTagsShadowing(perPersonRelChanges)
+        let statusMessage = this.constructStatusMessage(effects, tripSummary)
 
-        let effectsMsgs = Array.from(new Set(effects.map(effect => this.fixAgreement(effect.description))))
-        effectsMsgs.push("") // separator dummy
-        effectsMsgs = effectsMsgs.concat(this.createEffectsMsgs(perPersonRelChanges, perPersonHumChanges))
+        // construct fail msg
+        let failMsgs = this.checkFondnessAndPrepareFailMsg()
+        if (failMsgs.length > 0) {
+            failMsgs.push("Game over.")
+            board.fail(failMsgs.join('\n'))
+        }
 
-        console.log("Msgs:", effectsMsgs)
-        effectsMsgs = effectsMsgs.filter(msg => {
-            let gonePeople = this.friendshipManager.peopleGraph.getPeopleWithTags(HumanTag.gone)
-            return gonePeople.every(gp => !msg.includes(gp))
-        })
+        return statusMessage
+    }
 
-        let effectMsg = effectsMsgs.length > 0
-            ? effectsMsgs.join('\n')
-            : "Nothing significant occured."
-
-        // Construct final msg
-        let friendList: string = tripSummary.goPeople.filter((x: Human) => x.name != 'You').map((human: Human) => human.name).join(', ')
-        let statusMessage = `You went ${tripSummary.goLocation} with ${friendList}.\n${effectMsg}`
-
+    private checkFondnessAndPrepareFailMsg() {
         let failMsgs = Array<string>()
         for (let h1 of this.humans) {
             let h1HatesList = Array<HumanName>()
@@ -88,25 +80,45 @@ export class Level {
                 }
             }
 
-            if(h1HatesList.length > 0) {
-                let h1HatesString = h1HatesList.length == 2 
+            if (h1HatesList.length > 0) {
+                let h1HatesString = h1HatesList.length == 2
                     ? h1HatesList.join(" and ")
                     : h1HatesList.join(", ")
-                
+
                 failMsgs.push(`${h1.name} ${h1.name == 'You' ? `hate` : `hates`} ${h1HatesString} too much.`)
             }
         }
-        if (failMsgs.length > 0) {
-            failMsgs.push("Game over.")
-            board.fail(failMsgs.join('\n'))
-        }
+        return failMsgs
+    }
+
+    private constructStatusMessage(effects: SituationEffect[], tripSummary: TripSummary) {
+        let { perPersonRelChanges, perPersonHumChanges } = this.reduceEffectsPerPerson(effects)
+        this.reduceTagsShadowing(perPersonRelChanges)
+
+        // deduplicate effect descriptions 
+        let effectsMsgs = Array.from(new Set(effects.map(effect => this.fixAgreement(effect.description))))
+
+        effectsMsgs.push("") // separator dummy
+        effectsMsgs = effectsMsgs.concat(this.createEffectsMsgs(perPersonRelChanges, perPersonHumChanges))
+        console.log("Msgs:", effectsMsgs)
+
+        effectsMsgs = effectsMsgs.filter(msg => {
+            let gonePeople = this.friendshipManager.peopleGraph.getPeopleWithTags(HumanTag.gone)
+            return gonePeople.every(gp => !msg.includes(gp))
+        })
+
+        let effectMsg = effectsMsgs.length > 0
+            ? effectsMsgs.join('\n')
+            : "Nothing significant occurred."
+
+        // Construct final msg
+        let friendList: string = tripSummary.goPeople.filter((x: Human) => x.name != 'You').map((human: Human) => human.name).join(', ')
+        let statusMessage = `You went ${tripSummary.goLocation} with ${friendList}.\n${effectMsg}`
 
         return statusMessage
     }
 
-    private reduceTagsShadowing(
-        perPersonRelMsg: Map<EdgeKey, [RelationshipTag[], RelationshipTag[]]>
-    ) {
+    private reduceTagsShadowing(perPersonRelMsg: Map<EdgeKey, [RelationshipTag[], RelationshipTag[]]>) {
         perPersonRelMsg.forEach((changes, couple) => {
             let newTags = changes[0]
             let remTags = changes[1]
