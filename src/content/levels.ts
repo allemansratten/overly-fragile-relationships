@@ -7,6 +7,7 @@ import {
     AlexAndCecil,
     BeatriceBreakups,
     Complex,
+    Depression,
     EternalCouple,
     MutualCrush,
     NobodyLikesAngryDrunk,
@@ -119,6 +120,7 @@ const flavieFomo2 = new Complex({    //Flavie FOMO event 2
     effects: [new SituationEffect().changeFondness([[[HumanName.Flavie, HumanName.You], -10]])
         .setDescription('Flavie came uninvited, chewed you out, and left. Forever.')],
 })
+
 const bowlingbrawl = new Complex({
     humReq: [HumanName.Cecil, HumanName.Dan],
     allowedLocations: [LocationName.Bowling],
@@ -137,6 +139,19 @@ const bowlingbrawl = new Complex({
         })
         return baseEffects
     },
+})
+
+const alexSupportive = new Complex({
+    humReq: [HumanName.Alex, HumanName.Beatrice],
+    relTagsBan: [
+        [[HumanName.Alex, HumanName.Beatrice], RelationshipTag.awkawardness],
+        [[HumanName.Beatrice, HumanName.Alex], RelationshipTag.awkawardness],
+    ],
+    allowedLocations: [LocationName.Bowling, LocationName.Hiking],
+    humTagsReq: [[HumanName.Beatrice, HumanTag.depressed]],
+    effects: [new SituationEffect()
+        .removeHumTags([[HumanName.Beatrice, HumanTag.depressed]])
+        .setDescription('Alex helped Beatrice get over her breakup. She feels better now.')],
 })
 
 const PRESENT_FONDNESS_CHANGE = +2
@@ -174,7 +189,7 @@ levels.push(
                 [RelationshipTag.crushable, RelationshipTag.crush, RelationshipTag.disable_mutual_crush_dating]),
             mutualRelationship([HumanName.Alex, HumanName.Cecil],
                 [RelationshipTag.crushable, RelationshipTag.crush, RelationshipTag.like, RelationshipTag.disable_mutual_crush_dating]),
-            mutualRelationship([HumanName.Dan, HumanName.Beatrice],[RelationshipTag.crushable, RelationshipTag.crush]),
+            mutualRelationship([HumanName.Dan, HumanName.Beatrice], [RelationshipTag.crushable, RelationshipTag.crush]),
             mutualRelationship([HumanName.Dan, HumanName.Flavie], [RelationshipTag.crushable, RelationshipTag.crush, RelationshipTag.like]),
             mutualRelationship([HumanName.Cecil, HumanName.Flavie], [RelationshipTag.like]),
             new Relationship([HumanName.Cecil, HumanName.Flavie], new Set([RelationshipTag.crushable, RelationshipTag.crush])),
@@ -195,12 +210,12 @@ levels.push(
             [[HumanName.Cecil, HumanName.Flavie], 7],
         ],
         [
+
             new Sympathies(),
             new NobodyLikesAngryDrunk(),
             new AlexAndCecil(), // must be before MutualCrush
             new MutualCrush(),
             new EternalCouple(HumanName.Dan, HumanName.Flavie),
-            new BeatriceBreakups(),
             new AlexAndBeatriceGetDrunk(),
 
             bowlingbrawl,
@@ -210,6 +225,10 @@ levels.push(
             baseFondnessChanges,
             fragileFlavie2, // zas stejnej issue
             fragileFlavie1,
+
+            new Depression(),
+            alexSupportive,
+            new BeatriceBreakups(),
 
             new UpdateFondnessBasedTags(),
         ],
