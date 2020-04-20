@@ -431,17 +431,29 @@ export class GoodCompany implements Situation {
                 goodTimePeople.push(a)
             }
         }
-        let effect = new SituationEffect().changeFondness(fondnessChange)
+        let effects = Array<SituationEffect>()
 
-        // TODO: good are currently unused (on purpose, so that the game is harder)
+        if (fondnessChange.length > 0) {
+            effects.push(new SituationEffect().changeFondness(fondnessChange))
+        }
         if (badTimePeople.length > 0) {
             const peopleString = HumanUtils.peopleToString(badTimePeople)
-            effect.setDescription(`${peopleString} ${badTimePeople.length <= 1 ? "wasn't" : "weren't"} happy about who you invited.`)
-            return [effect]    
+            effects.push(
+                new SituationEffect()
+                    .setDescription(`${peopleString} ${goodTimePeople.length <= 1 ? "wasn't" : "weren't"} happy about who you invited.`)
+            )
         }
-        else {
-            return []
+
+        // TODO: good are currently unused (on purpose, so that the game is harder)
+        if (goodTimePeople.length > 0) {
+            const peopleString = HumanUtils.peopleToString(goodTimePeople)
+            effects.push(
+                new SituationEffect()
+                    .setDescription(`${peopleString} enjoyed their company.`)
+            )
+
         }
+        return effects    
     }
 }
 
