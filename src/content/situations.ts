@@ -16,7 +16,7 @@ export class SituationUtils {
             [RelationshipTag.lover],
             [RelationshipTag.crush, RelationshipTag.ex],
             +10,
-        )
+        ).setDescription(`${a} and ${b} started dating.`)
     }
 
     public static breakUp(couple: Couple): SituationEffect {
@@ -26,7 +26,7 @@ export class SituationUtils {
             [RelationshipTag.ex],
             [RelationshipTag.lover],
             -5,
-        )
+        ).setDescription(`${a} and ${b} broke up!`)
     }
 
     public static changeRelationship(
