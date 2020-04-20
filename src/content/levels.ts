@@ -208,8 +208,8 @@ levels.push(
             flavieFomo1,
             danTwoGirlfriendsBusted,
             baseFondnessChanges,
+            fragileFlavie2, // zas stejnej issue
             fragileFlavie1,
-            fragileFlavie2,
         ],
     ),
 )        
