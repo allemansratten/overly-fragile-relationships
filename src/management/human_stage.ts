@@ -10,7 +10,7 @@ export class HumanStage {
     private allPeopleLines: Array<Phaser.GameObjects.Group> = []
     private TEXT_ALPHA_OK = 1
     private TEXT_ALPHA_BD = 0.3
-    private CIRCLE_ALPHA_OK = 0.1
+    private CIRCLE_ALPHA_OK = 0.2
     private CIRCLE_ALPHA_BD = 0
     private positions: Array<{ x: number, y: number }>
     private positionsInner: Array<{ x: number, y: number }>
@@ -41,6 +41,16 @@ export class HumanStage {
             let human = level.humans[i]
             const position = this.positions[i]
 
+
+            let circle = scene.add.ellipse(0, 0, 80, 80, 0x2e2e2e)
+                .setOrigin(0.5, 0.5)
+                .setAlpha((Number(i) == 0 ? this.CIRCLE_ALPHA_OK : this.CIRCLE_ALPHA_BD))
+            // .setInteractive({ useHandCursor: true })
+            // .on('pointerover', () => {
+            //     this.display(human, Number(i))
+            // })
+
+
             let image = scene.add.image(0, 0, 'portrait_small', i)
                 .setOrigin(0.5, 0.5)
                 .setInteractive({ useHandCursor: true })
@@ -51,14 +61,6 @@ export class HumanStage {
                     this.display(level.humans[0], 0)
                 })
 
-            let circle = scene.add.ellipse(0, 0, 80, 80, 0x2e2e2e)
-                .setOrigin(0.5, 0.5)
-                .setAlpha((Number(i) == 0 ? this.CIRCLE_ALPHA_OK : this.CIRCLE_ALPHA_BD))
-                // .setInteractive({ useHandCursor: true })
-                // .on('pointerover', () => {
-                //     this.display(human, Number(i))
-                // })
-
             let text = scene.add.text(0, 0, `${human.name}`, {
                 fill: '#1c1c1c',
                 fontFamily: 'Roboto',
@@ -67,9 +69,9 @@ export class HumanStage {
                 .setOrigin(0.5, 0.5)
                 .setInteractive({ useHandCursor: true })
                 .setAlpha(Number(i) == 0 ? this.TEXT_ALPHA_OK : this.TEXT_ALPHA_BD)
-                // .on('pointerover', () => {
-                //     this.display(human, Number(i))
-                // })
+            // .on('pointerover', () => {
+            //     this.display(human, Number(i))
+            // })
 
             scene.add.group([image, text, circle]).setXY(position.x, position.y)
 
