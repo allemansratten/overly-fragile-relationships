@@ -16,3 +16,13 @@ npm run dev
 ```
 
 and go to https://localhost:8080/.
+
+## Release
+
+Run
+
+```
+npm run build
+```
+
+and go to https://allemansratten.github.io/overly-fragile-relationships/dist/
