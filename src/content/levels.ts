@@ -1,5 +1,5 @@
 import { Level } from "../model/level"
-import { Relationship } from "../model/peopleGraph"
+import { Couple, Relationship } from "../model/peopleGraph"
 import { Human } from "../model/human"
 import { HumanTag, RelationshipTag } from "./entityTags"
 import {
@@ -25,7 +25,7 @@ let locations: LocationName[] = [
 
 // You is always on the zeroth position
 
-function mutualRelationship(people: [HumanName, HumanName], tags: RelationshipTag[]): [Relationship, Relationship] {
+function mutualRelationship(people: Couple, tags: RelationshipTag[]): [Relationship, Relationship] {
     const tagSet = new Set(tags)
     const [a, b] = people
 
@@ -35,15 +35,14 @@ function mutualRelationship(people: [HumanName, HumanName], tags: RelationshipTa
     ]
 }
 
-function flattenRelationshipList(relationships: Array<Relationship | [Relationship, Relationship]>) {
+function flatten<T>(arr: Array<T | T[]>): Array<T> {
     let res = []
 
-    for (const r of relationships) {
-        if (r instanceof Relationship) {
-            res.push(r)
+    for (const a of arr) {
+        if (a instanceof Array) {
+            res.push(...a)
         } else {
-            const [ra, rb] = r
-            res.push(ra, rb)
+            res.push(a)
         }
     }
 
@@ -148,7 +147,7 @@ levels.push(
             new Human(HumanName.Flavie),
         ],
         locations,
-        flattenRelationshipList([
+        flatten([
             mutualRelationship([HumanName.Alex, HumanName.Beatrice], [RelationshipTag.crush]),
             mutualRelationship([HumanName.Alex, HumanName.Cecil], [RelationshipTag.crush]),
             mutualRelationship([HumanName.Eric, HumanName.Alex], [RelationshipTag.crush]),
@@ -161,14 +160,20 @@ levels.push(
             [HumanName.Cecil, HumanTag.introvert],
             [HumanName.Dan, HumanTag.extrovert],
             [HumanName.Dan, HumanTag.angry_drunk],
-        ]
-        ,
+        ],
         [
-            // initial fondness
             [[HumanName.Alex, HumanName.Beatrice], 7],
             [[HumanName.Beatrice, HumanName.Alex], 7],
             [[HumanName.Alex, HumanName.Cecil], 7],
             [[HumanName.Cecil, HumanName.Alex], 7],
+            [[HumanName.Eric, HumanName.Alex], 7],
+            [[HumanName.Alex, HumanName.Eric], 7],
+            [[HumanName.Eric, HumanName.Beatrice], 7],
+            [[HumanName.Beatrice, HumanName.Eric], 7],
+            [[HumanName.Dan, HumanName.Beatrice], 7],
+            [[HumanName.Beatrice, HumanName.Dan], 7],
+            [[HumanName.Dan, HumanName.Flavie], 7],
+            [[HumanName.Flavie, HumanName.Dan], 7],
         ],
         [
             new Sympathies(),
