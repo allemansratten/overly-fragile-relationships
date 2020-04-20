@@ -97,7 +97,7 @@ const fragileFlavie2 = new Complex({    //Flavie vs Alex event 2
     humTagsReq: [[HumanName.Flavie, HumanTag.fragile_flavie_1]],
     humTagsBan: [[HumanName.Flavie, HumanTag.fragile_flavie_2]],
     effects: [new SituationEffect().removeRelTags([[[HumanName.Flavie, HumanName.Alex], RelationshipTag.dislike]])
-        .changeFondness([[[HumanName.Flavie, HumanName.Alex], +1]])
+        .changeFondness([[[HumanName.Flavie, HumanName.Alex], +4]])
         .addHumTags([[HumanName.Flavie, HumanTag.fragile_flavie_2]])
         .setDescription('Alex saw that her comment really hurt Flavie\'s feelings, and apologised. She even brought her a vegan Flapjack.')],
 })
