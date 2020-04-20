@@ -8,12 +8,12 @@ export class HumanStage {
     private allPeopleTexts: Array<Phaser.GameObjects.Text> = []
     private allPeopleCircles: Array<Phaser.GameObjects.Ellipse> = []
     private allPeopleLines: Array<Phaser.GameObjects.Group> = []
-    private allPeopleWarning: Array<Phaser.GameObjects.Ellipse> = []
+    private allPeopleWarning: Array<Phaser.GameObjects.Text> = []
     private TEXT_ALPHA_OK = 1
     private TEXT_ALPHA_BD = 0.3
     private CIRCLE_ALPHA_OK = 0.2
     private CIRCLE_ALPHA_BD = 0
-    private WARNING_ALPHA_OK = 0.4
+    private WARNING_ALPHA_OK = 0.9
     private WARNING_ALPHA_BD = 0
     private positions: Array<{ x: number, y: number }>
     private positionsInner: Array<{ x: number, y: number }>
@@ -68,7 +68,7 @@ export class HumanStage {
                 .setInteractive({ useHandCursor: true })
                 .setAlpha(Number(i) == 0 ? this.TEXT_ALPHA_OK : this.TEXT_ALPHA_BD)
 
-            let warning = scene.add.ellipse(0, 0, 10, 10, 0xff0000)
+            let warning = scene.add.text(0, 0, '!', {color: '#ff0000', fontSize: '33px'})
                 .setOrigin(0.5, 0.5)
                 .setAlpha(this.WARNING_ALPHA_OK)
 
@@ -78,7 +78,7 @@ export class HumanStage {
             text.setPosition(position.x, position.y + 100 + 10)
             circle.setPosition(position.x, position.y + 50 + 10)
             image.setPosition(position.x, position.y + 45 + 10)
-            warning.setPosition(position.x + 10, position.y + 30)
+            warning.setPosition(position.x + 19, position.y + 30)
 
             if (Number(i) != 0) {
                 const onClick = () => {
