@@ -56,7 +56,7 @@ export class BoardScene extends Phaser.Scene {
             .setDepth(1001)
             .setAlpha(0)
             .setAlign('center')
-            .setWordWrapWidth(550)
+            .setWordWrapWidth(560)
             .setOrigin(0.5, 0)
 
         this.levelsText = this.add.text(270, 20, '0 turns', { fill: '#000', fontFamily: 'Roboto', fontSize: '20px' })
