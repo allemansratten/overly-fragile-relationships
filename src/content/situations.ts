@@ -384,7 +384,7 @@ export class BeatriceBreakups implements Situation {
             console.assert(lovers.length === 1)
         }
 
-        if (this.relationshipLength >= BeatriceBreakups.BREAK_UP_AFTER) {
+        if (this.lover != null && this.relationshipLength >= BeatriceBreakups.BREAK_UP_AFTER) {
             return [
                 SituationUtils.breakUp([HumanName.Beatrice, lovers[0]]).setDescription(
                     `Oh no... Beatrice got into a big fight with ${lovers[0]}, and they broke up.`,
