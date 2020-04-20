@@ -40,10 +40,10 @@ export class Level {
         })
     }
 
-    private fixAgreement(val: string) : string {
+    private fixAgreement(val: string): string {
         return val.replace(/You was/g, 'You were')
     }
-    
+
     public goOut(board: BoardScene, tripSummary: TripSummary): string {
         // Update friendships based on trip
         let effects = this.friendshipManager.applyMeeting(tripSummary)
@@ -78,24 +78,18 @@ export class Level {
         let friendList: string = tripSummary.goPeople.filter((x: Human) => x.name != 'You').map((human: Human) => human.name).join(', ')
         let statusMessage = `You went ${tripSummary.goLocation} with ${friendList}.\n${effectMsg}`
 
-        let stopProp : boolean = false
-        for(let h1 of this.humans) {
-            for(let h2 of this.humans) {
-                if(h1 == h2) {
-                    continue
-                }
-                if(this.friendshipManager.peopleGraph.getFondness([h1.name, h2.name]) <= MIN_FONDNESS) {
-                    if(h1.name == 'You') {
-                        board.fail(`${h1.name} hate ${h2.name} too much.\nGame over.`)
-                    } else {
-                        board.fail(`${h1.name} hates ${h2.name} too much.\nGame over.`)
-                    }
-                    stopProp = true
-                    break
+        let failMsgs = Array<string>()
+        for (let h1 of this.humans) {
+            for (let h2 of this.humans) {
+                if (h1 == h2) { continue }
+                else if (this.friendshipManager.peopleGraph.getFondness([h1.name, h2.name]) <= MIN_FONDNESS) {
+                    failMsgs.push(`${h1.name} ${h1.name == 'You' ? `hate` : `hates`} ${h2.name} too much.`)
                 }
             }
-            if(stopProp)
-                break
+        }
+        if (failMsgs.length > 0) {
+            failMsgs.push("Game over.")
+            board.fail(failMsgs.join('\n'))
         }
 
         return statusMessage
@@ -107,18 +101,18 @@ export class Level {
         perPersonRelMsg.forEach((changes, couple) => {
             let newTags = changes[0]
             let remTags = changes[1]
-            let toRemNew : Array<RelationshipTag> = []
-            let toRemRem : Array<RelationshipTag> = []
-            for(let tag of newTags) {
-                for(let tagK of relationshipTagShadowingNewRem) {
-                    if(tagK[0] == tag) {
+            let toRemNew: Array<RelationshipTag> = []
+            let toRemRem: Array<RelationshipTag> = []
+            for (let tag of newTags) {
+                for (let tagK of relationshipTagShadowingNewRem) {
+                    if (tagK[0] == tag) {
                         toRemRem.push(tagK[1])
                     }
                 }
             }
-            for(let tag of remTags) {
-                for(let tagK of relationshipTagShadowingRemNew) {
-                    if(tagK[0] == tag) {
+            for (let tag of remTags) {
+                for (let tagK of relationshipTagShadowingRemNew) {
+                    if (tagK[0] == tag) {
                         toRemNew.push(tagK[1])
                     }
                 }
@@ -160,17 +154,17 @@ export class Level {
             }
         })
 
-        
-        let relationshipTemplates : Array<[string, Couple]> = []
-        let addIfNotContains = (tag: RelationshipTag, message: string, couple: Couple) : boolean => {
+
+        let relationshipTemplates: Array<[string, Couple]> = []
+        let addIfNotContains = (tag: RelationshipTag, message: string, couple: Couple): boolean => {
             // If it's not bidirectional explicitly, we don't deduplicate
-            if(!relationshipTagBidirectional.has(tag)) {
+            if (!relationshipTagBidirectional.has(tag)) {
                 relationshipTemplates.push([message, couple])
                 return true
             }
 
-            for(let x of relationshipTemplates) {
-                if (x[0] == message && ((x[1][0] == couple[0] && x[1][1] == couple[1]) || (x[1][0] == couple[1] && x[1][1] == couple[0])) )
+            for (let x of relationshipTemplates) {
+                if (x[0] == message && ((x[1][0] == couple[0] && x[1][1] == couple[1]) || (x[1][0] == couple[1] && x[1][1] == couple[0])))
                     return false
             }
             relationshipTemplates.push([message, couple])
@@ -201,7 +195,7 @@ export class Level {
             }
         })
 
-        for(let x of relationshipTemplates) {
+        for (let x of relationshipTemplates) {
             effectMsg.push(
                 x[0].replace('SUBJ', x[1][0]).replace('OBJ', x[1][1])
             )
