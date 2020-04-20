@@ -22,7 +22,7 @@ export let levels: Array<Level> = []
 let locations: LocationName[] = [
     LocationName.Bowling,
     LocationName.Drink,
-    LocationName.Park,
+    LocationName.Hiking,
 ]
 
 // You is always on the zeroth position
@@ -77,7 +77,7 @@ const danTwoGirlfriendsBusted = new Complex({
 })
 const fragileFlavie1 = new Complex({    //Flavie vs Alex event 1
     humReq: [HumanName.Alex, HumanName.Flavie],
-    allowedLocations: [LocationName.Park],
+    allowedLocations: [LocationName.Hiking],
     humTagsBan: [[HumanName.Flavie, HumanTag.fragile_flavie_1]],
     effects: [new SituationEffect().changeFondness([
         [[HumanName.Flavie, HumanName.Alex], -3]]).addRelTags([
@@ -87,7 +87,7 @@ const fragileFlavie1 = new Complex({    //Flavie vs Alex event 1
 })
 const fragileFlavie2 = new Complex({    //Flavie vs Alex event 2
     humReq: [HumanName.Alex, HumanName.Flavie],
-    allowedLocations: [LocationName.Park],
+    allowedLocations: [LocationName.Hiking],
     humTagsReq: [[HumanName.Flavie, HumanTag.fragile_flavie_1]],
     humTagsBan: [[HumanName.Flavie, HumanTag.fragile_flavie_2]],
     effects: [new SituationEffect().removeRelTags([[[HumanName.Flavie, HumanName.Alex], RelationshipTag.dislike]])

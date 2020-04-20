@@ -186,8 +186,8 @@ export class MutualCrush implements Situation {
 }
 
 export class EternalCouple implements Situation {
-    a: HumanName
-    b: HumanName
+    always: HumanName
+    onlyWhenNotInOtherRel: HumanName
 
     lastChange: number = 0
     static CHANGE_AFTER = 3
@@ -196,13 +196,13 @@ export class EternalCouple implements Situation {
     nMakeups = 0
     danBustedMessageFired = false
 
-    constructor(a: HumanName, b: HumanName) {
-        this.a = a
-        this.b = b
+    constructor(always: HumanName, onlyWhenNotInOtherRel: HumanName) {
+        this.always = always
+        this.onlyWhenNotInOtherRel = onlyWhenNotInOtherRel
     }
 
     public GetApplicableEffects(trip: TripSummary, currentState: PeopleGraph, tripCount: number): Array<SituationEffect> {
-        let relationships = currentState.getMutualRelationshipsBetween(this.a, this.b)
+        let relationships = currentState.getMutualRelationshipsBetween(this.always, this.onlyWhenNotInOtherRel)
 
         if (!relationships.includes(RelationshipTag.ex) && !relationships.includes(RelationshipTag.lover)) {
             // Not triggered yet
@@ -228,13 +228,21 @@ export class EternalCouple implements Situation {
             let wrapperIndex: number
 
             if (!this.together) {
-                effect = SituationUtils.startToDate([this.a, this.b])
-                description = `${this.a} and ${this.b} started dating`
+                if (currentState.getOutRelationshipsOfType(this.onlyWhenNotInOtherRel, RelationshipTag.lover).length > 0){
+                    // is in relationship -> not getting back togther
+                    // Something has changed externally
+                    this.lastChange = tripCount
+                    this.together = togetherNow
+                    return []
+                }
+
+                effect = SituationUtils.startToDate([this.always, this.onlyWhenNotInOtherRel])
+                description = `${this.always} and ${this.onlyWhenNotInOtherRel} started dating`
                 wrapperIndex = this.nMakeups
                 this.nMakeups++
             } else {
-                effect = SituationUtils.breakUp([this.a, this.b])
-                description = `${this.a} and ${this.b} broke up`
+                effect = SituationUtils.breakUp([this.always, this.onlyWhenNotInOtherRel])
+                description = `${this.always} and ${this.onlyWhenNotInOtherRel} broke up`
                 wrapperIndex = this.nBreakups
                 this.nBreakups++
             }
@@ -387,7 +395,7 @@ export class BeatriceBreakups implements Situation {
             console.assert(lovers.length <= 1)
         }
 
-        if (this.relationshipLength >= BeatriceBreakups.BREAK_UP_AFTER) {
+        if (this.lover != null && this.relationshipLength >= BeatriceBreakups.BREAK_UP_AFTER) {
             return [
                 SituationUtils.breakUp([HumanName.Beatrice, lovers[0]]).setDescription(
                     `Oh no... Beatrice got into a big fight with ${lovers[0]}, and they broke up.`,
