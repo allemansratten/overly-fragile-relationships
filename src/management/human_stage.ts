@@ -47,14 +47,17 @@ export class HumanStage {
                 .on('pointerover', () => {
                     this.display(human, Number(i))
                 })
+                .on('pointerout', () => {
+                    this.display(level.humans[0], 0)
+                })
 
             let circle = scene.add.ellipse(0, 0, 80, 80, 0xcccccc)
                 .setOrigin(0.5, 0.5)
                 .setAlpha((Number(i) == 0 ? this.CIRCLE_ALPHA_OK : this.CIRCLE_ALPHA_BD))
                 .setInteractive({ useHandCursor: true })
-                .on('pointerover', () => {
-                    this.display(human, Number(i))
-                })
+                // .on('pointerover', () => {
+                //     this.display(human, Number(i))
+                // })
 
             let text = scene.add.text(0, 0, `${human.name}`, {
                 fill: '#e0e0e0',
@@ -64,9 +67,9 @@ export class HumanStage {
                 .setOrigin(0.5, 0.5)
                 .setInteractive({ useHandCursor: true })
                 .setAlpha(Number(i) == 0 ? this.TEXT_ALPHA_OK : this.TEXT_ALPHA_BD)
-                .on('pointerover', () => {
-                    this.display(human, Number(i))
-                })
+                // .on('pointerover', () => {
+                //     this.display(human, Number(i))
+                // })
 
             scene.add.group([image, text, circle]).setXY(position.x, position.y)
 
