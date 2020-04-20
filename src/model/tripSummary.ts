@@ -1,5 +1,6 @@
 import { Human } from './human'
 import { LocationName } from '../content/locations'
+import { HumanName } from "../content/humans"
 
 export class TripSummary {
     public goPeople: Array<Human> = new Array<Human>()
@@ -28,5 +29,21 @@ export class TripSummary {
 
     public prepare(location: LocationName) {
         this.goLocation = location
+    }
+
+    public allPresent(...people: HumanName[]) {
+        return people.every(p => this.goPeople.map(q => q.name).includes(p))
+    }
+
+    public somePresent(...people: HumanName[]) {
+        return people.some(p => this.goPeople.map(q => q.name).includes(p))
+    }
+
+    public allAbsent(...people: HumanName[]) {
+        return people.every(p => !this.goPeople.map(q => q.name).includes(p))
+    }
+
+    public someAbsent(...people: HumanName[]) {
+        return people.some(p => !this.goPeople.map(q => q.name).includes(p))
     }
 }
