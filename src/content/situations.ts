@@ -15,7 +15,12 @@ export class SituationUtils {
             [RelationshipTag.lover],
             [RelationshipTag.crush, RelationshipTag.ex],
             +10,
-        ).setDescription(`After having fun at the night out, ${a} and ${b} started dating.`)
+        ).setDescription([`After having fun at the night out, ${a} and ${b} started dating.`,
+        `${a} and ${b} seemed to have a good time together at the party and ended up getting together`,
+        `Everybody saw it coming - ${a} and ${b} got together`,
+        `After checking out eachother for some time ${a} and ${b} finally became a couple.`,
+        `After ${a} and ${b} finally confessed their feelings they started dating.`,
+        `What if ${a} and ${b} started dating that'd be so weird? Haha, just kidding... unless? Oh it just happened.`])
     }
 
     public static breakUp(couple: Couple): SituationEffect {
@@ -25,7 +30,10 @@ export class SituationUtils {
             [RelationshipTag.ex],
             [RelationshipTag.lover],
             -6,
-        ).setDescription(`${a} and ${b} broke up!`)
+        ).setDescription([`${a} and ${b} broke up!`,
+        `${a} and ${b}'s relationship seemed rough lately, but now it finally came to an end`,
+        `After some stress ${a} and ${b} separated and are no longer together`,
+        `As all things do, even ${a} and ${b}'s dating era came to an end...`])
     }
 
     public static changeRelationship(
