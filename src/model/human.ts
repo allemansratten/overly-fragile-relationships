@@ -15,3 +15,20 @@ export class Human {
         this.tags = new Set()
     }
 }
+
+export class HumanUtils{
+    public static peopleToString(people: HumanName[]) : string {
+        if (people.length == 1) {
+            return people[0]
+        }
+        else if (people.length == 2) {
+            return people.join(" and ")
+        }
+        else {
+            let copy: string[] = people.slice()
+            copy[copy.length - 1] = `and ${copy[copy.length - 1]}`
+            return copy.join(", ")
+        }
+    }
+    
+}

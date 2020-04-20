@@ -4,6 +4,7 @@ import { Couple, PeopleGraph } from "../model/peopleGraph"
 import { HumanTag, RelationshipTag } from "./entityTags"
 import { HumanName } from "./humans"
 import { LocationName } from "./locations"
+import { Human, HumanUtils } from "../model/human"
 
 
 export class SituationUtils {
@@ -373,12 +374,13 @@ export class GoodCompany implements Situation {
     static GOOD_FONDNESS = 7
 
     GetApplicableEffects(trip: TripSummary, currentState: PeopleGraph, tripCount: number): Array<SituationEffect> {
-        let effects = new Array
-
+        let fondnessChange = new Array<[Couple, number]>()
+        let goodTimePeople = new Array<HumanName>()
+        let badTimePeople = new Array<HumanName>()
+        
         for (const a of trip.getNames()) {
             if (a == HumanName.You) continue
 
-            let effect = new SituationEffect()
 
             let totalChange = 0
             let goodNames = []
@@ -414,30 +416,29 @@ export class GoodCompany implements Situation {
             if (totalChange === 0) continue
 
             totalChange = Math.max(totalChange, -4)
-
-            effect.changeFondness([[[a, HumanName.You], totalChange]])
-
-            // TODO: good are currently unused (on purpose, so that the game is harder)
-            let goodDescriptions = [
-                `${a} had fun with the other people you invited.`
-            ]
-            let badDescriptions = [
-                `${a} wasn't happy about who you invited.`
-            ]
+            fondnessChange.push([[a, HumanName.You], totalChange])
 
             // TODO: specify the person they were happy/unhappy about, if it's just one person
             if (totalChange < 0) {
-                effect.setDescription(badDescriptions)
+                badTimePeople.push(a)
             } else {
-                effect.setDescription(goodDescriptions)
+                goodTimePeople.push(a)
             }
-
-            effects.push(effect)
         }
+        let effect = new SituationEffect().changeFondness(fondnessChange)
 
-        return effects
+        // TODO: good are currently unused (on purpose, so that the game is harder)
+        if (badTimePeople.length > 0) {
+            const peopleString = HumanUtils.peopleToString(badTimePeople)
+            effect.setDescription(`${peopleString} ${goodTimePeople.length <= 1 ? "wasn't" : "weren't"} happy about who you invited.`)
+            return [effect]    
+        }
+        else {
+            return []
+        }
     }
 }
+
 
 export class UpdateFondnessBasedTags implements Situation {
     GetApplicableEffects(trip: TripSummary, currentState: PeopleGraph, tripCount: number): Array<SituationEffect> {
