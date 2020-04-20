@@ -117,6 +117,7 @@ export class BoardScene extends Phaser.Scene {
         this.tripSummary = new TripSummary(this.level.humans[0])
         this.phone?.display(this.level.humans[0], 0)
         this.humanStage?.redrawLines(this.level)
+        this.humanStage?.display(this.level.humans[0], 0)
     }
 
     private messageQueue?: [string, () => void] = undefined

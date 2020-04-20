@@ -1,17 +1,24 @@
 import { Human } from "./human"
 import { LocationName } from "../content/locations"
 import { TripSummary } from "./tripSummary"
-import { Couple, PeopleGraph, Relationship, EdgeKey, CoupleUtils, MIN_FONDNESS } from "./peopleGraph"
+import { Couple, CoupleUtils, EdgeKey, MIN_FONDNESS, PeopleGraph, Relationship } from "./peopleGraph"
 import { Situation, SituationEffect } from "./situation"
 import { FriendshipManager } from "./friendshipManager"
-import { HumanTag, humanTagMap, RelationshipTag, relationshipTagMap, relationshipTagMapStory, relationshipTagBidirectional, relationshipTagShadowingNewRem, relationshipTagShadowingRemNew } from "../content/entityTags"
+import {
+    HumanTag,
+    humanTagMap,
+    RelationshipTag,
+    relationshipTagBidirectional,
+    relationshipTagMapStory,
+    relationshipTagShadowingNewRem,
+    relationshipTagShadowingRemNew,
+} from "../content/entityTags"
 import { HumanName } from "../content/humans"
 import { BoardScene } from "../management/board"
 
 export class Level {
     public humans: Array<Human>
     public locations: Array<LocationName>
-
     public friendshipManager: FriendshipManager
 
     constructor(
@@ -74,8 +81,9 @@ export class Level {
         for (let h1 of this.humans) {
             let h1HatesList = Array<HumanName>()
             for (let h2 of this.humans) {
-                if (h1 == h2) { continue }
-                else if (this.friendshipManager.peopleGraph.getFondness([h1.name, h2.name]) <= MIN_FONDNESS) {
+                if (h1 == h2) {
+                    continue
+                } else if (this.friendshipManager.peopleGraph.getFondness([h1.name, h2.name]) <= MIN_FONDNESS) {
                     h1HatesList.push(h2.name)
                 }
             }
@@ -98,8 +106,8 @@ export class Level {
         // deduplicate effect descriptions 
         let effectsMsgs = Array.from(new Set(effects.map(effect => this.fixAgreement(effect.getRandomDescription()))))
 
-        effectsMsgs.push("") // separator dummy
-        effectsMsgs = effectsMsgs.concat(this.createEffectsMsgs(perPersonRelChanges, perPersonHumChanges))
+        // effectsMsgs.push("") // separator dummy
+        // effectsMsgs = effectsMsgs.concat(this.createEffectsMsgs(perPersonRelChanges, perPersonHumChanges))
         console.log("Msgs:", effectsMsgs)
 
         effectsMsgs = effectsMsgs.filter(msg => {
@@ -147,7 +155,7 @@ export class Level {
 
     private createEffectsMsgs(
         perPersonRelMsg: Map<EdgeKey, [RelationshipTag[], RelationshipTag[]]>,
-        perPersonHumMsg: Map<HumanName, [HumanTag[], HumanTag[]]>
+        perPersonHumMsg: Map<HumanName, [HumanTag[], HumanTag[]]>,
     ): Array<string> {
         let effectMsg: Array<string> = []
 
@@ -201,7 +209,7 @@ export class Level {
                     addIfNotContains(
                         remTag,
                         (relationshipTagMapStory.get(remTag) as [string, string])[1],
-                        couple
+                        couple,
                     )
                 }
             }
@@ -210,7 +218,7 @@ export class Level {
                     addIfNotContains(
                         newTag,
                         (relationshipTagMapStory.get(newTag) as [string, string])[0],
-                        couple
+                        couple,
                     )
                 }
             }
@@ -218,7 +226,7 @@ export class Level {
 
         for (let x of relationshipTemplates) {
             effectMsg.push(
-                x[0].replace('SUBJ', x[1][0]).replace('OBJ', x[1][1])
+                x[0].replace('SUBJ', x[1][0]).replace('OBJ', x[1][1]),
             )
         }
 
@@ -242,7 +250,6 @@ export class Level {
             effect.addedRelTags.forEach(ah => addToMap(CoupleUtils.toEdgeKey(ah[0]), ah[1], perPersonRelChanges, 0))
             effect.removedRelTags.forEach(ah => addToMap(CoupleUtils.toEdgeKey(ah[0]), ah[1], perPersonRelChanges, 1))
         })
-
 
 
         return { perPersonRelChanges, perPersonHumChanges }

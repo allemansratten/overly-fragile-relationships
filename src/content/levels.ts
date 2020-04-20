@@ -1,8 +1,9 @@
 import { Level } from "../model/level"
-import { Relationship } from "../model/peopleGraph"
+import { Couple, Relationship } from "../model/peopleGraph"
 import { Human } from "../model/human"
 import { HumanTag, RelationshipTag } from "./entityTags"
 import {
+    BeatriceBreakups,
     Complex,
     EternalCouple,
     MutualCrush,
@@ -25,7 +26,7 @@ let locations: LocationName[] = [
 
 // You is always on the zeroth position
 
-function mutualRelationship(people: [HumanName, HumanName], tags: RelationshipTag[]): [Relationship, Relationship] {
+function mutualRelationship(people: Couple, tags: RelationshipTag[]): [Relationship, Relationship] {
     const tagSet = new Set(tags)
     const [a, b] = people
 
@@ -35,15 +36,14 @@ function mutualRelationship(people: [HumanName, HumanName], tags: RelationshipTa
     ]
 }
 
-function flattenRelationshipList(relationships: Array<Relationship | [Relationship, Relationship]>) {
+function flatten<T>(arr: Array<T | T[]>): Array<T> {
     let res = []
 
-    for (const r of relationships) {
-        if (r instanceof Relationship) {
-            res.push(r)
+    for (const a of arr) {
+        if (a instanceof Array) {
+            res.push(...a)
         } else {
-            const [ra, rb] = r
-            res.push(ra, rb)
+            res.push(a)
         }
     }
 
@@ -73,6 +73,26 @@ const danTwoGirlfriendsBusted = new Complex({
             .setDescription("Uh oh... Dan was dating Beatrice and Flavie at the same time," +
                 " and now they found out! No more Dan Juan."),
     ],
+})
+const fragileFlavie1 = new Complex({    //Flavie vs Alex event 1
+    humReq: [HumanName.Alex, HumanName.Flavie],
+    allowedLocations: [LocationName.Park],
+    humTagsBan: [[HumanName.Flavie, HumanTag.fragile_flavie_1]],
+    effects: [new SituationEffect().changeFondness([
+        [[HumanName.Flavie, HumanName.Alex], -3]]).addRelTags([
+        [[HumanName.Flavie, HumanName.Alex], RelationshipTag.dislike]])
+        .addHumTags([[HumanName.Flavie, HumanTag.fragile_flavie_1]])
+        .setDescription('Alex made fun of Flavie\'s vegan snacks, and she got really upset. But Alex makes fun of everybody, right?')]
+})
+const fragileFlavie2 = new Complex({    //Flavie vs Alex event 2
+    humReq: [HumanName.Alex, HumanName.Flavie],
+    allowedLocations: [LocationName.Park],
+    humTagsReq: [[HumanName.Flavie, HumanTag.fragile_flavie_1]],
+    humTagsBan: [[HumanName.Flavie, HumanTag.fragile_flavie_2]],
+    effects: [new SituationEffect().removeRelTags([[[HumanName.Flavie, HumanName.Alex], RelationshipTag.dislike]])
+    .changeFondness([[[HumanName.Flavie, HumanName.Alex], +1]])
+    .addHumTags([[HumanName.Flavie, HumanTag.fragile_flavie_2]])
+    .setDescription('Alex saw that her comment really hurt Flavie\'s feelings, and apologised. She even brought her a vegan Flapjack.')]
 })
 
 const flavieFomo1 = new Complex({    //Flavie FOMO event 1
@@ -130,9 +150,8 @@ const baseFondnessChanges = new Complex({
                 effect.changedFondness.push([[hName, HumanName.You], PRESENT_FONDNESS_CHANGE])
             }
         })
-        baseEffects.push(effect);
 
-        return baseEffects
+        return baseEffects.concat([effect])
     }
 })
 
@@ -148,7 +167,7 @@ levels.push(
             new Human(HumanName.Flavie),
         ],
         locations,
-        flattenRelationshipList([
+        flatten([
             mutualRelationship([HumanName.Alex, HumanName.Beatrice], [RelationshipTag.crush]),
             mutualRelationship([HumanName.Alex, HumanName.Cecil], [RelationshipTag.crush]),
             mutualRelationship([HumanName.Eric, HumanName.Alex], [RelationshipTag.crush]),
@@ -161,14 +180,20 @@ levels.push(
             [HumanName.Cecil, HumanTag.introvert],
             [HumanName.Dan, HumanTag.extrovert],
             [HumanName.Dan, HumanTag.angry_drunk],
-        ]
-        ,
+        ],
         [
-            // initial fondness
             [[HumanName.Alex, HumanName.Beatrice], 7],
             [[HumanName.Beatrice, HumanName.Alex], 7],
             [[HumanName.Alex, HumanName.Cecil], 7],
             [[HumanName.Cecil, HumanName.Alex], 7],
+            [[HumanName.Eric, HumanName.Alex], 7],
+            [[HumanName.Alex, HumanName.Eric], 7],
+            [[HumanName.Eric, HumanName.Beatrice], 7],
+            [[HumanName.Beatrice, HumanName.Eric], 7],
+            [[HumanName.Dan, HumanName.Beatrice], 7],
+            [[HumanName.Beatrice, HumanName.Dan], 7],
+            [[HumanName.Dan, HumanName.Flavie], 7],
+            [[HumanName.Flavie, HumanName.Dan], 7],
         ],
         [
             new Sympathies(),
@@ -176,12 +201,15 @@ levels.push(
             new NobodyLikesAngryDrunk(),
             new MutualCrush(),
             new EternalCouple(HumanName.Dan, HumanName.Flavie),
+            new BeatriceBreakups(),
 
             bowlingbrawl,
             flavieFomo2, // 2 must be before 1 (else both happen simultaneously)
             flavieFomo1,
             danTwoGirlfriendsBusted,
             baseFondnessChanges,
+            fragileFlavie2, // zas stejnej issue
+            fragileFlavie1,
         ],
     ),
 )        

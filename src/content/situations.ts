@@ -16,7 +16,7 @@ export class SituationUtils {
             [RelationshipTag.lover],
             [RelationshipTag.crush, RelationshipTag.ex],
             +10,
-        )
+        ).setDescription(`${a} and ${b} started dating.`)
     }
 
     public static breakUp(couple: Couple): SituationEffect {
@@ -26,7 +26,7 @@ export class SituationUtils {
             [RelationshipTag.ex],
             [RelationshipTag.lover],
             -5,
-        )
+        ).setDescription(`${a} and ${b} broke up!`)
     }
 
     public static changeRelationship(
@@ -62,6 +62,17 @@ export class SituationUtils {
                     .find(oPerson => currentState.getRelationshipsBetween(person.name, oPerson.name).some(t => t == tag))
     }
 
+    public static getLovers(person: HumanName, currentState: PeopleGraph): HumanName[] {
+        let res = []
+
+        for (const rel of currentState.getOutRelationships(person)) {
+            if (rel.tags.has(RelationshipTag.lover)) {
+                res.push(rel.people[1])
+            }
+        }
+
+        return res
+    }
 }
 
 export class SimpleSituation implements Situation {
@@ -338,4 +349,31 @@ export class UpdateFondnessBasedTags implements Situation {
         otherEffects.push(effect)
         return otherEffects
     }
+}
+
+export class BeatriceBreakups implements Situation {
+    static BREAK_UP_AFTER = 3
+
+    relationshipLength = -1
+
+    GetApplicableEffects(trip: TripSummary, currentState: PeopleGraph, tripCount: number): Array<SituationEffect> {
+        const lovers = SituationUtils.getLovers(HumanName.Beatrice, currentState)
+        if (lovers.length === 0) {
+            this.relationshipLength = -1
+        } else {
+            this.relationshipLength++
+            console.assert(lovers.length === 1)
+        }
+
+        if (this.relationshipLength >= BeatriceBreakups.BREAK_UP_AFTER) {
+            return [
+                SituationUtils.breakUp([HumanName.Beatrice, lovers[0]]).setDescription(
+                    `Oh no... Beatrice got into a big fight with ${lovers[0]}, and they broke up.`
+                )
+            ]
+        } else {
+            return []
+        }
+    }
+
 }
