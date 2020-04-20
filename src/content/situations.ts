@@ -137,6 +137,7 @@ export class MutualCrush implements Situation {
     public GetApplicableEffects(trip: TripSummary, currentState: PeopleGraph): Array<SituationEffect> {
         let effects = new Array()
         let crushesMap: Map<HumanName, HumanName[]> = new Map()
+        let eligiblePeople = []
 
         for (const person of trip.goPeople) {
             let loverOnTrip = SituationUtils.getSomeoneOnTripWithTag(trip, person, currentState, RelationshipTag.lover)
@@ -144,20 +145,34 @@ export class MutualCrush implements Situation {
                 continue
             }
 
+            if (SituationUtils.getLovers(person.name, currentState).length >= 1
+                && !currentState.getHumTags(person.name).has(HumanTag.promiscuous)) {
+                // No polygamy unless the promiscuous tag is present.
+                continue
+            }
+
             let crushesPresent = trip.goPeople.filter(
                 b => currentState.getMutualRelationshipsBetween(person.name, b.name).includes(RelationshipTag.crush),
             ).map(h => h.name)
+
+            if (crushesPresent.length != 1) {
+                continue
+            }
             crushesMap.set(person.name, crushesPresent)
+            eligiblePeople.push(person.name)
         }
 
-        for (const person of trip.goPeople) {
-            const crushes = crushesMap.get(person.name)
+        for (const person of eligiblePeople) {
+            const crushes = crushesMap.get(person)
             if (crushes?.length === 1) {
                 const crush = crushes[0]
+                if (!eligiblePeople.includes(crush)) {
+                    continue
+                }
                 // Break symmetry by comparing names
-                if (crushesMap.get(crush)?.length === 1 && crush <= person.name) {
+                if (crushesMap.get(crush)?.length === 1 && crush <= person) {
                     effects.push(
-                        SituationUtils.startToDate([person.name, crush]),
+                        SituationUtils.startToDate([person, crush]),
                     )
                 }
             }

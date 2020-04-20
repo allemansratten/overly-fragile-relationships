@@ -176,10 +176,10 @@ levels.push(
             mutualRelationship([HumanName.Dan, HumanName.Flavie], [RelationshipTag.crush, RelationshipTag.like]),
         ]),
         [
-            [HumanName.Beatrice, HumanTag.promiscuous],
             [HumanName.Cecil, HumanTag.introvert],
             [HumanName.Dan, HumanTag.extrovert],
             [HumanName.Dan, HumanTag.angry_drunk],
+            [HumanName.Dan, HumanTag.promiscuous],
         ],
         [
             [[HumanName.Alex, HumanName.Beatrice], 7],

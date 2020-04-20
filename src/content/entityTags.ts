@@ -57,7 +57,7 @@ export const humanTagMap: Map<HumanTag, string> = new Map([
     [HumanTag.sad_drunk, 'sad when drunk'],
     [HumanTag.good_bowler, 'good bowler'],
     [HumanTag.bad_bowler, 'bad bowler'],
-    [HumanTag.promiscuous, 'promiscuous'],
+    // [HumanTag.promiscuous, 'promiscuous'],
     [HumanTag.jealous, 'jealous'],
     [HumanTag.disagreeable, 'disagreeable'],
     [HumanTag.agreeable, 'agreeable'],
