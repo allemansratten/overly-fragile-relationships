@@ -5,7 +5,7 @@ export class LoadingScene extends Phaser.Scene {
     constructor() {
         super({
             key: 'loading',
-        });
+        })
     }
 
     public preload() {
@@ -21,7 +21,7 @@ export class LoadingScene extends Phaser.Scene {
             .setOrigin(0, 0)
             .setDepth(1001)
             .setAlpha(1)
-            .setInteractive({useHandCursor: true})
+            .setInteractive({ useHandCursor: true })
             .on('pointerdown', () => {
                 this.scene.start('management')
             })
@@ -32,9 +32,22 @@ export class LoadingScene extends Phaser.Scene {
     }
 
     public create() {
-        let title = this.add.text(100, 100, 'Overly Fragile Relationships', { fill: '#fff', fontFamily: 'Roboto', fontSize: '30px' })
+        let title = this.add.text(100, 100, 'Overly Fragile Relationships', {
+            fill: '#fff',
+            fontFamily: 'Roboto',
+            fontSize: '30px',
+        })
             .setDepth(1002)
-        let help = this.add.text(100, 200, 'Pick one or more friends to join you on nights out.\nTry to keep your friendship network alive.\nPeople get upset if you don\'t see them for a longer time\nor when they have to spend time with someone they don\'t like\nor when they have a generally bad time.\n\nIt\'s complex.', { fill: '#fff', fontFamily: 'Roboto', fontSize: '18px' })
+        let help = this.add.text(100, 200,
+            'Pick one or more friends to join you on nights out.\n'
+            + 'Try to keep your friendship network alive.\n'
+            + 'You lose if one of your friends begins to hate somebody.\n'
+            + 'People get upset if you don\'t go out with them for a longer time\n'
+            + 'or when they have to spend time with someone they don\'t like\n'
+            + 'or when they have a generally bad time.\n'
+            + '\n'
+            + 'It\'s complex.',
+            { fill: '#fff', fontFamily: 'Roboto', fontSize: '18px' })
             .setDepth(1002)
     }
 }
