@@ -229,10 +229,11 @@ levels.push(
             new ExtrovertsIntroverts(),
 
             new NobodyLikesAngryDrunk(),
-            new AlexAndCecil(), // must be before MutualCrush
+            new AlexAndCecil(),
             new MutualCrush(),
             new LeftOutWithoutCrush(),
             new EternalCouple(HumanName.Dan, HumanName.Flavie),
+            new EricVSAAndB(),
             new AlexAndBeatriceGetDrunk(),
             new CecilCrushConundrum(),
 
@@ -249,7 +250,6 @@ levels.push(
             new BeatriceBreakups(),
 
             new UpdateFondnessBasedTags(),
-            new EricVSAAndB(),
         ],
     ),
 )        
