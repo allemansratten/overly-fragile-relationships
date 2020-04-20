@@ -104,7 +104,7 @@ export class Level {
         this.reduceTagsShadowing(perPersonRelChanges)
 
         // deduplicate effect descriptions 
-        let effectsMsgs = Array.from(new Set(effects.map(effect => this.fixAgreement(effect.description))))
+        let effectsMsgs = Array.from(new Set(effects.map(effect => this.fixAgreement(effect.getRandomDescription()))))
 
         // effectsMsgs.push("") // separator dummy
         // effectsMsgs = effectsMsgs.concat(this.createEffectsMsgs(perPersonRelChanges, perPersonHumChanges))

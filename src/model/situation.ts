@@ -9,7 +9,7 @@ export interface Situation {
 
 
 export class SituationEffect {
-    description: string
+    description: Array<string>
 
     addedRelTags: Array<[Couple, RelationshipTag]>
     removedRelTags: Array<[Couple, RelationshipTag]>
@@ -21,7 +21,7 @@ export class SituationEffect {
     newFutureSituations: Array<[number, Situation]>
 
     constructor(
-        description?: string,
+        description?: string | Array<string>,
         addedRelTags?: Array<[Couple, RelationshipTag]>,
         removedRelTags?: Array<[Couple, RelationshipTag]>,
         addedHumTags?: Array<[HumanName, HumanTag]>,
@@ -29,7 +29,10 @@ export class SituationEffect {
         changedFondness?: Array<[Couple, number]>,
         newFutureSituations?: Array<[number, Situation]>
     ) {
-        this.description = description ?? ""
+        let assignedDescription = description ?? new Array<string>()
+        this.description = Array.isArray(assignedDescription) 
+            ? assignedDescription 
+            : [assignedDescription]
         this.addedRelTags = addedRelTags ?? new Array()
         this.removedRelTags = removedRelTags ?? new Array()
         this.addedHumTags = addedHumTags ?? new Array()
@@ -58,9 +61,15 @@ export class SituationEffect {
         return this
     }
 
-    setDescription(description: string): SituationEffect {
-        this.description = description
+    setDescription(description: string|Array<string>): SituationEffect {
+        this.description = Array.isArray(description) 
+            ? description 
+            : [description]
         return this
+    }
+
+    public getRandomDescription(): string{
+        return this.description[Math.floor(Math.random() * this.description.length)]
     }
 
     changeFondness(changes: Array<[Couple, number]>): SituationEffect {
