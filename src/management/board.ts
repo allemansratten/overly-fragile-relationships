@@ -52,7 +52,7 @@ export class BoardScene extends Phaser.Scene {
             .setAlpha(0)
             .setInteractive({ useHandCursor: true })
             .on('pointerdown', () => this.goBack())
-        this.infoText = this.add.text(400, 110, '', { fill: '#fff', fontFamily: 'Roboto', fontSize: '20px' })
+        this.infoText = this.add.text(400, 140, '', { fill: '#fff', fontFamily: 'Roboto', fontSize: '20px' })
             .setDepth(1001)
             .setAlpha(0)
             .setAlign('center')
