@@ -206,6 +206,12 @@ levels.push(
             [HumanName.Dan, HumanTag.promiscuous],
         ],
         [
+            [[HumanName.Alex, HumanName.You], 6],
+            [[HumanName.Beatrice, HumanName.You], 6],
+            [[HumanName.Cecil, HumanName.You], 6],
+            [[HumanName.Dan, HumanName.You], 6],
+            [[HumanName.Eric, HumanName.You], 6],
+            [[HumanName.Flavie, HumanName.You], 6],
             [[HumanName.Alex, HumanName.Beatrice], 7],
             [[HumanName.Beatrice, HumanName.Alex], 7],
             [[HumanName.Dan, HumanName.Beatrice], 7],

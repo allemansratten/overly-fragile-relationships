@@ -163,7 +163,7 @@ export class HumanStage {
             return 0xde0000
         } else if (level <= 4) {
             return 0xd46c6c
-        } else if (level <= 6) {
+        } else if (level <= 5) {
             return 0xa3a3a3
         } else if (level <= 8) {
             return 0x70cc78
