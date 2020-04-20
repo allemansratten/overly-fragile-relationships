@@ -68,8 +68,12 @@ export class SituationEffect {
         return this
     }
 
-    public getRandomDescription(): string{
-        return this.description[Math.floor(Math.random() * this.description.length)]
+    public getRandomDescription(): string {
+        if (this.description.length === 0) {
+            return ""
+        } else {
+            return this.description[Math.floor(Math.random() * this.description.length)]
+        }
     }
 
     changeFondness(changes: Array<[Couple, number]>): SituationEffect {
