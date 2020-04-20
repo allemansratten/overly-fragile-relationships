@@ -214,7 +214,7 @@ export class HumanStage {
 
                 let graphics = this.scene.add.graphics()
 
-                if (fondness != DEFAULT_FONDNESS || tags.length != 0) {
+                if (fondness != DEFAULT_FONDNESS || tags.length != 0 || youChange) {
                     let diffX = (this.positionsInner[hi1].x - this.positionsInner[hi2].x)
                     let diffY = (this.positionsInner[hi1].y - this.positionsInner[hi2].y)
                     let diffXN = diffX / Math.sqrt(diffX * diffX + diffY * diffY)

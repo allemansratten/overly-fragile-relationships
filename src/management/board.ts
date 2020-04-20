@@ -71,6 +71,11 @@ export class BoardScene extends Phaser.Scene {
             alpha: { from: 1, to: 0 },
             duration: 500,
         })
+
+
+        this.phone?.display(this.level.humans[0], 0)
+        this.humanStage?.redrawLines(this.level)
+        this.humanStage?.display(this.level.humans[0], 0)
     }
 
     public goOut(location: LocationName) {
