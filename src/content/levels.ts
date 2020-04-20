@@ -13,6 +13,7 @@ import {
     SituationUtils,
     Sympathies,
     UpdateFondnessBasedTags,
+    EricVSAAndB,
 } from "./situations"
 import { HumanName } from "./humans"
 import { LocationName } from "./locations"
@@ -212,6 +213,7 @@ levels.push(
             fragileFlavie1,
 
             new UpdateFondnessBasedTags(),
+            new EricVSAAndB(),
         ],
     ),
 )        
