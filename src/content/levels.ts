@@ -6,18 +6,19 @@ import {
     AlexAndBeatriceGetDrunk,
     AlexAndCecil,
     BeatriceBreakups,
+    CecilCrushConundrum,
     Complex,
     Depression,
+    EricVSAAndB,
     EternalCouple,
+    ExtrovertsIntroverts,
+    GoodCompany,
+    LeftOutWithoutCrush,
     MutualCrush,
     NobodyLikesAngryDrunk,
     SituationUtils,
     Sympathies,
     UpdateFondnessBasedTags,
-    EricVSAAndB,
-    GoodCompany,
-    LeftOutWithoutCrush,
-    ExtrovertsIntroverts, CecilCrushConundrum,
 } from "./situations"
 import { HumanName } from "./humans"
 import { LocationName } from "./locations"
@@ -64,8 +65,8 @@ const danTwoGirlfriendsBusted = new Complex({
         [[HumanName.Dan, HumanName.Flavie], RelationshipTag.lover],
     ],
     effects: [
-        SituationUtils.breakUp([HumanName.Dan, HumanName.Beatrice]),
-        SituationUtils.breakUp([HumanName.Dan, HumanName.Flavie]),
+        SituationUtils.breakUp([HumanName.Dan, HumanName.Beatrice]).setDescription(""),
+        SituationUtils.breakUp([HumanName.Dan, HumanName.Flavie]).setDescription(""),
         new SituationEffect()
             .addHumTags([[HumanName.Dan, HumanTag.dan_busted]])
             .changeFondness([
@@ -155,7 +156,16 @@ const alexSupportive = new Complex({
     humTagsReq: [[HumanName.Beatrice, HumanTag.depressed]],
     effects: [new SituationEffect()
         .removeHumTags([[HumanName.Beatrice, HumanTag.depressed]])
-        .setDescription('Alex helped Beatrice get over her breakup. She feels better now.')],
+        .setDescription('Alex helped Beatrice get over her breakup. She feels better now.')
+        .changeFondness([
+            [[HumanName.Beatrice, HumanName.You], 1],
+            [[HumanName.Beatrice, HumanName.Alex], 1],
+            [[HumanName.Beatrice, HumanName.Cecil], 1],
+            [[HumanName.Beatrice, HumanName.Dan], 1],
+            [[HumanName.Beatrice, HumanName.Eric], 1],
+            [[HumanName.Beatrice, HumanName.Flavie], 1],
+        ])
+    ],
 })
 
 const PRESENT_FONDNESS_CHANGE = +2

@@ -712,6 +712,7 @@ export class Depression implements Situation {
                 if (!SituationUtils.isSingle(a, currentState)) {
                     // Having a lover removes depression
                     effect.removeHumTags([[a, HumanTag.depressed]])
+
                 } else {
                     for (const b of currentState.getHumanNames()) {
                         if (a == b) continue
