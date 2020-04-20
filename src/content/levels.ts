@@ -245,8 +245,8 @@ levels.push(
             fragileFlavie2, // zas stejnej issue
             fragileFlavie1,
 
-            new Depression(),
             alexSupportive,
+            new Depression(),
             new BeatriceBreakups(),
 
             new UpdateFondnessBasedTags(),
