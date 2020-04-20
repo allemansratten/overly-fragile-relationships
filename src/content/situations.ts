@@ -4,7 +4,6 @@ import { Couple, PeopleGraph } from "../model/peopleGraph"
 import { HumanTag, RelationshipTag } from "./entityTags"
 import { HumanName } from "./humans"
 import { LocationName } from "./locations"
-import { Human } from "../model/human"
 
 
 export class SituationUtils {
@@ -56,10 +55,10 @@ export class SituationUtils {
             ])
     }
 
-    public static getSomeoneOnTripWithTag(trip: TripSummary, person: Human, currentState: PeopleGraph, tag: RelationshipTag) {
+    public static getSomeoneOnTripWithTag(trip: TripSummary, person: HumanName, currentState: PeopleGraph, tag: RelationshipTag) {
         return trip.goPeople
-            .filter(oPerson => oPerson.name != person.name)
-            .find(oPerson => currentState.getRelationshipsBetween(person.name, oPerson.name).some(t => t == tag))
+            .filter(oPerson => oPerson.name != person)
+            .find(oPerson => currentState.getRelationshipsBetween(person, oPerson.name).some(t => t == tag))
     }
 
     public static getLovers(person: HumanName, currentState: PeopleGraph): HumanName[] {
@@ -72,6 +71,10 @@ export class SituationUtils {
         }
 
         return res
+    }
+
+    public static subset<T>(as: T[], bs: T[]) {
+        return as.every(a => bs.includes(a))
     }
 }
 
@@ -140,7 +143,7 @@ export class MutualCrush implements Situation {
         let eligiblePeople = []
 
         for (const person of trip.goPeople) {
-            let loverOnTrip = SituationUtils.getSomeoneOnTripWithTag(trip, person, currentState, RelationshipTag.lover)
+            let loverOnTrip = SituationUtils.getSomeoneOnTripWithTag(trip, person.name, currentState, RelationshipTag.lover)
             if (loverOnTrip) {
                 continue
             }
@@ -343,18 +346,18 @@ export class UpdateFondnessBasedTags implements Situation {
             for (const b of currentState.getHumanNames()) {
                 if (a == b) continue
                 const fondness = currentState.getFondness([a, b])
-                if (fondness < 5) {
+                const mutualRelationships = currentState.getMutualRelationshipsBetween(a, b)
+                const relationships = currentState.getRelationshipsBetween(a, b)
+                if (fondness >= 5 && relationships.includes(RelationshipTag.crushable)) {
+                    effect.addRelTags([
+                        [[a, b], RelationshipTag.crush],
+                    ])
+                } else {
                     effect.removeRelTags([
                         [[a, b], RelationshipTag.crush],
                     ])
-                    if (a < b && currentState.getMutualRelationshipsBetween(a, b).includes(RelationshipTag.lover)) {
+                    if (a < b && mutualRelationships.includes(RelationshipTag.lover)) {
                         otherEffects.push(SituationUtils.breakUp([a, b]))
-                    }
-                } else {
-                    if (currentState.getRelationshipsBetween(a, b).includes(RelationshipTag.crushable)) {
-                        effect.addRelTags([
-                            [[a, b], RelationshipTag.crush],
-                        ])
                     }
                 }
             }
@@ -381,7 +384,7 @@ export class BeatriceBreakups implements Situation {
             this.lover = newLover
         } else {
             this.relationshipLength++
-            console.assert(lovers.length === 1)
+            console.assert(lovers.length <= 1)
         }
 
         if (this.relationshipLength >= BeatriceBreakups.BREAK_UP_AFTER) {
@@ -394,5 +397,63 @@ export class BeatriceBreakups implements Situation {
             return []
         }
     }
+}
 
+export class AlexAndBeatriceGetDrunk implements Situation {
+    GetApplicableEffects(trip: TripSummary, currentState: PeopleGraph, tripCount: number): Array<SituationEffect> {
+        const peoplePresent = trip.goPeople.map(p => p.name)
+        if (!SituationUtils.subset([HumanName.Alex, HumanName.Beatrice], peoplePresent)) {
+            return []
+        }
+        if (trip.goLocation != LocationName.Drink) {
+            return []
+        }
+
+        // Beatrice must be single, but it's sufficient for Alex's lover not to be present
+        if (SituationUtils.getLovers(HumanName.Beatrice, currentState).length > 0) {
+            return []
+        }
+        let alexLoverOnTrip = SituationUtils.getSomeoneOnTripWithTag(trip, HumanName.Alex, currentState, RelationshipTag.lover)
+        if (alexLoverOnTrip) {
+            return []
+        }
+
+        if (!currentState.getMutualRelationshipsBetween(HumanName.Alex, HumanName.Beatrice)
+            .includes(RelationshipTag.crush)) {
+            return []
+        }
+
+        let alexLovers = SituationUtils.getLovers(HumanName.Alex, currentState)
+
+        if (alexLovers.length === 0) {
+            // Alex is single
+            return [
+                SituationUtils.startToDate([HumanName.Alex, HumanName.Beatrice])
+                    .setDescription("Encouraged by alcohol, Alex and Beatrice revealed their true feelings towards"
+                        + " one another! After going home together at the night out with you, they started dating."),
+            ]
+        } else {
+            // Alex has a lover
+            const lover = alexLovers[0]
+            return [
+                SituationUtils.breakUp([HumanName.Alex, lover])
+                    .setDescription(`Encouraged by alcohol, Alex cheated on ${lover} with Beatrice.` +
+                        ` ${lover} found out and broke up with Alex.`)
+                    .changeFondness([
+                        [[lover, HumanName.Alex], -2],
+                        [[lover, HumanName.Beatrice], -4],
+                        [[lover, HumanName.You], -3],
+                    ])
+                    .removeRelTags([
+                        [[HumanName.Alex, HumanName.Beatrice], RelationshipTag.crushable],
+                        [[HumanName.Beatrice, HumanName.Alex], RelationshipTag.crushable],
+                    ])
+                    .addRelTags([
+                        [[lover, HumanName.Beatrice], RelationshipTag.dislike],
+                    ])
+            ]
+        }
+
+        return []
+    }
 }

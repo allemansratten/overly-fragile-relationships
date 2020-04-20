@@ -3,6 +3,7 @@ import { Couple, Relationship } from "../model/peopleGraph"
 import { Human } from "../model/human"
 import { HumanTag, RelationshipTag } from "./entityTags"
 import {
+    AlexAndBeatriceGetDrunk,
     BeatriceBreakups,
     Complex,
     EternalCouple,
@@ -82,7 +83,7 @@ const fragileFlavie1 = new Complex({    //Flavie vs Alex event 1
         [[HumanName.Flavie, HumanName.Alex], -3]]).addRelTags([
         [[HumanName.Flavie, HumanName.Alex], RelationshipTag.dislike]])
         .addHumTags([[HumanName.Flavie, HumanTag.fragile_flavie_1]])
-        .setDescription('Alex made fun of Flavie\'s vegan snacks, and she got really upset. But Alex makes fun of everybody, right?')]
+        .setDescription('Alex made fun of Flavie\'s vegan snacks, and she got really upset. But Alex makes fun of everybody, right?')],
 })
 const fragileFlavie2 = new Complex({    //Flavie vs Alex event 2
     humReq: [HumanName.Alex, HumanName.Flavie],
@@ -90,9 +91,9 @@ const fragileFlavie2 = new Complex({    //Flavie vs Alex event 2
     humTagsReq: [[HumanName.Flavie, HumanTag.fragile_flavie_1]],
     humTagsBan: [[HumanName.Flavie, HumanTag.fragile_flavie_2]],
     effects: [new SituationEffect().removeRelTags([[[HumanName.Flavie, HumanName.Alex], RelationshipTag.dislike]])
-    .changeFondness([[[HumanName.Flavie, HumanName.Alex], +1]])
-    .addHumTags([[HumanName.Flavie, HumanTag.fragile_flavie_2]])
-    .setDescription('Alex saw that her comment really hurt Flavie\'s feelings, and apologised. She even brought her a vegan Flapjack.')]
+        .changeFondness([[[HumanName.Flavie, HumanName.Alex], +1]])
+        .addHumTags([[HumanName.Flavie, HumanTag.fragile_flavie_2]])
+        .setDescription('Alex saw that her comment really hurt Flavie\'s feelings, and apologised. She even brought her a vegan Flapjack.')],
 })
 
 const flavieFomo1 = new Complex({    //Flavie FOMO event 1
@@ -117,33 +118,33 @@ const flavieFomo2 = new Complex({    //Flavie FOMO event 2
     effects: [new SituationEffect().changeFondness([[[HumanName.Flavie, HumanName.You], -10]])
         .setDescription('Flavie came uninvited, chewed you out, and left. Forever.')],
 })
-const bowlingbrawl = new Complex({    
+const bowlingbrawl = new Complex({
     humReq: [HumanName.Cecil, HumanName.Dan],
     allowedLocations: [LocationName.Bowling],
     relTagsBan: [[[HumanName.Cecil, HumanName.Dan], RelationshipTag.bowling_brawl]],
     effects: [new SituationEffect().changeFondness([
         [[HumanName.Cecil, HumanName.Dan], -2],
-        [[HumanName.Dan, HumanName.Cecil,], -2]])
+        [[HumanName.Dan, HumanName.Cecil], -2]])
         .addRelTags([[[HumanName.Cecil, HumanName.Dan], RelationshipTag.bowling_brawl]])
         .setDescription('Cecil and Dan bet who could score the most in bowling.' +
             ' Dan thought he would win easily, but Cecil did.' +
             ' So Dan accused him of cheating, and they got into a fight!')],
-    processEffects: function(trip, currentState, baseEffects) {
+    processEffects: function (trip, currentState, baseEffects) {
         trip.goPeople.filter(p => (p.name != HumanName.Cecil) && (p.name != HumanName.Dan)).forEach(p => {
             baseEffects[0].changedFondness.push([[p.name, HumanName.Cecil], -2])
             baseEffects[0].changedFondness.push([[p.name, HumanName.Dan], -1])
         })
-        return baseEffects;
-    }
+        return baseEffects
+    },
 })
 
 const PRESENT_FONDNESS_CHANGE = +2
 const ABSENT_FONDNESS_CHANGE = -1
 
 const baseFondnessChanges = new Complex({
-    processEffects: function(trip, currentState, baseEffects) {
+    processEffects: function (trip, currentState, baseEffects) {
         let effect = new SituationEffect()
-        currentState.getAllHumanNames().forEach(hName =>{
+        currentState.getAllHumanNames().forEach(hName => {
             if (!trip.goPeople.map(p => p.name).includes(hName)) {
                 effect.changedFondness.push([[hName, HumanName.You], ABSENT_FONDNESS_CHANGE])
             } else {
@@ -152,7 +153,7 @@ const baseFondnessChanges = new Complex({
         })
 
         return baseEffects.concat([effect])
-    }
+    },
 })
 
 levels.push(
@@ -168,12 +169,12 @@ levels.push(
         ],
         locations,
         flatten([
-            mutualRelationship([HumanName.Alex, HumanName.Beatrice], [RelationshipTag.crush]),
-            mutualRelationship([HumanName.Alex, HumanName.Cecil], [RelationshipTag.crush]),
-            mutualRelationship([HumanName.Eric, HumanName.Alex], [RelationshipTag.crush]),
-            mutualRelationship([HumanName.Eric, HumanName.Beatrice], [RelationshipTag.crush]),
-            mutualRelationship([HumanName.Dan, HumanName.Beatrice], [RelationshipTag.crush]),
-            mutualRelationship([HumanName.Dan, HumanName.Flavie], [RelationshipTag.crush, RelationshipTag.like]),
+            mutualRelationship([HumanName.Alex, HumanName.Beatrice],[RelationshipTag.crushable, RelationshipTag.crush]),
+            mutualRelationship([HumanName.Alex, HumanName.Cecil],[RelationshipTag.crushable, RelationshipTag.crush]),
+            mutualRelationship([HumanName.Eric, HumanName.Alex],[RelationshipTag.crushable, RelationshipTag.crush]),
+            mutualRelationship([HumanName.Eric, HumanName.Beatrice],[RelationshipTag.crushable, RelationshipTag.crush]),
+            mutualRelationship([HumanName.Dan, HumanName.Beatrice],[RelationshipTag.crushable, RelationshipTag.crush]),
+            mutualRelationship([HumanName.Dan, HumanName.Flavie], [RelationshipTag.crushable, RelationshipTag.crush, RelationshipTag.like]),
         ]),
         [
             [HumanName.Cecil, HumanTag.introvert],
@@ -197,11 +198,11 @@ levels.push(
         ],
         [
             new Sympathies(),
-            new UpdateFondnessBasedTags(),
             new NobodyLikesAngryDrunk(),
             new MutualCrush(),
             new EternalCouple(HumanName.Dan, HumanName.Flavie),
             new BeatriceBreakups(),
+            new AlexAndBeatriceGetDrunk(),
 
             bowlingbrawl,
             flavieFomo2, // 2 must be before 1 (else both happen simultaneously)
@@ -210,6 +211,8 @@ levels.push(
             baseFondnessChanges,
             fragileFlavie2, // zas stejnej issue
             fragileFlavie1,
+
+            new UpdateFondnessBasedTags(),
         ],
     ),
 )        
