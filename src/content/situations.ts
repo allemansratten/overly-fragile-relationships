@@ -16,11 +16,11 @@ export class SituationUtils {
             [RelationshipTag.crush, RelationshipTag.ex],
             +10,
         ).setDescription([`After having fun at the night out, ${a} and ${b} started dating.`,
-        `${a} and ${b} seemed to have a good time together at the party and ended up getting together`,
-        `Everybody saw it coming - ${a} and ${b} got together`,
-        `After checking out eachother for some time ${a} and ${b} finally became a couple.`,
-        `After ${a} and ${b} finally confessed their feelings they started dating.`,
-        `What if ${a} and ${b} started dating that'd be so weird? Haha, just kidding... unless? Oh it just happened.`])
+        `${a} and ${b} seemed to have a good time together at the party and ended up getting together.`,
+        `Everybody saw it coming - ${a} and ${b} got together.`,
+        `After checking each other out for some time, ${a} and ${b} finally became a couple.`,
+        `After ${a} and ${b} finally confessed their feelings, they started dating.`,
+        `What if ${a} and ${b} started dating, that'd be so weird? Haha, just kidding... unless? Oh, it just happened.`])
     }
 
     public static breakUp(couple: Couple): SituationEffect {
@@ -31,8 +31,8 @@ export class SituationUtils {
             [RelationshipTag.lover],
             -6,
         ).setDescription([`${a} and ${b} broke up!`,
-        `${a} and ${b}'s relationship seemed rough lately, but now it finally came to an end`,
-        `After some stress ${a} and ${b} separated and are no longer together`,
+        `${a} and ${b}'s relationship seemed rough lately, and now it finally came to an end.`,
+        `After some stress ${a} and ${b} separated and are no longer together.`,
         `As all things do, even ${a} and ${b}'s dating era came to an end...`])
     }
 
@@ -269,11 +269,11 @@ export class EternalCouple implements Situation {
                 this.nBreakups++
             }
             const wrappedDescriptions = [
-                `${description}.`,
-                `${description} again.`,
+                `Have you heard? ${description}.`,
+                `Have you heard? ${description} again.`,
                 `You won't believe this: ${description} again.`,
-                `${description}, yet again.`,
-                `${description}, to nobody's surprise.`,
+                `Oh, by the way: ${description}, yet again.`,
+                `Oh, by the way: ${description}, to nobody's surprise.`,
             ]
 
             if (!this.danBustedMessageFired && currentState.getHumTags(HumanName.Dan).has(HumanTag.dan_busted)) {
@@ -703,3 +703,44 @@ export class Depression implements Situation {
         return [effect]
     }
 }
+
+export class LeftOutWithoutCrush implements Situation {
+    GetApplicableEffects(trip: TripSummary, currentState: PeopleGraph, tripCount: number): Array<SituationEffect> {
+        for (const h of currentState.getHumanNames()) {
+            if (!trip.allPresent(h) && 
+                currentState.getOutRelationshipsOfType(h, RelationshipTag.crush).every(rel => !trip.allPresent(rel.people[1]))) {
+
+                return [new SituationEffect().changeFondness([[[h, HumanName.You], -1]])]
+            }
+        }
+
+        return []
+    }
+}
+
+export class ExtrovertsIntroverts implements Situation {
+    GetApplicableEffects(trip: TripSummary, currentState: PeopleGraph, tripCount: number): SituationEffect[] {
+        let results = new Array<SituationEffect>()
+        if (trip.goPeople.length >= 4) {
+             results.push(this.effectDoesntLike(HumanTag.introvert, trip, currentState, "many"))
+        } 
+        if (trip.goPeople.length <= 4) {
+            results.push(this.effectDoesntLike(HumanTag.introvert, trip, currentState, "little"))
+        }
+
+        return results
+    }
+
+    private effectDoesntLike(tag: HumanTag, trip: TripSummary, currentState: PeopleGraph, msg: string) {
+        let relevantPeople = trip.goPeople.filter(per => currentState.getHumTags(per.name).has(tag))
+        if (relevantPeople.length <= 0) { return new SituationEffect()}
+
+        let fondnessChanges = relevantPeople.map(rel => [[rel.name, HumanName.You], -2]) as Array<[Couple, number]>
+
+        let sitEffect = new SituationEffect().changeFondness(fondnessChanges)
+                                             .setDescription(`${relevantPeople.join(", ")} ${relevantPeople.length > 1 ? "weren't" : "wasn't"} too happy about this ${msg} people.`)
+        return sitEffect
+    }
+
+}
+
