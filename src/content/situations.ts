@@ -394,7 +394,7 @@ export class UpdateFondnessBasedTags implements Situation {
 }
 
 export class BeatriceBreakups implements Situation {
-    static BREAK_UP_AFTER = 3
+    static BREAK_UP_AFTER = 2
 
     relationshipLength = -1
     lover: HumanName | null = null
@@ -414,8 +414,9 @@ export class BeatriceBreakups implements Situation {
         if (this.lover != null && this.relationshipLength >= BeatriceBreakups.BREAK_UP_AFTER) {
             return [
                 SituationUtils.breakUp([HumanName.Beatrice, lovers[0]]).setDescription(
-                    `Oh no... Beatrice got into a big fight with ${lovers[0]}, and they broke up.`,
-                ),
+                    `Oh no... Beatrice got into a big fight with ${lovers[0]}, and they broke up.`
+                    + ` She's been looking really depressed since...`,
+                ).addHumTags([[HumanName.Beatrice, HumanTag.depressed]]),
             ]
         } else {
             return []
@@ -474,6 +475,8 @@ export class AlexAndBeatriceGetDrunk implements Situation {
                     ])
                     .addRelTags([
                         [[lover, HumanName.Beatrice], RelationshipTag.dislike],
+                        [[HumanName.Alex, HumanName.Beatrice], RelationshipTag.awkawardness],
+                        [[HumanName.Beatrice, HumanName.Alex], RelationshipTag.awkawardness],
                     ]),
             ]
         }
@@ -562,5 +565,27 @@ export class AlexAndCecil implements Situation {
         } else {
             return []
         }
+    }
+}
+
+export class Depression implements Situation {
+    GetApplicableEffects(trip: TripSummary, currentState: PeopleGraph, tripCount: number): Array<SituationEffect> {
+        let effect = new SituationEffect()
+
+        for (const a of currentState.getHumanNames()) {
+            if (currentState.getHumTags(a).has(HumanTag.depressed)) {
+                if (!SituationUtils.isSingle(a, currentState)) {
+                    // Having a lover removes depression
+                    effect.removeHumTags([[a, HumanTag.depressed]])
+                } else {
+                    for (const b of currentState.getHumanNames()) {
+                        if (a == b) continue
+                        effect.changeFondness([[[a, b], -1]])
+                    }
+                }
+            }
+        }
+
+        return [effect]
     }
 }
