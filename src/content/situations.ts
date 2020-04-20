@@ -24,7 +24,7 @@ export class SituationUtils {
             couple,
             [RelationshipTag.ex],
             [RelationshipTag.lover],
-            -5,
+            -6,
         ).setDescription(`${a} and ${b} broke up!`)
     }
 
