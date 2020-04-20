@@ -121,7 +121,7 @@ export class Level {
 
         // Construct final msg
         let friendList: string = tripSummary.goPeople.filter((x: Human) => x.name != 'You').map((human: Human) => human.name).join(', ')
-        let statusMessage = `You went ${tripSummary.goLocation} with ${friendList}.\n${effectMsg}`
+        let statusMessage = `You went ${tripSummary.goLocation}.\n${effectMsg}`
 
         return statusMessage
     }

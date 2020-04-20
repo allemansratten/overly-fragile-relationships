@@ -14,10 +14,10 @@ import {
     SituationUtils,
     Sympathies,
     UpdateFondnessBasedTags,
-    EricVSAAndB, 
-    GoodCompany, 
+    EricVSAAndB,
+    GoodCompany,
     LeftOutWithoutCrush,
-    ExtrovertsIntroverts,
+    ExtrovertsIntroverts, CecilCrushConundrum,
 } from "./situations"
 import { HumanName } from "./humans"
 import { LocationName } from "./locations"
@@ -97,7 +97,7 @@ const fragileFlavie2 = new Complex({    //Flavie vs Alex event 2
     humTagsReq: [[HumanName.Flavie, HumanTag.fragile_flavie_1]],
     humTagsBan: [[HumanName.Flavie, HumanTag.fragile_flavie_2]],
     effects: [new SituationEffect().removeRelTags([[[HumanName.Flavie, HumanName.Alex], RelationshipTag.dislike]])
-        .changeFondness([[[HumanName.Flavie, HumanName.Alex], +1]])
+        .changeFondness([[[HumanName.Flavie, HumanName.Alex], +4]])
         .addHumTags([[HumanName.Flavie, HumanTag.fragile_flavie_2]])
         .setDescription('Alex saw that her comment really hurt Flavie\'s feelings, and apologised. She even brought her a vegan Flapjack.')],
 })
@@ -198,7 +198,7 @@ levels.push(
             mutualRelationship([HumanName.Cecil, HumanName.Flavie], [RelationshipTag.like]),
             new Relationship([HumanName.Cecil, HumanName.Flavie], new Set([RelationshipTag.crushable, RelationshipTag.crush])),
             new Relationship([HumanName.Beatrice, HumanName.Flavie], new Set([RelationshipTag.dislike])),
-            new Relationship([HumanName.Dan, HumanName.Cecil], new Set([RelationshipTag.dislike])),
+            new Relationship([HumanName.Eric, HumanName.Beatrice], new Set([RelationshipTag.dislike])),
         ]),
         [
             [HumanName.Cecil, HumanTag.introvert],
@@ -207,6 +207,12 @@ levels.push(
             [HumanName.Dan, HumanTag.promiscuous],
         ],
         [
+            [[HumanName.Alex, HumanName.You], 6],
+            [[HumanName.Beatrice, HumanName.You], 6],
+            [[HumanName.Cecil, HumanName.You], 6],
+            [[HumanName.Dan, HumanName.You], 6],
+            [[HumanName.Eric, HumanName.You], 6],
+            [[HumanName.Flavie, HumanName.You], 6],
             [[HumanName.Alex, HumanName.Beatrice], 7],
             [[HumanName.Beatrice, HumanName.Alex], 7],
             [[HumanName.Dan, HumanName.Beatrice], 7],
@@ -215,7 +221,7 @@ levels.push(
             [[HumanName.Flavie, HumanName.Dan], 7],
             [[HumanName.Cecil, HumanName.Flavie], 7],
             [[HumanName.Beatrice, HumanName.Flavie], 4],
-            [[HumanName.Dan, HumanName.Cecil], 4],
+            [[HumanName.Eric, HumanName.Beatrice], 4],
         ],
         [
             new Sympathies(),
@@ -228,6 +234,7 @@ levels.push(
             new LeftOutWithoutCrush(),
             new EternalCouple(HumanName.Dan, HumanName.Flavie),
             new AlexAndBeatriceGetDrunk(),
+            new CecilCrushConundrum(),
 
             bowlingbrawl,
             flavieFomo2, // 2 must be before 1 (else both happen simultaneously)

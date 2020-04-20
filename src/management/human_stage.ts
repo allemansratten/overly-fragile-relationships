@@ -158,15 +158,26 @@ export class HumanStage {
         // level is 0 to 1
         // return Math.round(level*255*255*255) + Math.round(level*255) + Math.round(level*255)
 
+        // aint got time to do this properly
         // level is 0 to 10
-        if (level <= 2) {
+        if (level <= 1) {
             return 0xde0000
-        } else if (level <= 4) {
+        } else if (level <= 2) {
+            return 0xcf3636
+        } else if (level <= 3) {
             return 0xd46c6c
-        } else if (level <= 6) {
+        } else if (level <= 4) {
+            return 0xb08787
+        } else if (level <= 5) {
             return 0xa3a3a3
+        } else if (level <= 6) {
+            return 0x93a390
+        } else if (level <= 7) {
+            return 0x73ba7a
         } else if (level <= 8) {
-            return 0x70cc78
+            return 0x62bd6b
+        } else if (level <= 9) {
+            return 0x3bb847
         } else {
             return 0x00de13
         }
@@ -203,7 +214,7 @@ export class HumanStage {
 
                 let graphics = this.scene.add.graphics()
 
-                if (fondness != DEFAULT_FONDNESS || tags.length != 0) {
+                if (fondness != DEFAULT_FONDNESS || tags.length != 0 || youChange) {
                     let diffX = (this.positionsInner[hi1].x - this.positionsInner[hi2].x)
                     let diffY = (this.positionsInner[hi1].y - this.positionsInner[hi2].y)
                     let diffXN = diffX / Math.sqrt(diffX * diffX + diffY * diffY)

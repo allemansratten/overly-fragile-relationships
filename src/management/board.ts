@@ -52,11 +52,11 @@ export class BoardScene extends Phaser.Scene {
             .setAlpha(0)
             .setInteractive({ useHandCursor: true })
             .on('pointerdown', () => this.goBack())
-        this.infoText = this.add.text(400, 110, '', { fill: '#fff', fontFamily: 'Roboto', fontSize: '20px' })
+        this.infoText = this.add.text(400, 140, '', { fill: '#fff', fontFamily: 'Roboto', fontSize: '20px' })
             .setDepth(1001)
             .setAlpha(0)
             .setAlign('center')
-            .setWordWrapWidth(550)
+            .setWordWrapWidth(560)
             .setOrigin(0.5, 0)
 
         this.levelsText = this.add.text(270, 20, 'week: 1', { fill: '#000', fontFamily: 'Roboto', fontSize: '20px' })
@@ -71,6 +71,11 @@ export class BoardScene extends Phaser.Scene {
             alpha: { from: 1, to: 0 },
             duration: 500,
         })
+
+
+        this.phone?.display(this.level.humans[0], 0)
+        this.humanStage?.redrawLines(this.level)
+        this.humanStage?.display(this.level.humans[0], 0)
     }
 
     public goOut(location: LocationName) {
