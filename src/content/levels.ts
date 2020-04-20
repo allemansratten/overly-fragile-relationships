@@ -14,10 +14,10 @@ import {
     SituationUtils,
     Sympathies,
     UpdateFondnessBasedTags,
-    EricVSAAndB, 
-    GoodCompany, 
+    EricVSAAndB,
+    GoodCompany,
     LeftOutWithoutCrush,
-    ExtrovertsIntroverts,
+    ExtrovertsIntroverts, CecilCrushConundrum,
 } from "./situations"
 import { HumanName } from "./humans"
 import { LocationName } from "./locations"
@@ -198,7 +198,7 @@ levels.push(
             mutualRelationship([HumanName.Cecil, HumanName.Flavie], [RelationshipTag.like]),
             new Relationship([HumanName.Cecil, HumanName.Flavie], new Set([RelationshipTag.crushable, RelationshipTag.crush])),
             new Relationship([HumanName.Beatrice, HumanName.Flavie], new Set([RelationshipTag.dislike])),
-            new Relationship([HumanName.Dan, HumanName.Cecil], new Set([RelationshipTag.dislike])),
+            new Relationship([HumanName.Eric, HumanName.Beatrice], new Set([RelationshipTag.dislike])),
         ]),
         [
             [HumanName.Cecil, HumanTag.introvert],
@@ -221,7 +221,7 @@ levels.push(
             [[HumanName.Flavie, HumanName.Dan], 7],
             [[HumanName.Cecil, HumanName.Flavie], 7],
             [[HumanName.Beatrice, HumanName.Flavie], 4],
-            [[HumanName.Dan, HumanName.Cecil], 4],
+            [[HumanName.Eric, HumanName.Beatrice], 4],
         ],
         [
             new Sympathies(),
@@ -234,6 +234,7 @@ levels.push(
             new LeftOutWithoutCrush(),
             new EternalCouple(HumanName.Dan, HumanName.Flavie),
             new AlexAndBeatriceGetDrunk(),
+            new CecilCrushConundrum(),
 
             bowlingbrawl,
             flavieFomo2, // 2 must be before 1 (else both happen simultaneously)
