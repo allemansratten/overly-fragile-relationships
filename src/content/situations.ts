@@ -386,6 +386,8 @@ export class GoodCompany implements Situation {
 
             for (const b of trip.getNames()) {
                 if (a == b) continue
+                if (b == HumanName.You) continue
+
                 let curChange = 0
                 // if (currentState.getFondness([a, b]) > GoodCompany.GOOD_FONDNESS) {
                 //     curChange++
