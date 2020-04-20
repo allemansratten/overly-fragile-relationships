@@ -75,7 +75,7 @@ export class HumanStage {
 
             // TBH I have no idea why this is not relative to the group, but whatevs
             text.setPosition(position.x, position.y + 100 + 10)
-            circle.setPosition(position.x, position.y + 45 + 10)
+            circle.setPosition(position.x, position.y + 45 + 15)
             image.setPosition(position.x, position.y + 45 + 10)
 
             if (Number(i) != 0) {
