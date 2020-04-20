@@ -14,10 +14,10 @@ import {
     SituationUtils,
     Sympathies,
     UpdateFondnessBasedTags,
-    EricVSAAndB, 
-    GoodCompany, 
+    EricVSAAndB,
+    GoodCompany,
     LeftOutWithoutCrush,
-    ExtrovertsIntroverts,
+    ExtrovertsIntroverts, CecilCrushConundrum,
 } from "./situations"
 import { HumanName } from "./humans"
 import { LocationName } from "./locations"
@@ -234,6 +234,7 @@ levels.push(
             new LeftOutWithoutCrush(),
             new EternalCouple(HumanName.Dan, HumanName.Flavie),
             new AlexAndBeatriceGetDrunk(),
+            new CecilCrushConundrum(),
 
             bowlingbrawl,
             flavieFomo2, // 2 must be before 1 (else both happen simultaneously)

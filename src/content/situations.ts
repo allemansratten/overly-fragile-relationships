@@ -630,7 +630,7 @@ export class EricVSAAndB implements Situation {
     }
 }
 
-export class CecilCrushConandrum implements Situation {
+export class CecilCrushConundrum implements Situation {
     private flavieAndDanBreakupCounter = 0
     private togetherWas = false
     private triggered = false
