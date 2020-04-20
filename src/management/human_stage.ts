@@ -51,7 +51,7 @@ export class HumanStage {
                     this.display(level.humans[0], 0)
                 })
 
-            let circle = scene.add.ellipse(0, 0, 80, 80, 0xcccccc)
+            let circle = scene.add.ellipse(0, 0, 80, 80, 0x2e2e2e)
                 .setOrigin(0.5, 0.5)
                 .setAlpha((Number(i) == 0 ? this.CIRCLE_ALPHA_OK : this.CIRCLE_ALPHA_BD))
                 // .setInteractive({ useHandCursor: true })
@@ -60,7 +60,7 @@ export class HumanStage {
                 // })
 
             let text = scene.add.text(0, 0, `${human.name}`, {
-                fill: '#e0e0e0',
+                fill: '#1c1c1c',
                 fontFamily: 'Roboto',
                 fontSize: '18px',
             })
