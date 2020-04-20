@@ -140,6 +140,14 @@ export class PeopleGraph {
         return Array.from(this.relationshipTags.get(CoupleUtils.toEdgeKey([a, b])) ?? [])
     }
 
+    public getOutRelationshipsOfType(a: HumanName, tag: RelationshipTag): Array<Relationship>{
+        return this.getOutRelationships(a).filter(rel => rel.tags.has(tag))
+    }
+
+    public haveMutualRelationshipTag(a: HumanName, b: HumanName, tag: RelationshipTag): boolean{
+        return this.getMutualRelationshipsBetween(a, b).includes(tag);
+    }
+
     public getMutualRelationshipsBetween(a: HumanName, b: HumanName): Array<RelationshipTag> {
         let ab = this.getRelationshipsBetween(a, b)
         let ba = this.getRelationshipsBetween(b, a)
