@@ -80,7 +80,7 @@ export class BoardScene extends Phaser.Scene {
         }
 
         this.tripSummary.prepare(location)
-        let message = this.level.goOut(this.tripSummary)
+        let message = this.level.goOut(this, this.tripSummary)
         this.tripFader!.input.enabled = false
         this.locationStage!.enable(false)
         this.infoText!.setText(message)
@@ -103,7 +103,13 @@ export class BoardScene extends Phaser.Scene {
             targets: [this.infoText, this.tripFader],
             alpha: { from: 1, to: 0 },
             duration: 500,
-            onComplete: () => this.tripFader!.input.enabled = true
+            onComplete: () => {
+                this.tripFader!.input.enabled = true
+                // check if message queue has something
+                if(this.messageQueue) {
+                    new ModalDialog(this, this.messageQueue[0], this.messageQueue[1])
+                }
+            }
         })
     }
 
@@ -111,5 +117,10 @@ export class BoardScene extends Phaser.Scene {
         this.tripSummary = new TripSummary(this.level.humans[0])
         this.phone?.display(this.level.humans[0], 0)
         this.humanStage?.redrawLines(this.level)
+    }
+
+    private messageQueue?: [string, () => void] = undefined
+    public fail(message: string) {
+        this.messageQueue = [message, () => { window.location.reload() }]
     }
 }

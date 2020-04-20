@@ -1,11 +1,12 @@
 import { Human } from "./human"
 import { LocationName } from "../content/locations"
 import { TripSummary } from "./tripSummary"
-import { Couple, PeopleGraph, Relationship, EdgeKey, CoupleUtils } from "./peopleGraph"
+import { Couple, PeopleGraph, Relationship, EdgeKey, CoupleUtils, MIN_FONDNESS } from "./peopleGraph"
 import { Situation, SituationEffect } from "./situation"
 import { FriendshipManager } from "./friendshipManager"
 import { HumanTag, humanTagMap, RelationshipTag, relationshipTagMap, relationshipTagMapStory, relationshipTagBidirectional, relationshipTagShadowingNewRem, relationshipTagShadowingRemNew } from "../content/entityTags"
 import { HumanName } from "../content/humans"
+import { BoardScene } from "../management/board"
 
 export class Level {
     public humans: Array<Human>
@@ -43,7 +44,7 @@ export class Level {
         return val.replace(/You was/g, 'You were')
     }
     
-    public goOut(tripSummary: TripSummary): string {
+    public goOut(board: BoardScene, tripSummary: TripSummary): string {
         // Update friendships based on trip
         let effects = this.friendshipManager.applyMeeting(tripSummary)
 
@@ -76,6 +77,26 @@ export class Level {
         // Construct final msg
         let friendList: string = tripSummary.goPeople.filter((x: Human) => x.name != 'You').map((human: Human) => human.name).join(', ')
         let statusMessage = `You went ${tripSummary.goLocation} with ${friendList}.\n${effectMsg}`
+
+        let stopProp : boolean = false
+        for(let h1 of this.humans) {
+            for(let h2 of this.humans) {
+                if(h1 == h2) {
+                    continue
+                }
+                if(this.friendshipManager.peopleGraph.getFondness([h1.name, h2.name]) <= MIN_FONDNESS) {
+                    if(h1.name == 'You') {
+                        board.fail(`${h1.name} hate ${h2.name} too much.\nGame over.`)
+                    } else {
+                        board.fail(`${h1.name} hates ${h2.name} too much.\nGame over.`)
+                    }
+                    stopProp = true
+                    break
+                }
+            }
+            if(stopProp)
+                break
+        }
 
         return statusMessage
     }
