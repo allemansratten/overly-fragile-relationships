@@ -7,3 +7,13 @@ export enum HumanName {
     Eric = 'Eric',
     Flavie = 'Flavie',
 }
+
+export const HumanNameIndex: Array<string> = [
+    'You',
+    'Alex',
+    'Beatrice',
+    'Cecil',
+    'Dan',
+    'Eric',
+    'Flavie',
+]

@@ -6,6 +6,7 @@ import { LocationStage } from './location_stage'
 import { LocationName } from '../content/locations'
 import { Level } from "../model/level"
 import { ModalDialog } from '../utils/modal'
+import { Utils } from '../utils/utils'
 
 export class BoardScene extends Phaser.Scene {
     private tripFader?: Phaser.GameObjects.Rectangle
@@ -17,6 +18,7 @@ export class BoardScene extends Phaser.Scene {
     public phone?: PhoneStage
     private humanStage?: HumanStage
     private locationStage?: LocationStage
+    tempPeoplePortraits?: Phaser.GameObjects.Group
 
     constructor() {
         super({
@@ -84,6 +86,14 @@ export class BoardScene extends Phaser.Scene {
         this.tripFader!.input.enabled = false
         this.locationStage!.enable(false)
         this.infoText!.setText(message)
+        this.tempPeoplePortraits = Utils.drawPortraits(this.tripSummary.goPeople, this)
+        for(let child of this.tempPeoplePortraits.children.getArray()) {
+            this.add.tween({
+                targets: child,
+                alpha: { from: 0, to: 1 },
+                duration: 500,
+            })
+        }
         this.add.tween({
             targets: [this.infoText, this.tripFader],
             alpha: { from: 0, to: 1 },
@@ -111,6 +121,18 @@ export class BoardScene extends Phaser.Scene {
                 }
             }
         })
+
+        for(let child of this.tempPeoplePortraits!.children.getArray()) {
+            this.add.tween({
+                targets: child,
+                alpha: { from: 1, to: 0 },
+                duration: 500,
+                onComplete: () => {
+                    child.destroy()
+                    this.tempPeoplePortraits!.destroy(false)
+                }
+            })
+        }
     }
 
     private refresh() {

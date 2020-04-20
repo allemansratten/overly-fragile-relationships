@@ -14,6 +14,7 @@ import {
     SituationUtils,
     Sympathies,
     UpdateFondnessBasedTags,
+    EricVSAAndB,
 } from "./situations"
 import { HumanName } from "./humans"
 import { LocationName } from "./locations"
@@ -231,6 +232,7 @@ levels.push(
             new BeatriceBreakups(),
 
             new UpdateFondnessBasedTags(),
+            new EricVSAAndB(),
         ],
     ),
 )        

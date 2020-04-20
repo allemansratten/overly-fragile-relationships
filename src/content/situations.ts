@@ -485,6 +485,67 @@ export class AlexAndBeatriceGetDrunk implements Situation {
     }
 }
 
+export class EricVSAAndB implements Situation {
+    private state: "init" | "abDating" | "cecilCrush" | "done" = "init"
+    private abVisibleStartedDating = 0
+
+    GetApplicableEffects(trip: TripSummary, currentState: PeopleGraph, tripCount: number): Array<SituationEffect> {
+        if (this.state == "init") {
+
+            if (trip.allPresent(HumanName.Alex, HumanName.Beatrice, HumanName.Eric) &&
+                currentState.haveMutualRelationshipTag(HumanName.Alex, HumanName.Beatrice, RelationshipTag.lover)) {
+                this.abVisibleStartedDating = tripCount
+                this.state = "abDating"
+                return [new SituationEffect()
+                    .setDescription("Eric said something about Alex's and Beatrice's relationship being unnatural and stormed off.")
+                    .changeFondness([
+                        [[HumanName.Eric, HumanName.Alex], -4],
+                        [[HumanName.Eric, HumanName.Beatrice], -4],
+                        [[HumanName.Beatrice, HumanName.Eric], -2],
+                        [[HumanName.Alex, HumanName.Eric], -2]
+                    ])
+                    .addRelTags([
+                        [[HumanName.Eric, HumanName.Alex], RelationshipTag.dislike],
+                        [[HumanName.Eric, HumanName.Beatrice], RelationshipTag.dislike],
+                    ])
+                ]
+            }
+        }
+        else if (this.state == "abDating" && tripCount >= 2 + this.abVisibleStartedDating) {
+            if (trip.allPresent(HumanName.Eric, HumanName.Cecil) && 
+                currentState.getFondness([HumanName.Eric, HumanName.Cecil]) > 3 && currentState.getFondness([HumanName.Cecil, HumanName.Eric]) > 4) {
+                this.state = "cecilCrush"
+                return [new SituationEffect()
+                    .setDescription("Eric and Cecil seem awfully close, for how harsh Eric was towards Alex and Beatrice...")
+                    .addRelTags([
+                        [[HumanName.Eric, HumanName.Cecil], RelationshipTag.crush],
+                        [[HumanName.Cecil, HumanName.Eric], RelationshipTag.crush],
+                    ])
+                ]
+            }
+        }
+        else if (this.state == "cecilCrush" && tripCount >= 2 + this.abVisibleStartedDating) {
+            if (currentState.haveMutualRelationshipTag(HumanName.Eric, HumanName.Cecil, RelationshipTag.lover)) {
+                this.state = "done"
+                return [new SituationEffect()
+                    .setDescription("Oh! Eric must have been repressing these feelings for a while. Now that he's dating Cecil he went to apologize to Alex and Beatrice...")
+                    .changeFondness([
+                        [[HumanName.Eric, HumanName.Alex], 4],
+                        [[HumanName.Eric, HumanName.Beatrice], 4],
+                        [[HumanName.Beatrice, HumanName.Eric], 2],
+                        [[HumanName.Alex, HumanName.Eric], 2]
+                    ])
+                    .removeRelTags([
+                        [[HumanName.Eric, HumanName.Alex], RelationshipTag.dislike],
+                        [[HumanName.Eric, HumanName.Beatrice], RelationshipTag.dislike],
+                    ])
+                ]
+            }
+        }
+        return []
+    }
+}
+
 export class AlexAndCecil implements Situation {
     fired = false
 
