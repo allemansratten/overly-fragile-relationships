@@ -357,9 +357,11 @@ export class UpdateFondnessBasedTags implements Situation {
                 const mutualRelationships = currentState.getMutualRelationshipsBetween(a, b)
                 const relationships = currentState.getRelationshipsBetween(a, b)
                 if (fondness >= 5 && relationships.includes(RelationshipTag.crushable)) {
-                    effect.addRelTags([
-                        [[a, b], RelationshipTag.crush],
-                    ])
+                    if (!mutualRelationships.includes(RelationshipTag.lover)) {
+                        effect.addRelTags([
+                            [[a, b], RelationshipTag.crush],
+                        ])
+                    }
                 } else {
                     effect.removeRelTags([
                         [[a, b], RelationshipTag.crush],
