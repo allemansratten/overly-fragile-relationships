@@ -130,9 +130,8 @@ const baseFondnessChanges = new Complex({
                 effect.changedFondness.push([[hName, HumanName.You], PRESENT_FONDNESS_CHANGE])
             }
         })
-        baseEffects.push(effect);
 
-        return baseEffects
+        return baseEffects.concat([effect])
     }
 })
 
