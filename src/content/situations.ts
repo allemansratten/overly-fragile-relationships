@@ -15,7 +15,12 @@ export class SituationUtils {
             [RelationshipTag.lover],
             [RelationshipTag.crush, RelationshipTag.ex],
             +10,
-        ).setDescription(`After having fun at the night out, ${a} and ${b} started dating.`)
+        ).setDescription([`After having fun at the night out, ${a} and ${b} started dating.`,
+        `${a} and ${b} seemed to have a good time together at the party and ended up getting together`,
+        `Everybody saw it coming - ${a} and ${b} got together`,
+        `After checking out eachother for some time ${a} and ${b} finally became a couple.`,
+        `After ${a} and ${b} finally confessed their feelings they started dating.`,
+        `What if ${a} and ${b} started dating that'd be so weird? Haha, just kidding... unless? Oh it just happened.`])
     }
 
     public static breakUp(couple: Couple): SituationEffect {
@@ -25,7 +30,10 @@ export class SituationUtils {
             [RelationshipTag.ex],
             [RelationshipTag.lover],
             -6,
-        ).setDescription(`${a} and ${b} broke up!`)
+        ).setDescription([`${a} and ${b} broke up!`,
+        `${a} and ${b}'s relationship seemed rough lately, but now it finally came to an end`,
+        `After some stress ${a} and ${b} separated and are no longer together`,
+        `As all things do, even ${a} and ${b}'s dating era came to an end...`])
     }
 
     public static changeRelationship(
@@ -356,6 +364,76 @@ export class Sympathies implements Situation {
             }
         }
         return [effect]
+    }
+}
+
+export class GoodCompany implements Situation {
+
+    static BAD_FONDNESS = 3
+    static GOOD_FONDNESS = 7
+
+    GetApplicableEffects(trip: TripSummary, currentState: PeopleGraph, tripCount: number): Array<SituationEffect> {
+        let effects = new Array
+
+        for (const a of trip.getNames()) {
+            if (a == HumanName.You) continue
+
+            let effect = new SituationEffect()
+
+            let totalChange = 0
+            let goodNames = []
+            let badNames = []
+
+            for (const b of trip.getNames()) {
+                if (a == b) continue
+                let curChange = 0
+                // if (currentState.getFondness([a, b]) > GoodCompany.GOOD_FONDNESS) {
+                //     curChange++
+                // }
+                if (currentState.getFondness([a, b]) <= GoodCompany.BAD_FONDNESS) {
+                    curChange--
+                }
+                // if (currentState.getRelationshipsBetween(a, b).includes(RelationshipTag.like)) {
+                //     curChange++
+                // }
+                if (currentState.getRelationshipsBetween(a, b).includes(RelationshipTag.dislike)) {
+                    curChange--
+                }
+
+                // Maybe clamp curChange between -1 and 1?
+                totalChange += curChange * 2
+                if (curChange > 0) {
+                    goodNames.push(b)
+                }
+                if (curChange < 0) {
+                    badNames.push(b)
+                }
+            }
+            if (totalChange === 0) continue
+
+            totalChange = Math.max(totalChange, -4)
+
+            effect.changeFondness([[[a, HumanName.You], totalChange]])
+
+            // TODO: good are currently unused (on purpose, so that the game is harder)
+            let goodDescriptions = [
+                `${a} had fun with the other people you invited.`
+            ]
+            let badDescriptions = [
+                `${a} wasn't happy about who you invited.`
+            ]
+
+            // TODO: specify the person they were happy/unhappy about, if it's just one person
+            if (totalChange < 0) {
+                effect.setDescription(badDescriptions)
+            } else {
+                effect.setDescription(goodDescriptions)
+            }
+
+            effects.push(effect)
+        }
+
+        return effects
     }
 }
 
