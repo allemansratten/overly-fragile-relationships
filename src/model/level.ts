@@ -80,11 +80,20 @@ export class Level {
 
         let failMsgs = Array<string>()
         for (let h1 of this.humans) {
+            let h1HatesList = Array<HumanName>()
             for (let h2 of this.humans) {
                 if (h1 == h2) { continue }
                 else if (this.friendshipManager.peopleGraph.getFondness([h1.name, h2.name]) <= MIN_FONDNESS) {
-                    failMsgs.push(`${h1.name} ${h1.name == 'You' ? `hate` : `hates`} ${h2.name} too much.`)
+                    h1HatesList.push(h2.name)
                 }
+            }
+
+            if(h1HatesList.length > 0) {
+                let h1HatesString = h1HatesList.length == 2 
+                    ? h1HatesList.join(" and ")
+                    : h1HatesList.join(", ")
+                
+                failMsgs.push(`${h1.name} ${h1.name == 'You' ? `hate` : `hates`} ${h1HatesString} too much.`)
             }
         }
         if (failMsgs.length > 0) {
