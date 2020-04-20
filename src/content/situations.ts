@@ -740,7 +740,7 @@ export class LeftOutWithoutCrush implements Situation {
 export class ExtrovertsIntroverts implements Situation {
     GetApplicableEffects(trip: TripSummary, currentState: PeopleGraph, tripCount: number): SituationEffect[] {
         let results = new Array<SituationEffect>()
-        if (trip.goPeople.length >= 4) {
+        if (trip.goPeople.length > 4) {
             results.push(this.effectDoesntLike(HumanTag.introvert, trip, currentState, "so many"))
         }
         if (trip.goPeople.length <= 4) {
