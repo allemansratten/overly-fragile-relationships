@@ -174,8 +174,6 @@ levels.push(
                 [RelationshipTag.crushable, RelationshipTag.crush, RelationshipTag.disable_mutual_crush_dating]),
             mutualRelationship([HumanName.Alex, HumanName.Cecil],
                 [RelationshipTag.crushable, RelationshipTag.crush, RelationshipTag.like, RelationshipTag.disable_mutual_crush_dating]),
-            mutualRelationship([HumanName.Eric, HumanName.Alex],[RelationshipTag.crushable, RelationshipTag.crush]),
-            mutualRelationship([HumanName.Eric, HumanName.Beatrice],[RelationshipTag.crushable, RelationshipTag.crush]),
             mutualRelationship([HumanName.Dan, HumanName.Beatrice],[RelationshipTag.crushable, RelationshipTag.crush]),
             mutualRelationship([HumanName.Dan, HumanName.Flavie], [RelationshipTag.crushable, RelationshipTag.crush, RelationshipTag.like]),
             mutualRelationship([HumanName.Cecil, HumanName.Flavie], [RelationshipTag.like]),
