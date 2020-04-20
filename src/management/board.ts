@@ -59,7 +59,7 @@ export class BoardScene extends Phaser.Scene {
             .setWordWrapWidth(550)
             .setOrigin(0.5, 0)
 
-        this.levelsText = this.add.text(270, 20, '0 turns', { fill: '#000', fontFamily: 'Roboto', fontSize: '20px' })
+        this.levelsText = this.add.text(270, 20, 'week: 1', { fill: '#000', fontFamily: 'Roboto', fontSize: '20px' })
             .setDepth(1001)
 
         this.locationStage = new LocationStage(this, this.level)
@@ -147,15 +147,12 @@ export class BoardScene extends Phaser.Scene {
         this.humanStage?.display(this.level.humans[0], 0)
 
         this.levelCount += 1
-        if(this.levelCount == 1) {
-            this.levelsText?.setText('1 week')
-        } else {
-            this.levelsText?.setText(`${this.levelCount} weeks`)
-        }
+        this.levelsText?.setText(`week: ${this.levelCount}`)
     }
 
     private messageQueue?: [string, () => void] = undefined
     public fail(message: string) {
-        this.messageQueue = [message + `\nYou kept the friendship network alive for ${this.levelCount} weeks`, () => { window.location.reload() }]
+        // +1 because turns are 0-based, weeks aren't
+        this.messageQueue = [message + `\nYou kept the friendship network alive for ${1 + this.levelCount} weeks`, () => { window.location.reload() }]
     }
 }
