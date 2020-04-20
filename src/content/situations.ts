@@ -512,7 +512,8 @@ export class EricVSAAndB implements Situation {
             }
         }
         else if (this.state == "abDating" && tripCount >= 2 + this.abVisibleStartedDating) {
-            if (trip.allPresent(HumanName.Eric, HumanName.Cecil)) {
+            if (trip.allPresent(HumanName.Eric, HumanName.Cecil) && 
+                currentState.getFondness([HumanName.Eric, HumanName.Cecil]) > 3 && currentState.getFondness([HumanName.Cecil, HumanName.Eric]) > 4) {
                 this.state = "cecilCrush"
                 return [new SituationEffect()
                     .setDescription("Eric and Cecil seem awfully close, for how harsh Eric was towards Alex and Beatrice...")
