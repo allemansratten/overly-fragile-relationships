@@ -47,14 +47,17 @@ export class HumanStage {
                 .on('pointerover', () => {
                     this.display(human, Number(i))
                 })
+                .on('pointerout', () => {
+                    this.display(level.humans[0], 0)
+                })
 
             let circle = scene.add.ellipse(0, 0, 80, 80, 0xcccccc)
                 .setOrigin(0.5, 0.5)
                 .setAlpha((Number(i) == 0 ? this.CIRCLE_ALPHA_OK : this.CIRCLE_ALPHA_BD))
-                .setInteractive({ useHandCursor: true })
-                .on('pointerover', () => {
-                    this.display(human, Number(i))
-                })
+                // .setInteractive({ useHandCursor: true })
+                // .on('pointerover', () => {
+                //     this.display(human, Number(i))
+                // })
 
             let text = scene.add.text(0, 0, `${human.name}`, {
                 fill: '#e0e0e0',
@@ -64,16 +67,16 @@ export class HumanStage {
                 .setOrigin(0.5, 0.5)
                 .setInteractive({ useHandCursor: true })
                 .setAlpha(Number(i) == 0 ? this.TEXT_ALPHA_OK : this.TEXT_ALPHA_BD)
-                .on('pointerover', () => {
-                    this.display(human, Number(i))
-                })
+                // .on('pointerover', () => {
+                //     this.display(human, Number(i))
+                // })
 
             scene.add.group([image, text, circle]).setXY(position.x, position.y)
-            
+
             // TBH I have no idea why this is not relative to the group, but whatevs
-            text.setPosition(position.x,   position.y + 100 + 10)
-            circle.setPosition(position.x, position.y +  45 + 10)
-            image.setPosition(position.x,  position.y +  45 + 10)
+            text.setPosition(position.x, position.y + 100 + 10)
+            circle.setPosition(position.x, position.y + 45 + 10)
+            image.setPosition(position.x, position.y + 45 + 10)
 
             if (Number(i) != 0) {
                 const onClick = () => {
@@ -195,6 +198,7 @@ export class HumanStage {
                     .filter((x) => relationshipTagMap.has(x))
                 let fondness = peopleGraph.getFondness([human1.name, human2.name])
 
+                let graphics = this.scene.add.graphics()
 
                 if (fondness != DEFAULT_FONDNESS || tags.length != 0) {
                     let diffX = (this.positionsInner[hi1].x - this.positionsInner[hi2].x)
@@ -202,13 +206,25 @@ export class HumanStage {
                     let diffXN = diffX / Math.sqrt(diffX * diffX + diffY * diffY)
                     let diffYN = diffY / Math.sqrt(diffX * diffX + diffY * diffY)
 
+                    let color = this.linearScaleBlack(fondness)
+
+                    let x1 = this.positionsInner[hi1].x - 45 * diffXN
+                    let y1 = this.positionsInner[hi1].y + 60 - 45 * diffYN
+                    let x2 = this.positionsInner[hi2].x + 45 * diffXN
+                    let y2 = this.positionsInner[hi2].y + 60 + 45 * diffYN
                     let line = this.scene.add.line(0, 0,
-                        this.positionsInner[hi1].x - 45 * diffXN, this.positionsInner[hi1].y + 60 - 45 * diffYN,
-                        this.positionsInner[hi2].x + 45 * diffXN, this.positionsInner[hi2].y + 60 + 45 * diffYN,
-                        this.linearScaleBlack(fondness), 0.3)
-                    line.setOrigin(0, 0)
+                        x1, y1, x2, y2,
+                        color,
+                        0.3)
+                        .setOrigin(0, 0)
                         .setLineWidth(2)
                     group.add(line)
+
+
+                    let triangle = this.scene.add.triangle(youChange ? x1 : x2, youChange ? y1 : y2, -10, 0, 10, 0, 0, 10, color)
+                        .setOrigin(0, 0)
+                        .setRotation(Math.atan2(y2 - y1, x2 - x1) - Math.PI / 2 + (youChange ? Math.PI : 0))
+                    group.add(triangle)
                 }
 
                 for (let i in tags) {

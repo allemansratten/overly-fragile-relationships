@@ -3,6 +3,7 @@ import { Couple, Relationship } from "../model/peopleGraph"
 import { Human } from "../model/human"
 import { HumanTag, RelationshipTag } from "./entityTags"
 import {
+    BeatriceBreakups,
     Complex,
     EternalCouple,
     MutualCrush,
@@ -149,9 +150,8 @@ const baseFondnessChanges = new Complex({
                 effect.changedFondness.push([[hName, HumanName.You], PRESENT_FONDNESS_CHANGE])
             }
         })
-        baseEffects.push(effect);
 
-        return baseEffects
+        return baseEffects.concat([effect])
     }
 })
 
@@ -201,6 +201,7 @@ levels.push(
             new NobodyLikesAngryDrunk(),
             new MutualCrush(),
             new EternalCouple(HumanName.Dan, HumanName.Flavie),
+            new BeatriceBreakups(),
 
             bowlingbrawl,
             flavieFomo2, // 2 must be before 1 (else both happen simultaneously)
