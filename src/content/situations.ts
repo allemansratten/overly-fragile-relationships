@@ -58,8 +58,8 @@ export class SituationUtils {
 
     public static getSomeoneOnTripWithTag(trip: TripSummary, person: Human, currentState: PeopleGraph, tag: RelationshipTag) {
         return trip.goPeople
-                    .filter(oPerson => oPerson.name != person.name)
-                    .find(oPerson => currentState.getRelationshipsBetween(person.name, oPerson.name).some(t => t == tag))
+            .filter(oPerson => oPerson.name != person.name)
+            .find(oPerson => currentState.getRelationshipsBetween(person.name, oPerson.name).some(t => t == tag))
     }
 
     public static getLovers(person: HumanName, currentState: PeopleGraph): HumanName[] {
@@ -370,11 +370,15 @@ export class BeatriceBreakups implements Situation {
     static BREAK_UP_AFTER = 3
 
     relationshipLength = -1
+    lover: HumanName | null = null
 
     GetApplicableEffects(trip: TripSummary, currentState: PeopleGraph, tripCount: number): Array<SituationEffect> {
         const lovers = SituationUtils.getLovers(HumanName.Beatrice, currentState)
-        if (lovers.length === 0) {
+        const newLover = lovers.length == 0 ? null : lovers[0]
+
+        if (this.lover !== newLover) {
             this.relationshipLength = -1
+            this.lover = newLover
         } else {
             this.relationshipLength++
             console.assert(lovers.length === 1)
@@ -383,8 +387,8 @@ export class BeatriceBreakups implements Situation {
         if (this.relationshipLength >= BeatriceBreakups.BREAK_UP_AFTER) {
             return [
                 SituationUtils.breakUp([HumanName.Beatrice, lovers[0]]).setDescription(
-                    `Oh no... Beatrice got into a big fight with ${lovers[0]}, and they broke up.`
-                )
+                    `Oh no... Beatrice got into a big fight with ${lovers[0]}, and they broke up.`,
+                ),
             ]
         } else {
             return []
