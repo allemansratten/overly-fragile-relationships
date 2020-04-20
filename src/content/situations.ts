@@ -744,7 +744,7 @@ export class ExtrovertsIntroverts implements Situation {
             return new SituationEffect()
         }
 
-        let fondnessChanges = relevantPeople.map(rel => [[rel.name, HumanName.You], -2]) as Array<[Couple, number]>
+        let fondnessChanges = relevantPeople.map(rel => [[rel.name, HumanName.You], -3]) as Array<[Couple, number]>
 
         let sitEffect = new SituationEffect()
             .changeFondness(fondnessChanges)
