@@ -104,7 +104,6 @@ const fragileFlavie2 = new Complex({    //Flavie vs Alex event 2
 })
 
 const flavieFomo1 = new Complex({    //Flavie FOMO event 1
-    humReq: [HumanName.Alex, HumanName.Beatrice, HumanName.Cecil, HumanName.Dan, HumanName.Eric],
     humBan: [HumanName.Flavie],
     humTagsBan: [[HumanName.Flavie, HumanTag.flavie_angry]],
     effects: [new SituationEffect().changeFondness([
@@ -116,14 +115,19 @@ const flavieFomo1 = new Complex({    //Flavie FOMO event 1
         [[HumanName.Flavie, HumanName.You], -3],
     ]).addHumTags([[HumanName.Flavie, HumanTag.flavie_angry]])
         .setDescription('Flavie is angry that you invited everybody except her.')],
+    processEffects: (trip, currentState, baseEffects) => {
+        return trip.goPeople.length >= 4 ? baseEffects : []
+    }
 })
 
 const flavieFomo2 = new Complex({    //Flavie FOMO event 2
-    humReq: [HumanName.Alex, HumanName.Beatrice, HumanName.Cecil, HumanName.Dan, HumanName.Eric],
     humBan: [HumanName.Flavie],
     humTagsReq: [[HumanName.Flavie, HumanTag.flavie_angry]],
     effects: [new SituationEffect().changeFondness([[[HumanName.Flavie, HumanName.You], -10]])
         .setDescription('Flavie came uninvited, chewed you out, and left. Forever.')],
+    processEffects: (trip, currentState, baseEffects) => {
+        return trip.goPeople.length >= 4 ? baseEffects : []
+    }
 })
 
 const bowlingbrawl = new Complex({
