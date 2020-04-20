@@ -118,22 +118,22 @@ export class SimpleSituation implements Situation {
 export class NobodyLikesAngryDrunk implements Situation {
     public GetApplicableEffects(trip: TripSummary, currentState: PeopleGraph): Array<SituationEffect> {
         if (trip.goLocation != LocationName.Drink) {
-            return new Array()
+            return []
         }
 
         let effects = new Array()
+
         trip.goPeople.forEach(person => {
             let personTags = currentState.getHumTags(person.name)
             if (personTags.has(HumanTag.angry_drunk)) {
+                let effect = new SituationEffect()
+                    .setDescription(`${person.name} got drunk and angry; the others weren't happy about that.`)
+
                 trip.goPeople.filter(p => p != person).forEach(otherPerson => {
-                    // TODO: make this be one effect (so that we have one description and can say "the others weren't happy"
-                    effects.push(
-                        new SituationEffect(
-                            `${person.name} got drunk and angry; ${otherPerson.name} wasn't happy about that.`,
-                        ).changeFondness([[[otherPerson.name, person.name], -1]]),
-                    )
+                    effect.changeFondness([[[otherPerson.name, person.name], -1]])
                 })
 
+                effects.push(effect)
             }
         })
         return effects
@@ -179,7 +179,7 @@ export class MutualCrush implements Situation {
                     continue
                 }
                 if (currentState.getFondness([person, crush]) < MutualCrush.MIN_DATING_FONDNESS
-                    || currentState.getFondness([person, crush]) < MutualCrush.MIN_DATING_FONDNESS) {
+                    || currentState.getFondness([crush, person]) < MutualCrush.MIN_DATING_FONDNESS) {
                     continue
                 }
                 if (currentState.getMutualRelationshipsBetween(person, crush)
@@ -512,7 +512,7 @@ export class EricVSAAndB implements Situation {
             }
         }
         else if (this.state == "abDating" && tripCount >= 2 + this.abVisibleStartedDating) {
-            if (trip.allPresent(HumanName.Eric, HumanName.Cecil) && 
+            if (trip.allPresent(HumanName.Eric, HumanName.Cecil) &&
                 currentState.getFondness([HumanName.Eric, HumanName.Cecil]) > 3 && currentState.getFondness([HumanName.Cecil, HumanName.Eric]) > 4) {
                 this.state = "cecilCrush"
                 return [new SituationEffect()
@@ -545,6 +545,39 @@ export class EricVSAAndB implements Situation {
         return []
     }
 }
+
+export class CecilCrushConandrum implements Situation {
+    private flavieAndDanBreakupCounter = 0
+    private togetherWas = false
+    private triggered = false
+
+    GetApplicableEffects(trip: TripSummary, currentState: PeopleGraph, tripCount: number): Array<SituationEffect> {
+        let relationships = currentState.getMutualRelationshipsBetween(HumanName.Dan, HumanName.Flavie)
+        const togetherNow = relationships.includes(RelationshipTag.lover)
+
+        if (togetherNow === false && this.togetherWas === true) {
+            this.flavieAndDanBreakupCounter += 1
+        }
+
+        if (!this.triggered &&
+            this.flavieAndDanBreakupCounter >= 2 &&
+            currentState.getFondness([HumanName.Flavie, HumanName.Cecil]) > 8 &&
+            currentState.getOutRelationshipsOfType(HumanName.Flavie, RelationshipTag.lover)) {
+            this.triggered = true
+            return [new SituationEffect()
+                .setDescription("Flavie is starting to see that Cecil might be right for her after all!")
+                .addRelTags([
+                    [[HumanName.Flavie, HumanName.Cecil], RelationshipTag.crush],
+                ])
+            ]
+        }
+
+        this.togetherWas = togetherNow
+
+        return []
+    }
+}
+
 
 export class AlexAndCecil implements Situation {
     fired = false
