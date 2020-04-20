@@ -74,6 +74,26 @@ const danTwoGirlfriendsBusted = new Complex({
                 " and now they found out! No more Dan Juan."),
     ],
 })
+const fragileFlavie1 = new Complex({    //Flavie vs Alex event 1
+    humReq: [HumanName.Alex, HumanName.Flavie],
+    allowedLocations: [LocationName.Park],
+    humTagsBan: [[HumanName.Flavie, HumanTag.fragile_flavie_1]],
+    effects: [new SituationEffect().changeFondness([
+        [[HumanName.Flavie, HumanName.Alex], -3]]).addRelTags([
+        [[HumanName.Flavie, HumanName.Alex], RelationshipTag.dislike]])
+        .addHumTags([[HumanName.Flavie, HumanTag.fragile_flavie_1]])
+        .setDescription('Alex made fun of Flavie\'s vegan snacks, and she got really upset. But Alex makes fun of everybody, right?')]
+})
+const fragileFlavie2 = new Complex({    //Flavie vs Alex event 2
+    humReq: [HumanName.Alex, HumanName.Flavie],
+    allowedLocations: [LocationName.Park],
+    humTagsReq: [[HumanName.Flavie, HumanTag.fragile_flavie_1]],
+    humTagsBan: [[HumanName.Flavie, HumanTag.fragile_flavie_2]],
+    effects: [new SituationEffect().removeRelTags([[[HumanName.Flavie, HumanName.Alex], RelationshipTag.dislike]])
+    .changeFondness([[[HumanName.Flavie, HumanName.Alex], +1]])
+    .addHumTags([[HumanName.Flavie, HumanTag.fragile_flavie_2]])
+    .setDescription('Alex saw that her comment really hurt Flavie\'s feelings, and apologised. She even brought her a vegan Flapjack.')]
+})
 
 const flavieFomo1 = new Complex({    //Flavie FOMO event 1
     humReq: [HumanName.Alex, HumanName.Beatrice, HumanName.Cecil, HumanName.Dan, HumanName.Eric],
@@ -188,6 +208,8 @@ levels.push(
             flavieFomo1,
             danTwoGirlfriendsBusted,
             baseFondnessChanges,
+            fragileFlavie1,
+            fragileFlavie2,
         ],
     ),
 )        
