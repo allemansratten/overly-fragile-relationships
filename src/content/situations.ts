@@ -718,3 +718,29 @@ export class LeftOutWithoutCrush implements Situation {
     }
 }
 
+export class ExtrovertsIntroverts implements Situation {
+    GetApplicableEffects(trip: TripSummary, currentState: PeopleGraph, tripCount: number): SituationEffect[] {
+        let results = new Array<SituationEffect>()
+        if (trip.goPeople.length >= 4) {
+             results.push(this.effectDoesntLike(HumanTag.introvert, trip, currentState, "many"))
+        } 
+        if (trip.goPeople.length <= 4) {
+            results.push(this.effectDoesntLike(HumanTag.introvert, trip, currentState, "little"))
+        }
+
+        return results
+    }
+
+    private effectDoesntLike(tag: HumanTag, trip: TripSummary, currentState: PeopleGraph, msg: string) {
+        let relevantPeople = trip.goPeople.filter(per => currentState.getHumTags(per.name).has(tag))
+        if (relevantPeople.length <= 0) { return new SituationEffect()}
+
+        let fondnessChanges = relevantPeople.map(rel => [[rel.name, HumanName.You], -2]) as Array<[Couple, number]>
+
+        let sitEffect = new SituationEffect().changeFondness(fondnessChanges)
+                                             .setDescription(`${relevantPeople.join(", ")} ${relevantPeople.length > 1 ? "weren't" : "wasn't"} too happy about this ${msg} people.`)
+        return sitEffect
+    }
+
+}
+

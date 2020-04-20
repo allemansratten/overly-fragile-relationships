@@ -17,6 +17,7 @@ import {
     EricVSAAndB, 
     GoodCompany, 
     LeftOutWithoutCrush,
+    ExtrovertsIntroverts,
 } from "./situations"
 import { HumanName } from "./humans"
 import { LocationName } from "./locations"
@@ -219,6 +220,7 @@ levels.push(
         [
             new Sympathies(),
             new GoodCompany(),
+            new ExtrovertsIntroverts(),
 
             new NobodyLikesAngryDrunk(),
             new AlexAndCecil(), // must be before MutualCrush
