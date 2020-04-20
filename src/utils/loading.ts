@@ -32,7 +32,7 @@ export class LoadingScene extends Phaser.Scene {
     }
 
     public create() {
-        let title = this.add.text(100, 100, 'Sustainable Friendships', { fill: '#fff', fontFamily: 'Roboto', fontSize: '30px' })
+        let title = this.add.text(100, 100, 'Overly Fragile Relationships', { fill: '#fff', fontFamily: 'Roboto', fontSize: '30px' })
             .setDepth(1002)
         let help = this.add.text(100, 200, 'Pick people to join you on nights out.\nTry to keep your friendship network alive.', { fill: '#fff', fontFamily: 'Roboto', fontSize: '18px' })
             .setDepth(1002)
