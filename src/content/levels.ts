@@ -6,18 +6,19 @@ import {
     AlexAndBeatriceGetDrunk,
     AlexAndCecil,
     BeatriceBreakups,
+    CecilCrushConundrum,
     Complex,
     Depression,
+    EricVSAAndB,
     EternalCouple,
+    ExtrovertsIntroverts,
+    GoodCompany,
+    LeftOutWithoutCrush,
     MutualCrush,
     NobodyLikesAngryDrunk,
     SituationUtils,
     Sympathies,
     UpdateFondnessBasedTags,
-    EricVSAAndB,
-    GoodCompany,
-    LeftOutWithoutCrush,
-    ExtrovertsIntroverts, CecilCrushConundrum,
 } from "./situations"
 import { HumanName } from "./humans"
 import { LocationName } from "./locations"
@@ -64,8 +65,8 @@ const danTwoGirlfriendsBusted = new Complex({
         [[HumanName.Dan, HumanName.Flavie], RelationshipTag.lover],
     ],
     effects: [
-        SituationUtils.breakUp([HumanName.Dan, HumanName.Beatrice]),
-        SituationUtils.breakUp([HumanName.Dan, HumanName.Flavie]),
+        SituationUtils.breakUp([HumanName.Dan, HumanName.Beatrice]).setDescription(""),
+        SituationUtils.breakUp([HumanName.Dan, HumanName.Flavie]).setDescription(""),
         new SituationEffect()
             .addHumTags([[HumanName.Dan, HumanTag.dan_busted]])
             .changeFondness([
@@ -103,7 +104,6 @@ const fragileFlavie2 = new Complex({    //Flavie vs Alex event 2
 })
 
 const flavieFomo1 = new Complex({    //Flavie FOMO event 1
-    humReq: [HumanName.Alex, HumanName.Beatrice, HumanName.Cecil, HumanName.Dan, HumanName.Eric],
     humBan: [HumanName.Flavie],
     humTagsBan: [[HumanName.Flavie, HumanTag.flavie_angry]],
     effects: [new SituationEffect().changeFondness([
@@ -115,14 +115,19 @@ const flavieFomo1 = new Complex({    //Flavie FOMO event 1
         [[HumanName.Flavie, HumanName.You], -3],
     ]).addHumTags([[HumanName.Flavie, HumanTag.flavie_angry]])
         .setDescription('Flavie is angry that you invited everybody except her.')],
+    processEffects: (trip, currentState, baseEffects) => {
+        return trip.goPeople.length >= 4 ? baseEffects : []
+    }
 })
 
 const flavieFomo2 = new Complex({    //Flavie FOMO event 2
-    humReq: [HumanName.Alex, HumanName.Beatrice, HumanName.Cecil, HumanName.Dan, HumanName.Eric],
     humBan: [HumanName.Flavie],
     humTagsReq: [[HumanName.Flavie, HumanTag.flavie_angry]],
     effects: [new SituationEffect().changeFondness([[[HumanName.Flavie, HumanName.You], -10]])
         .setDescription('Flavie came uninvited, chewed you out, and left. Forever.')],
+    processEffects: (trip, currentState, baseEffects) => {
+        return trip.goPeople.length >= 4 ? baseEffects : []
+    }
 })
 
 const bowlingbrawl = new Complex({
@@ -155,7 +160,16 @@ const alexSupportive = new Complex({
     humTagsReq: [[HumanName.Beatrice, HumanTag.depressed]],
     effects: [new SituationEffect()
         .removeHumTags([[HumanName.Beatrice, HumanTag.depressed]])
-        .setDescription('Alex helped Beatrice get over her breakup. She feels better now.')],
+        .setDescription('Alex helped Beatrice get over her breakup. She feels better now.')
+        .changeFondness([
+            [[HumanName.Beatrice, HumanName.You], 1],
+            [[HumanName.Beatrice, HumanName.Alex], 1],
+            [[HumanName.Beatrice, HumanName.Cecil], 1],
+            [[HumanName.Beatrice, HumanName.Dan], 1],
+            [[HumanName.Beatrice, HumanName.Eric], 1],
+            [[HumanName.Beatrice, HumanName.Flavie], 1],
+        ])
+    ],
 })
 
 const PRESENT_FONDNESS_CHANGE = +2
