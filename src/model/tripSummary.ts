@@ -31,19 +31,23 @@ export class TripSummary {
         this.goLocation = location
     }
 
-    public allPresent(...people: HumanName[]) {
+    public allPresent(...people: HumanName[]): boolean {
         return people.every(p => this.goPeople.map(q => q.name).includes(p))
     }
 
-    public somePresent(...people: HumanName[]) {
+    public somePresent(...people: HumanName[]): boolean {
         return people.some(p => this.goPeople.map(q => q.name).includes(p))
     }
 
-    public allAbsent(...people: HumanName[]) {
+    public allAbsent(...people: HumanName[]): boolean {
         return people.every(p => !this.goPeople.map(q => q.name).includes(p))
     }
 
-    public someAbsent(...people: HumanName[]) {
+    public someAbsent(...people: HumanName[]): boolean {
         return people.some(p => !this.goPeople.map(q => q.name).includes(p))
+    }
+
+    public getNames(): HumanName[] {
+        return this.goPeople.map(p => p.name)
     }
 }

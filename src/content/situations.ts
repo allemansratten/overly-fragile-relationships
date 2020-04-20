@@ -359,6 +359,71 @@ export class Sympathies implements Situation {
     }
 }
 
+export class GoodCompany implements Situation {
+
+    static BAD_FONDNESS = 3
+    static GOOD_FONDNESS = 7
+
+    GetApplicableEffects(trip: TripSummary, currentState: PeopleGraph, tripCount: number): Array<SituationEffect> {
+        let effects = new Array
+
+        for (const a of trip.getNames()) {
+            let effect = new SituationEffect()
+
+            let totalChange = 0
+            let goodNames = []
+            let badNames = []
+
+            for (const b of trip.getNames()) {
+                if (a == b) continue
+                let curChange = 0
+                if (currentState.getFondness([a, b]) > GoodCompany.GOOD_FONDNESS) {
+                    curChange++
+                }
+                if (currentState.getFondness([a, b]) < GoodCompany.BAD_FONDNESS) {
+                    curChange--
+                }
+                if (currentState.getRelationshipsBetween(a, b).includes(RelationshipTag.like)) {
+                    curChange++
+                }
+                if (currentState.getRelationshipsBetween(a, b).includes(RelationshipTag.dislike)) {
+                    curChange--
+                }
+
+                // Maybe clamp curChange between -1 and 1?
+                totalChange += curChange
+                if (curChange > 0) {
+                    goodNames.push(b)
+                }
+                if (curChange < 0) {
+                    badNames.push(b)
+                }
+            }
+            if (totalChange === 0) continue
+
+            effect.changeFondness([[[a, HumanName.You], totalChange]])
+
+            let goodDescriptions = [
+                `${a} had fun with the other people you invited.`
+            ]
+            let badDescriptions = [
+                `${a} wasn't happy about who you invited.`
+            ]
+
+            // TODO: specify the person they were happy/unhappy about, if it's just one person
+            if (totalChange < 0) {
+                effect.setDescription(badDescriptions)
+            } else {
+                effect.setDescription(goodDescriptions)
+            }
+
+            effects.push(effect)
+        }
+
+        return effects
+    }
+}
+
 export class UpdateFondnessBasedTags implements Situation {
     GetApplicableEffects(trip: TripSummary, currentState: PeopleGraph, tripCount: number): Array<SituationEffect> {
         let effect = new SituationEffect()

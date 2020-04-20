@@ -14,7 +14,7 @@ import {
     SituationUtils,
     Sympathies,
     UpdateFondnessBasedTags,
-    EricVSAAndB,
+    EricVSAAndB, GoodCompany,
 } from "./situations"
 import { HumanName } from "./humans"
 import { LocationName } from "./locations"
@@ -211,8 +211,9 @@ levels.push(
             [[HumanName.Cecil, HumanName.Flavie], 7],
         ],
         [
-
             new Sympathies(),
+            new GoodCompany(),
+
             new NobodyLikesAngryDrunk(),
             new AlexAndCecil(), // must be before MutualCrush
             new MutualCrush(),
