@@ -662,13 +662,14 @@ export class CecilCrushConundrum implements Situation {
 
         if (!this.triggered &&
             this.flavieAndDanBreakupCounter >= 2 &&
-            currentState.getFondness([HumanName.Flavie, HumanName.Cecil]) > 8 &&
+            currentState.getFondness([HumanName.Flavie, HumanName.Cecil]) > 5 &&
             currentState.getOutRelationshipsOfType(HumanName.Flavie, RelationshipTag.lover)) {
             this.triggered = true
             return [new SituationEffect()
                 .setDescription("Flavie is starting to see that Cecil might be right for her after all!")
+                .changeFondness([[[HumanName.Flavie, HumanName.Cecil], 2]])
                 .addRelTags([
-                    [[HumanName.Flavie, HumanName.Cecil], RelationshipTag.crush],
+                    [[HumanName.Flavie, HumanName.Cecil], RelationshipTag.crushable],
                 ]),
             ]
         }
