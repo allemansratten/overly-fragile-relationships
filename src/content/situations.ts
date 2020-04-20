@@ -713,9 +713,9 @@ export class Depression implements Situation {
                         if (a == b) continue
                         effect.changeFondness([[[a, b], -1]])
                     }
+                    // TODO: this is bad if multiple people have the tag, we assume it's just Beatrice
+                    effect.setDescription(`${a} is depressed... if only a friend of hers could comfort her...`)
                 }
-                // TODO: this is bad if multiple people have the tag, we assume it's just Beatrice
-                effect.setDescription(`${a} is depressed... if only a friend of hers could comfort her...`)
             }
         }
 
