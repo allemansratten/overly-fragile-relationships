@@ -172,6 +172,10 @@ export class MutualCrush implements Situation {
                 if (!eligiblePeople.includes(crush)) {
                     continue
                 }
+                if (currentState.getMutualRelationshipsBetween(person, crush)
+                    .includes(RelationshipTag.disable_mutual_crush_dating)) {
+                    continue
+                }
                 // Break symmetry by comparing names
                 if (crushesMap.get(crush)?.length === 1 && crush <= person) {
                     effects.push(
