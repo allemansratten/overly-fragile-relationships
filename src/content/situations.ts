@@ -436,7 +436,7 @@ export class GoodCompany implements Situation {
         // TODO: good are currently unused (on purpose, so that the game is harder)
         if (badTimePeople.length > 0) {
             const peopleString = HumanUtils.peopleToString(badTimePeople)
-            effect.setDescription(`${peopleString} ${goodTimePeople.length <= 1 ? "wasn't" : "weren't"} happy about who you invited.`)
+            effect.setDescription(`${peopleString} ${badTimePeople.length <= 1 ? "wasn't" : "weren't"} happy about who you invited.`)
             return [effect]    
         }
         else {
