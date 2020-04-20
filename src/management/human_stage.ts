@@ -54,7 +54,7 @@ export class HumanStage {
             let circle = scene.add.ellipse(0, 0, 80, 80, 0xcccccc)
                 .setOrigin(0.5, 0.5)
                 .setAlpha((Number(i) == 0 ? this.CIRCLE_ALPHA_OK : this.CIRCLE_ALPHA_BD))
-                .setInteractive({ useHandCursor: true })
+                // .setInteractive({ useHandCursor: true })
                 // .on('pointerover', () => {
                 //     this.display(human, Number(i))
                 // })
