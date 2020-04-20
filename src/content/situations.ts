@@ -598,8 +598,8 @@ export class EricVSAAndB implements Situation {
                 return [new SituationEffect()
                     .setDescription("Eric said something about Alex's and Beatrice's relationship being unnatural and stormed off.")
                     .changeFondness([
-                        [[HumanName.Eric, HumanName.Alex], -4],
-                        [[HumanName.Eric, HumanName.Beatrice], -4],
+                        [[HumanName.Eric, HumanName.Alex], -2],
+                        [[HumanName.Eric, HumanName.Beatrice], -2],
                         [[HumanName.Beatrice, HumanName.Eric], -2],
                         [[HumanName.Alex, HumanName.Eric], -2],
                     ])
@@ -616,9 +616,13 @@ export class EricVSAAndB implements Situation {
                 return [new SituationEffect()
                     .setDescription("Eric and Cecil seem awfully close, for how harsh Eric was towards Alex and Beatrice...")
                     .addRelTags([
-                        [[HumanName.Eric, HumanName.Cecil], RelationshipTag.crush],
-                        [[HumanName.Cecil, HumanName.Eric], RelationshipTag.crush],
-                    ]),
+                        [[HumanName.Eric, HumanName.Cecil], RelationshipTag.crushable],
+                        [[HumanName.Cecil, HumanName.Eric], RelationshipTag.crushable],
+                    ])
+                    .changeFondness([
+                        [[HumanName.Eric, HumanName.Cecil], 4],
+                        [[HumanName.Cecil, HumanName.Eric], 4],
+                    ])
                 ]
             }
         } else if (this.state == "cecilCrush" && tripCount >= 2 + this.abVisibleStartedDating) {
@@ -627,8 +631,8 @@ export class EricVSAAndB implements Situation {
                 return [new SituationEffect()
                     .setDescription("Oh! Eric must have been repressing these feelings for a while. Now that he's dating Cecil he went to apologize to Alex and Beatrice...")
                     .changeFondness([
-                        [[HumanName.Eric, HumanName.Alex], 4],
-                        [[HumanName.Eric, HumanName.Beatrice], 4],
+                        [[HumanName.Eric, HumanName.Alex], 2],
+                        [[HumanName.Eric, HumanName.Beatrice], 2],
                         [[HumanName.Beatrice, HumanName.Eric], 2],
                         [[HumanName.Alex, HumanName.Eric], 2],
                     ])
@@ -729,7 +733,7 @@ export class LeftOutWithoutCrush implements Situation {
             if (!trip.allPresent(h) &&
                 currentState.getOutRelationshipsOfType(h, RelationshipTag.crush).length > 0 &&
                 currentState.getOutRelationshipsOfType(h, RelationshipTag.crush).every(rel => trip.allPresent(rel.people[1]))) {
-
+2
                 return [new SituationEffect().changeFondness([[[h, HumanName.You], -1]])]
             }
         }
