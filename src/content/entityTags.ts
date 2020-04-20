@@ -6,7 +6,7 @@ export enum RelationshipTag {
     like, dislike, // sympathies
     crushable,
     bowling_brawl,
-
+    disable_mutual_crush_dating, // disable the default way of getting together
 }
 
 export const relationshipTagMap: Map<RelationshipTag, string> = new Map([

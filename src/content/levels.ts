@@ -4,6 +4,7 @@ import { Human } from "../model/human"
 import { HumanTag, RelationshipTag } from "./entityTags"
 import {
     AlexAndBeatriceGetDrunk,
+    AlexAndCecil,
     BeatriceBreakups,
     Complex,
     EternalCouple,
@@ -169,8 +170,10 @@ levels.push(
         ],
         locations,
         flatten([
-            mutualRelationship([HumanName.Alex, HumanName.Beatrice],[RelationshipTag.crushable, RelationshipTag.crush]),
-            mutualRelationship([HumanName.Alex, HumanName.Cecil],[RelationshipTag.crushable, RelationshipTag.crush]),
+            mutualRelationship([HumanName.Alex, HumanName.Beatrice],
+                [RelationshipTag.crushable, RelationshipTag.crush, RelationshipTag.disable_mutual_crush_dating]),
+            mutualRelationship([HumanName.Alex, HumanName.Cecil],
+                [RelationshipTag.crushable, RelationshipTag.crush, RelationshipTag.like, RelationshipTag.disable_mutual_crush_dating]),
             mutualRelationship([HumanName.Eric, HumanName.Alex],[RelationshipTag.crushable, RelationshipTag.crush]),
             mutualRelationship([HumanName.Eric, HumanName.Beatrice],[RelationshipTag.crushable, RelationshipTag.crush]),
             mutualRelationship([HumanName.Dan, HumanName.Beatrice],[RelationshipTag.crushable, RelationshipTag.crush]),
@@ -185,8 +188,6 @@ levels.push(
         [
             [[HumanName.Alex, HumanName.Beatrice], 7],
             [[HumanName.Beatrice, HumanName.Alex], 7],
-            [[HumanName.Alex, HumanName.Cecil], 7],
-            [[HumanName.Cecil, HumanName.Alex], 7],
             [[HumanName.Eric, HumanName.Alex], 7],
             [[HumanName.Alex, HumanName.Eric], 7],
             [[HumanName.Eric, HumanName.Beatrice], 7],
@@ -199,6 +200,7 @@ levels.push(
         [
             new Sympathies(),
             new NobodyLikesAngryDrunk(),
+            new AlexAndCecil(), // must be before MutualCrush
             new MutualCrush(),
             new EternalCouple(HumanName.Dan, HumanName.Flavie),
             new BeatriceBreakups(),

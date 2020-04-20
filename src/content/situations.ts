@@ -15,7 +15,7 @@ export class SituationUtils {
             [RelationshipTag.lover],
             [RelationshipTag.crush, RelationshipTag.ex],
             +10,
-        ).setDescription(`${a} and ${b} started dating.`)
+        ).setDescription(`After having fun at the night out, ${a} and ${b} started dating.`)
     }
 
     public static breakUp(couple: Couple): SituationEffect {
@@ -24,7 +24,7 @@ export class SituationUtils {
             couple,
             [RelationshipTag.ex],
             [RelationshipTag.lover],
-            -5,
+            -6,
         ).setDescription(`${a} and ${b} broke up!`)
     }
 
@@ -71,6 +71,10 @@ export class SituationUtils {
         }
 
         return res
+    }
+
+    public static isSingle(person: HumanName, currentState: PeopleGraph): boolean {
+        return this.getLovers(person, currentState).length == 0
     }
 
     public static subset<T>(as: T[], bs: T[]) {
@@ -172,6 +176,10 @@ export class MutualCrush implements Situation {
                 if (!eligiblePeople.includes(crush)) {
                     continue
                 }
+                if (currentState.getMutualRelationshipsBetween(person, crush)
+                    .includes(RelationshipTag.disable_mutual_crush_dating)) {
+                    continue
+                }
                 // Break symmetry by comparing names
                 if (crushesMap.get(crush)?.length === 1 && crush <= person) {
                     effects.push(
@@ -228,7 +236,7 @@ export class EternalCouple implements Situation {
             let wrapperIndex: number
 
             if (!this.together) {
-                if (currentState.getOutRelationshipsOfType(this.onlyWhenNotInOtherRel, RelationshipTag.lover).length > 0){
+                if (currentState.getOutRelationshipsOfType(this.onlyWhenNotInOtherRel, RelationshipTag.lover).length > 0) {
                     // is in relationship -> not getting back togther
                     // Something has changed externally
                     this.lastChange = tripCount
@@ -460,10 +468,33 @@ export class AlexAndBeatriceGetDrunk implements Situation {
                     ])
                     .addRelTags([
                         [[lover, HumanName.Beatrice], RelationshipTag.dislike],
-                    ])
+                    ]),
             ]
         }
 
         return []
+    }
+}
+
+export class AlexAndCecil implements Situation {
+    fired = false
+
+    GetApplicableEffects(trip: TripSummary, currentState: PeopleGraph, tripCount: number): Array<SituationEffect> {
+        if (this.fired) return []
+        const a = HumanName.Alex
+        const c = HumanName.Cecil
+
+        if (trip.allAbsent(a, c)
+            && currentState.getFondness([a, c]) >= 7
+            && currentState.getFondness([c, a]) >= 7
+            && SituationUtils.isSingle(a, currentState)
+            && SituationUtils.isSingle(c, currentState)) {
+            this.fired = true
+            return [SituationUtils.startToDate([a, c])
+                .setDescription("While you were out with other people, Alex started dating Cecil,"
+                    + " since they found out they enjoy each others' company so much.")]
+        } else {
+            return []
+        }
     }
 }
